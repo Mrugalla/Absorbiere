@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="sxi35P" name="Abs&#246;rb" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="Mrugalla"
+              companyWebsite="https://github.com/Mrugalla" companyEmail="beatsbasteln@web.de"
+              pluginFormats="buildStandalone,buildVST3" pluginName="Abs&#246;rb"
+              pluginDesc="A sidechain ringmod with extra steps" pluginManufacturer="Mrugalla"
+              pluginManufacturerCode="BBBB" pluginCode="SCRM" pluginVST3Category="Distortion,Fx"
+              pluginAAXCategory="64" pluginVSTCategory="kPlugCategEffect" cppLanguageStandard="latest"
+              defines="PPDIOOut=0&#10;PPDIODryWet=1&#10;PPDIOWetMix=2&#10;&#10;PPDIsNonlinear=true&#10;PPDIO=PPDIOWetMix&#10;&#10;PPDHasStereoConfig=0&#10;PPDHasSidechain=1&#10;PPDHasLookahead=0&#10;PPDHasTuningEditor=0"
+              includeBinaryInJuceHeader="1" pluginAUMainType="'aufx'" maxBinaryFileSize="20971520"
+              pluginCharacteristicsValue="pluginWantsMidiIn">
+  <MAINGROUP id="WYhkvs" name="Abs&#246;rb">
+    <GROUP id="{266E5E69-4D9A-EB45-6039-F732E39E290B}" name="Source">
+      <GROUP id="{B2DD672C-3747-AD06-804C-97143B931D2A}" name="arch">
+        <FILE id="dpeeDR" name="FormulaParser.cpp" compile="1" resource="0"
+              file="Source/arch/FormulaParser.cpp"/>
+        <FILE id="yX0Uau" name="FormulaParser.h" compile="0" resource="0" file="Source/arch/FormulaParser.h"/>
+        <FILE id="mS63PL" name="Math.h" compile="0" resource="0" file="Source/arch/Math.h"/>
+        <FILE id="HtjXml" name="RandomSeed.cpp" compile="1" resource="0" file="Source/arch/RandomSeed.cpp"/>
+        <FILE id="lp5cuY" name="RandomSeed.h" compile="0" resource="0" file="Source/arch/RandomSeed.h"/>
+        <FILE id="lC12vR" name="Range.cpp" compile="1" resource="0" file="Source/arch/Range.cpp"/>
+        <FILE id="DHlfAp" name="Range.h" compile="0" resource="0" file="Source/arch/Range.h"/>
+        <FILE id="ufbBWW" name="State.cpp" compile="1" resource="0" file="Source/arch/State.cpp"/>
+        <FILE id="QtA2h7" name="State.h" compile="0" resource="0" file="Source/arch/State.h"/>
+        <FILE id="F2IOFD" name="XenManager.cpp" compile="1" resource="0" file="Source/arch/XenManager.cpp"/>
+        <FILE id="heh1JA" name="XenManager.h" compile="0" resource="0" file="Source/arch/XenManager.h"/>
+      </GROUP>
+      <GROUP id="{BDD2C9EC-5D51-F998-00A7-68F46D9ECD50}" name="audio">
+        <GROUP id="{46DD4EC8-38A2-51F4-A277-D310BC24E85C}" name="dsp">
+          <GROUP id="{548F7174-FAF7-657A-8F29-CB9DDFF6204B}" name="midi">
+            <FILE id="SelAAW" name="AutoMPE.cpp" compile="1" resource="0" file="Source/audio/dsp/midi/AutoMPE.cpp"/>
+            <FILE id="GOAmiC" name="AutoMPE.h" compile="0" resource="0" file="Source/audio/dsp/midi/AutoMPE.h"/>
+            <FILE id="uJyBY0" name="MIDITranspose.cpp" compile="1" resource="0"
+                  file="Source/audio/dsp/midi/MIDITranspose.cpp"/>
+            <FILE id="iBk5Ah" name="MIDITranspose.h" compile="0" resource="0" file="Source/audio/dsp/midi/MIDITranspose.h"/>
+            <FILE id="qx1G6f" name="MonophonyHandler.cpp" compile="1" resource="0"
+                  file="Source/audio/dsp/midi/MonophonyHandler.cpp"/>
+            <FILE id="BrAPhz" name="MonophonyHandler.h" compile="0" resource="0"
+                  file="Source/audio/dsp/midi/MonophonyHandler.h"/>
+            <FILE id="R4b9kg" name="MPESplit.cpp" compile="1" resource="0" file="Source/audio/dsp/midi/MPESplit.cpp"/>
+            <FILE id="VP9Ph9" name="MPESplit.h" compile="0" resource="0" file="Source/audio/dsp/midi/MPESplit.h"/>
+            <FILE id="EeOBnO" name="NoteDelay.cpp" compile="1" resource="0" file="Source/audio/dsp/midi/NoteDelay.cpp"/>
+            <FILE id="KCU20i" name="NoteDelay.h" compile="0" resource="0" file="Source/audio/dsp/midi/NoteDelay.h"/>
+            <FILE id="rgxpOQ" name="XenDemoSynth.cpp" compile="1" resource="0"
+                  file="Source/audio/dsp/midi/XenDemoSynth.cpp"/>
+            <FILE id="fIH1kF" name="XenDemoSynth.h" compile="0" resource="0" file="Source/audio/dsp/midi/XenDemoSynth.h"/>
+            <FILE id="zeawhc" name="XenRescaler.cpp" compile="1" resource="0" file="Source/audio/dsp/midi/XenRescaler.cpp"/>
+            <FILE id="CqM9Ib" name="XenRescaler.h" compile="0" resource="0" file="Source/audio/dsp/midi/XenRescaler.h"/>
+          </GROUP>
+          <FILE id="NpgONq" name="Allpass.cpp" compile="1" resource="0" file="Source/audio/dsp/Allpass.cpp"/>
+          <FILE id="RfYAN4" name="Allpass.h" compile="0" resource="0" file="Source/audio/dsp/Allpass.h"/>
+          <FILE id="ryNpj7" name="AutoGain.cpp" compile="1" resource="0" file="Source/audio/dsp/AutoGain.cpp"/>
+          <FILE id="iHW2Wc" name="AutoGain.h" compile="0" resource="0" file="Source/audio/dsp/AutoGain.h"/>
+          <FILE id="yMN8Px" name="Convolver.cpp" compile="1" resource="0" file="Source/audio/dsp/Convolver.cpp"/>
+          <FILE id="MANxa7" name="Convolver.h" compile="0" resource="0" file="Source/audio/dsp/Convolver.h"/>
+          <FILE id="JyW4yO" name="Distortion.cpp" compile="1" resource="0" file="Source/audio/dsp/Distortion.cpp"/>
+          <FILE id="UslHzg" name="Distortion.h" compile="0" resource="0" file="Source/audio/dsp/Distortion.h"/>
+          <FILE id="wJHW84" name="EnvelopeFollower.cpp" compile="1" resource="0"
+                file="Source/audio/dsp/EnvelopeFollower.cpp"/>
+          <FILE id="ziGscQ" name="EnvelopeFollower.h" compile="0" resource="0"
+                file="Source/audio/dsp/EnvelopeFollower.h"/>
+          <FILE id="bSO7hk" name="EnvelopeGenerator.cpp" compile="1" resource="0"
+                file="Source/audio/dsp/EnvelopeGenerator.cpp"/>
+          <FILE id="ZjaFfP" name="EnvelopeGenerator.h" compile="0" resource="0"
+                file="Source/audio/dsp/EnvelopeGenerator.h"/>
+          <FILE id="OTV7C5" name="FFT.cpp" compile="1" resource="0" file="Source/audio/dsp/FFT.cpp"/>
+          <FILE id="B1RmPB" name="FFT.h" compile="0" resource="0" file="Source/audio/dsp/FFT.h"/>
+          <FILE id="iarOnm" name="Filter.cpp" compile="1" resource="0" file="Source/audio/dsp/Filter.cpp"/>
+          <FILE id="Rn9jYx" name="Filter.h" compile="0" resource="0" file="Source/audio/dsp/Filter.h"/>
+          <FILE id="IEvld2" name="Gain.cpp" compile="1" resource="0" file="Source/audio/dsp/Gain.cpp"/>
+          <FILE id="RcbjTZ" name="Gain.h" compile="0" resource="0" file="Source/audio/dsp/Gain.h"/>
+          <FILE id="xFYMPt" name="KeySelector.cpp" compile="1" resource="0" file="Source/audio/dsp/KeySelector.cpp"/>
+          <FILE id="BT1g0a" name="KeySelector.h" compile="0" resource="0" file="Source/audio/dsp/KeySelector.h"/>
+          <FILE id="tIv1We" name="MidSide.cpp" compile="1" resource="0" file="Source/audio/dsp/MidSide.cpp"/>
+          <FILE id="nPbcQX" name="MidSide.h" compile="0" resource="0" file="Source/audio/dsp/MidSide.h"/>
+          <FILE id="w1k5d8" name="MixProcessor.cpp" compile="1" resource="0"
+                file="Source/audio/dsp/MixProcessor.cpp"/>
+          <FILE id="R0qNs6" name="MixProcessor.h" compile="0" resource="0" file="Source/audio/dsp/MixProcessor.h"/>
+          <FILE id="MpCZU0" name="NoiseSynth.cpp" compile="1" resource="0" file="Source/audio/dsp/NoiseSynth.cpp"/>
+          <FILE id="A2bEqS" name="NoiseSynth.h" compile="0" resource="0" file="Source/audio/dsp/NoiseSynth.h"/>
+          <FILE id="q1fEKU" name="Oversampler.cpp" compile="1" resource="0" file="Source/audio/dsp/Oversampler.cpp"/>
+          <FILE id="DWZ2hj" name="Oversampler.h" compile="0" resource="0" file="Source/audio/dsp/Oversampler.h"/>
+          <FILE id="lrNj9S" name="ParallelProcessor.cpp" compile="1" resource="0"
+                file="Source/audio/dsp/ParallelProcessor.cpp"/>
+          <FILE id="ZvPbDu" name="ParallelProcessor.h" compile="0" resource="0"
+                file="Source/audio/dsp/ParallelProcessor.h"/>
+          <FILE id="HiLfL0" name="Perlin.cpp" compile="1" resource="0" file="Source/audio/dsp/Perlin.cpp"/>
+          <FILE id="Jq6VSZ" name="Perlin.h" compile="0" resource="0" file="Source/audio/dsp/Perlin.h"/>
+          <FILE id="dcws8z" name="Phasor.cpp" compile="1" resource="0" file="Source/audio/dsp/Phasor.cpp"/>
+          <FILE id="qFKvYB" name="Phasor.h" compile="0" resource="0" file="Source/audio/dsp/Phasor.h"/>
+          <FILE id="hFZSl1" name="PluginRecorder.cpp" compile="1" resource="0"
+                file="Source/audio/dsp/PluginRecorder.cpp"/>
+          <FILE id="VJszle" name="PluginRecorder.h" compile="0" resource="0"
+                file="Source/audio/dsp/PluginRecorder.h"/>
+          <FILE id="dkRRfr" name="PRM.cpp" compile="1" resource="0" file="Source/audio/dsp/PRM.cpp"/>
+          <FILE id="PeWEgd" name="PRM.h" compile="0" resource="0" file="Source/audio/dsp/PRM.h"/>
+          <FILE id="COtYQZ" name="Randomizer.cpp" compile="1" resource="0" file="Source/audio/dsp/Randomizer.cpp"/>
+          <FILE id="UbXJN7" name="Randomizer.h" compile="0" resource="0" file="Source/audio/dsp/Randomizer.h"/>
+          <FILE id="gtCIRw" name="Resonator.cpp" compile="1" resource="0" file="Source/audio/dsp/Resonator.cpp"/>
+          <FILE id="ro16cu" name="Resonator.h" compile="0" resource="0" file="Source/audio/dsp/Resonator.h"/>
+          <FILE id="a0pyc7" name="SleepyDetector.cpp" compile="1" resource="0"
+                file="Source/audio/dsp/SleepyDetector.cpp"/>
+          <FILE id="p35hNm" name="SleepyDetector.h" compile="0" resource="0"
+                file="Source/audio/dsp/SleepyDetector.h"/>
+          <FILE id="u6SBVE" name="SlewLimiter.cpp" compile="1" resource="0" file="Source/audio/dsp/SlewLimiter.cpp"/>
+          <FILE id="r9qd5F" name="SlewLimiter.h" compile="0" resource="0" file="Source/audio/dsp/SlewLimiter.h"/>
+          <FILE id="UAdDSa" name="Smooth.cpp" compile="1" resource="0" file="Source/audio/dsp/Smooth.cpp"/>
+          <FILE id="zMgGIU" name="Smooth.h" compile="0" resource="0" file="Source/audio/dsp/Smooth.h"/>
+          <FILE id="pKmFka" name="Transport.cpp" compile="1" resource="0" file="Source/audio/dsp/Transport.cpp"/>
+          <FILE id="qoRMJF" name="Transport.h" compile="0" resource="0" file="Source/audio/dsp/Transport.h"/>
+          <FILE id="ce2MWW" name="WHead.cpp" compile="1" resource="0" file="Source/audio/dsp/WHead.cpp"/>
+          <FILE id="oci39f" name="WHead.h" compile="0" resource="0" file="Source/audio/dsp/WHead.h"/>
+          <FILE id="JEAItZ" name="XFade.cpp" compile="1" resource="0" file="Source/audio/dsp/XFade.cpp"/>
+          <FILE id="lPCfVr" name="XFade.h" compile="0" resource="0" file="Source/audio/dsp/XFade.h"/>
+        </GROUP>
+        <FILE id="Zqn3sE" name="PluginProcessor.cpp" compile="1" resource="0"
+              file="Source/audio/PluginProcessor.cpp"/>
+        <FILE id="OKrsum" name="PluginProcessor.h" compile="0" resource="0"
+              file="Source/audio/PluginProcessor.h"/>
+        <FILE id="EOo58n" name="Using.h" compile="0" resource="0" file="Source/audio/Using.h"/>
+      </GROUP>
+      <GROUP id="{9A3E7972-26DF-7695-AF8A-86260A4417C4}" name="fonts">
+        <GROUP id="{0C84BBF3-E70A-133D-6DD5-5E445EE5FAB8}" name="Dosis">
+          <GROUP id="{7FF38E42-9052-CF42-EF22-D12011D33A69}" name="static">
+            <FILE id="JLcHQ5" name="Dosis-Bold.ttf" compile="0" resource="1" file="Source/fonts/Dosis/static/Dosis-Bold.ttf"/>
+            <FILE id="AtXK17" name="Dosis-ExtraBold.ttf" compile="0" resource="1"
+                  file="Source/fonts/Dosis/static/Dosis-ExtraBold.ttf"/>
+            <FILE id="WwzbkK" name="Dosis-ExtraLight.ttf" compile="0" resource="1"
+                  file="Source/fonts/Dosis/static/Dosis-ExtraLight.ttf"/>
+            <FILE id="y1Oai3" name="Dosis-Light.ttf" compile="0" resource="1" file="Source/fonts/Dosis/static/Dosis-Light.ttf"/>
+            <FILE id="GQtHWl" name="Dosis-Medium.ttf" compile="0" resource="1"
+                  file="Source/fonts/Dosis/static/Dosis-Medium.ttf"/>
+            <FILE id="MIkkIn" name="Dosis-Regular.ttf" compile="0" resource="1"
+                  file="Source/fonts/Dosis/static/Dosis-Regular.ttf"/>
+            <FILE id="EDW2yQ" name="Dosis-SemiBold.ttf" compile="0" resource="1"
+                  file="Source/fonts/Dosis/static/Dosis-SemiBold.ttf"/>
+          </GROUP>
+          <FILE id="wxe3YG" name="Dosis-VariableFont_wght.ttf" compile="0" resource="1"
+                file="Source/fonts/Dosis/Dosis-VariableFont_wght.ttf"/>
+          <FILE id="g6ziid" name="OFL.txt" compile="0" resource="1" file="Source/fonts/Dosis/OFL.txt"/>
+          <FILE id="hxOijJ" name="README.txt" compile="0" resource="1" file="Source/fonts/Dosis/README.txt"/>
+        </GROUP>
+        <GROUP id="{BC928A75-6A6C-27ED-7149-C45BB6FD9FF5}" name="Lobster">
+          <FILE id="inCdxY" name="Lobster-Regular.ttf" compile="0" resource="1"
+                file="Source/fonts/Lobster/Lobster-Regular.ttf"/>
+          <FILE id="ZMZOCw" name="OFL.txt" compile="0" resource="1" file="Source/fonts/Lobster/OFL.txt"/>
+        </GROUP>
+        <GROUP id="{BDD5A344-7B7B-DA11-608B-FBAF613EABF0}" name="Ms_Madi">
+          <FILE id="n0hyvs" name="MsMadi-Regular.ttf" compile="0" resource="1"
+                file="Source/fonts/Ms_Madi/MsMadi-Regular.ttf"/>
+          <FILE id="kWNVCt" name="OFL.txt" compile="0" resource="1" file="Source/fonts/Ms_Madi/OFL.txt"/>
+        </GROUP>
+        <FILE id="ShAe32" name="felixhand_02.ttf" compile="0" resource="1"
+              file="Source/fonts/felixhand_02.ttf"/>
+        <FILE id="nYgW9M" name="license.txt" compile="0" resource="1" file="Source/fonts/license.txt"/>
+        <FILE id="VW6OHT" name="nel19.ttf" compile="0" resource="1" file="Source/fonts/nel19.ttf"/>
+      </GROUP>
+      <GROUP id="{88960760-0BAF-5D10-9A65-2B917D16B3C4}" name="gui">
+        <FILE id="jBvW0d" name="Button.cpp" compile="1" resource="0" file="Source/gui/Button.cpp"/>
+        <FILE id="M6p04W" name="Button.h" compile="0" resource="0" file="Source/gui/Button.h"/>
+        <FILE id="Cfm4S3" name="ButtonLink.cpp" compile="1" resource="0" file="Source/gui/ButtonLink.cpp"/>
+        <FILE id="quIzfb" name="ButtonLink.h" compile="0" resource="0" file="Source/gui/ButtonLink.h"/>
+        <FILE id="tFLNPB" name="ButtonPower.cpp" compile="1" resource="0" file="Source/gui/ButtonPower.cpp"/>
+        <FILE id="kbfwcY" name="ButtonPower.h" compile="0" resource="0" file="Source/gui/ButtonPower.h"/>
+        <FILE id="o4uaSj" name="ButtonRandomizer.cpp" compile="1" resource="0"
+              file="Source/gui/ButtonRandomizer.cpp"/>
+        <FILE id="YujhaU" name="ButtonRandomizer.h" compile="0" resource="0"
+              file="Source/gui/ButtonRandomizer.h"/>
+        <FILE id="wnh6gO" name="Colours.cpp" compile="1" resource="0" file="Source/gui/Colours.cpp"/>
+        <FILE id="hPSKXT" name="Colours.h" compile="0" resource="0" file="Source/gui/Colours.h"/>
+        <FILE id="uqRtiz" name="ColoursEditor.cpp" compile="1" resource="0"
+              file="Source/gui/ColoursEditor.cpp"/>
+        <FILE id="cu72ru" name="ColoursEditor.h" compile="0" resource="0" file="Source/gui/ColoursEditor.h"/>
+        <FILE id="iHuVAj" name="Comp.cpp" compile="1" resource="0" file="Source/gui/Comp.cpp"/>
+        <FILE id="Fd2ptj" name="Comp.h" compile="0" resource="0" file="Source/gui/Comp.h"/>
+        <FILE id="xr0bdt" name="Credits.cpp" compile="1" resource="0" file="Source/gui/Credits.cpp"/>
+        <FILE id="Q7tOKn" name="Credits.h" compile="0" resource="0" file="Source/gui/Credits.h"/>
+        <FILE id="QbPL8y" name="Cursor.cpp" compile="1" resource="0" file="Source/gui/Cursor.cpp"/>
+        <FILE id="EApcXw" name="Cursor.h" compile="0" resource="0" file="Source/gui/Cursor.h"/>
+        <FILE id="EOoT3v" name="DropDownMenu.cpp" compile="1" resource="0"
+              file="Source/gui/DropDownMenu.cpp"/>
+        <FILE id="cdOiR2" name="DropDownMenu.h" compile="0" resource="0" file="Source/gui/DropDownMenu.h"/>
+        <FILE id="d8tR2z" name="EnvelopeFollowerEditor.cpp" compile="1" resource="0"
+              file="Source/gui/EnvelopeFollowerEditor.cpp"/>
+        <FILE id="IzByeW" name="EnvelopeFollowerEditor.h" compile="0" resource="0"
+              file="Source/gui/EnvelopeFollowerEditor.h"/>
+        <FILE id="iLwIUE" name="EnvelopeGeneratorEditor.cpp" compile="1" resource="0"
+              file="Source/gui/EnvelopeGeneratorEditor.cpp"/>
+        <FILE id="iNKv6K" name="EnvelopeGeneratorEditor.h" compile="0" resource="0"
+              file="Source/gui/EnvelopeGeneratorEditor.h"/>
+        <FILE id="nInsGx" name="Events.cpp" compile="1" resource="0" file="Source/gui/Events.cpp"/>
+        <FILE id="sd20DY" name="Events.h" compile="0" resource="0" file="Source/gui/Events.h"/>
+        <FILE id="pkUGC6" name="KeySelectorEditor.cpp" compile="1" resource="0"
+              file="Source/gui/KeySelectorEditor.cpp"/>
+        <FILE id="Pw0EtX" name="KeySelectorEditor.h" compile="0" resource="0"
+              file="Source/gui/KeySelectorEditor.h"/>
+        <FILE id="XLhlwF" name="Knob.cpp" compile="1" resource="0" file="Source/gui/Knob.cpp"/>
+        <FILE id="dasrsC" name="Knob.h" compile="0" resource="0" file="Source/gui/Knob.h"/>
+        <FILE id="xES9Ed" name="Label.cpp" compile="1" resource="0" file="Source/gui/Label.cpp"/>
+        <FILE id="NY492d" name="Label.h" compile="0" resource="0" file="Source/gui/Label.h"/>
+        <FILE id="vOHjK0" name="LabelPluginRecorder.cpp" compile="1" resource="0"
+              file="Source/gui/LabelPluginRecorder.cpp"/>
+        <FILE id="hP7jPf" name="LabelPluginRecorder.h" compile="0" resource="0"
+              file="Source/gui/LabelPluginRecorder.h"/>
+        <FILE id="FQYeaZ" name="Layout.cpp" compile="1" resource="0" file="Source/gui/Layout.cpp"/>
+        <FILE id="cHTZX9" name="Layout.h" compile="0" resource="0" file="Source/gui/Layout.h"/>
+        <FILE id="qsYyiq" name="ManifestOfWisdom.cpp" compile="1" resource="0"
+              file="Source/gui/ManifestOfWisdom.cpp"/>
+        <FILE id="sBqoKb" name="ManifestOfWisdom.h" compile="0" resource="0"
+              file="Source/gui/ManifestOfWisdom.h"/>
+        <FILE id="wnyKwm" name="ParameterEditor.cpp" compile="1" resource="0"
+              file="Source/gui/ParameterEditor.cpp"/>
+        <FILE id="kWxJ07" name="ParameterEditor.h" compile="0" resource="0"
+              file="Source/gui/ParameterEditor.h"/>
+        <FILE id="slcluC" name="PatchBrowser.cpp" compile="1" resource="0"
+              file="Source/gui/PatchBrowser.cpp"/>
+        <FILE id="M6LvXq" name="PatchBrowser.h" compile="0" resource="0" file="Source/gui/PatchBrowser.h"/>
+        <FILE id="xsPLOJ" name="RadioButton.cpp" compile="1" resource="0" file="Source/gui/RadioButton.cpp"/>
+        <FILE id="WKEUHe" name="RadioButton.h" compile="0" resource="0" file="Source/gui/RadioButton.h"/>
+        <FILE id="gXadxt" name="RandomizerEditor.cpp" compile="1" resource="0"
+              file="Source/gui/RandomizerEditor.cpp"/>
+        <FILE id="xmCNbp" name="RandomizerEditor.h" compile="0" resource="0"
+              file="Source/gui/RandomizerEditor.h"/>
+        <FILE id="X3dShk" name="Ruler.cpp" compile="1" resource="0" file="Source/gui/Ruler.cpp"/>
+        <FILE id="us4vmW" name="Ruler.h" compile="0" resource="0" file="Source/gui/Ruler.h"/>
+        <FILE id="IgOTp0" name="TextEditor.cpp" compile="1" resource="0" file="Source/gui/TextEditor.cpp"/>
+        <FILE id="h3cRnf" name="TextEditor.h" compile="0" resource="0" file="Source/gui/TextEditor.h"/>
+        <FILE id="iXqitC" name="TimerCallback.cpp" compile="1" resource="0"
+              file="Source/gui/TimerCallback.cpp"/>
+        <FILE id="tj7ECv" name="TimerCallback.h" compile="0" resource="0" file="Source/gui/TimerCallback.h"/>
+        <FILE id="AeiGGL" name="Tooltip.cpp" compile="1" resource="0" file="Source/gui/Tooltip.cpp"/>
+        <FILE id="JwwlAY" name="Tooltip.h" compile="0" resource="0" file="Source/gui/Tooltip.h"/>
+        <FILE id="WYm8kB" name="Using.cpp" compile="1" resource="0" file="Source/gui/Using.cpp"/>
+        <FILE id="oWD6hb" name="Using.h" compile="0" resource="0" file="Source/gui/Using.h"/>
+        <FILE id="cytvBB" name="Utils.cpp" compile="1" resource="0" file="Source/gui/Utils.cpp"/>
+        <FILE id="uQEoVw" name="Utils.h" compile="0" resource="0" file="Source/gui/Utils.h"/>
+        <FILE id="ae8pWP" name="VoiceGrid.cpp" compile="1" resource="0" file="Source/gui/VoiceGrid.cpp"/>
+        <FILE id="DEwj6E" name="VoiceGrid.h" compile="0" resource="0" file="Source/gui/VoiceGrid.h"/>
+      </GROUP>
+      <GROUP id="{B7DE6F0A-F6A8-99D1-3656-D934F54C4249}" name="param">
+        <FILE id="vA2aFC" name="Param.cpp" compile="1" resource="0" file="Source/param/Param.cpp"/>
+        <FILE id="c0yYoA" name="Param.h" compile="0" resource="0" file="Source/param/Param.h"/>
+      </GROUP>
+      <FILE id="CmsC63" name="cursor.png" compile="0" resource="1" file="Source/cursor.png"/>
+      <FILE id="z8MTti" name="Editor.cpp" compile="1" resource="0" file="Source/Editor.cpp"/>
+      <FILE id="XX6mmB" name="Editor.h" compile="0" resource="0" file="Source/Editor.h"/>
+      <FILE id="jWbVV9" name="mow.png" compile="0" resource="1" file="Source/mow.png"/>
+      <FILE id="p5XYMD" name="Processor.cpp" compile="1" resource="0" file="Source/Processor.cpp"/>
+      <FILE id="oE47UR" name="Processor.h" compile="0" resource="0" file="Source/Processor.h"/>
+      <FILE id="DhtHQS" name="todo.h" compile="0" resource="0" file="Source/todo.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <VS2022 targetFolder="Builds/VisualStudio2022">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Absoerb" enablePluginBinaryCopyStep="1"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Absoerb" enablePluginBinaryCopyStep="1"
+                       useRuntimeLibDLL="0"/>
+        <CONFIGURATION isDebug="0" name="DebugRelease" targetName="Absoerb" enablePluginBinaryCopyStep="1"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../PluginDevelopment/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../PluginDevelopment/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+</JUCERPROJECT>
