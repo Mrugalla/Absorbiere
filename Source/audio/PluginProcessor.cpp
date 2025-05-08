@@ -90,8 +90,8 @@ namespace dsp
 	void PluginProcessor::operator()(ProcessorBufferView& view,
 		MidiBuffer&, const Transport::Info& trans) noexcept
 	{
-		scope(view, trans);
 		ducker(view);
+		scope(view, trans);
 	}
 
 	void PluginProcessor::processBlockBypassed(float**, MidiBuffer&, int, int) noexcept

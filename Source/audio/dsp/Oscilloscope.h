@@ -13,7 +13,7 @@ namespace dsp
 			phasor(0.),
 			beatLength(1.f),
 			Fs(0.),
-			scEnabled(true)
+			scEnabled(false)
 		{}
 
 		void prepare(double sampleRate)
@@ -25,9 +25,16 @@ namespace dsp
 			phasor.prepare(1. / Fs);
 		}
 
+		void setSCEnabled(bool e) noexcept
+		{
+			scEnabled.store(e);
+		}
+
 		void operator()(const ProcessorBufferView& view, const Transport::Info& transport) noexcept
 		{
-			const auto numChannels = scEnabled ? view.getNumChannelsSC() : view.getNumChannelsMain();
+			const auto useSC = scEnabled.load();
+
+			const auto numChannels = useSC ? view.getNumChannelsSC() : view.getNumChannelsMain();
 			const auto numSamples = view.getNumSamples();
 			
 			wHead(numSamples);
@@ -48,7 +55,7 @@ namespace dsp
 			phasor.phase.phase = ppqCh - std::floor(ppqCh);
 
 			{
-				const auto smpls = scEnabled ? view.getSamplesSC(0) : view.getSamplesMain(0);
+				const auto smpls = useSC ? view.getSamplesSC(0) : view.getSamplesMain(0);
 				for (auto s = 0; s < numSamples; ++s)
 				{
 					auto w = wHead[s];
@@ -88,12 +95,17 @@ namespace dsp
 		{
 			return beatLength.load();
 		}
+
+		const bool isSCEnabled() const noexcept
+		{
+			return scEnabled.load();
+		}
 	private:
 		WHead wHead;
 		std::vector<float> buffer;
 		Phasor phasor;
 		std::atomic<float> beatLength;
 		double Fs;
-		bool scEnabled;
+		std::atomic<bool> scEnabled;
 	};
 }

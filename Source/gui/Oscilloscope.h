@@ -4,17 +4,23 @@
 
 namespace gui
 {
-	struct Oscilloscope :
-		public Comp
+	struct OscilloscopeEditor :
+		public Button
 	{
 		using Oscope = dsp::Oscilloscope;
 
-		Oscilloscope(Utils& u, const Oscope& _oscope) :
-			Comp(u),
+		OscilloscopeEditor(Utils& u, Oscope& _oscope) :
+			Button(u),
 			oscope(_oscope),
 			curve(),
 			bipolar(false)
 		{
+			tooltip = "Click on the scope to switch between sc input and main output";
+			onClick = [&](const Mouse&)
+			{
+				_oscope.setSCEnabled(!oscope.isSCEnabled());
+			};
+
 			add(Callback([&]()
 			{
 				repaint();
@@ -51,13 +57,24 @@ namespace gui
 			const auto yOff = bounds.getY() + yScale;
 
 			curve.clear();
-			auto y = yOff - data[0] * yScale;
+			auto idx0 = 0;
+			auto y = yOff - data[idx0] * yScale;
 			curve.startNewSubPath(xOff, y);
 			for (auto i = thicc; i <= w; i += thicc)
 			{
 				const auto x = xOff + i;
-				const auto idx = static_cast<int>(i * xScaleInv);
-				y = yOff - data[idx] * yScale;
+				const auto idx1 = static_cast<int>(i * xScaleInv);
+		
+				auto smpl = 0.f;
+				for (auto j = idx0; j < idx1; ++j)
+				{
+					const auto rect = data[j] * data[j];
+					if (smpl < rect)
+						smpl = rect;
+				}
+				idx0 = idx1;
+				smpl = std::sqrt(smpl);
+				y = yOff - smpl * yScale;
 				curve.lineTo(x, y);
 			}
 

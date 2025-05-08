@@ -66,7 +66,7 @@ namespace gui
 		}
 
 	private:
-		Oscilloscope scope;
+		OscilloscopeEditor scope;
 		KnobAbsorb rmBlend;
 		DuckCompEditor compEditor;
 		KnobAbsorb bpBlend, bpLow, bpHigh;
