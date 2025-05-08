@@ -83,7 +83,6 @@ namespace dsp
 				sampleRate(1.f),
 				atkX(0.f),
 				rlsX(0.f),
-				
 				env(MinDb)
 			{
 			}
@@ -106,11 +105,8 @@ namespace dsp
 				rlsX = other.rlsX;
 			}
 
-			float operator()(float smpl) noexcept
+			float operator()(float rectDb) noexcept
 			{
-				const auto rect = std::abs(smpl);
-				const auto rectDb = rect == 0.f ? MinDb : math::ampToDecibel(rect);
-
 				if (env < rectDb)
 					lp.setX(atkX);
 				else
@@ -156,10 +152,12 @@ namespace dsp
 				{
 					const auto x = smplsMain[s];
 					const auto sc = smplsSC[s];
-					const auto lvl = lvlDetector(sc);
-					const auto tc = TransferDownwardsComp(lvl, thresholdDb, ratioDb, kneeDb);
-					const auto gainDownwardsExpanderDb = tc - lvl;
-					const auto gain = math::dbToAmp(gainDownwardsExpanderDb, MinDb);
+					const auto rect = std::abs(sc);
+					const auto rectDb = rect == 0.f ? MinDb : math::ampToDecibel(rect);
+					const auto tc = TransferDownwardsComp(rectDb, thresholdDb, ratioDb, kneeDb);
+					const auto gainDb = tc - rectDb;
+					const auto lvl = lvlDetector(gainDb);
+					const auto gain = math::dbToAmp(lvl);
 					const auto y = x * gain;
 					smplsMain[s] = x + blend * (y - x);
 				}

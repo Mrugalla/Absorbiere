@@ -2,7 +2,7 @@
 
 namespace dsp
 {
-	static constexpr auto ThresholdMin = -60, ThresholdMax = 0;
+	static constexpr auto ThresholdMin = -90, ThresholdMax = 0;
 	static constexpr auto RatioMin = 1, RatioMax = 60;
 	static constexpr auto KneeMin = 0, KneeMax = 20;
 
