@@ -11,7 +11,16 @@ namespace gui
             case evt::Type::ThemeUpdated:
                 return e.repaint();
             case evt::Type::ClickedEmpty:
-                return e.giveAwayKeyboardFocus();
+				//e.coloursEditor.setVisible(false);
+                //e.manifestOfWisdom.setVisible(false);
+                //e.patchBrowser.setVisible(false);
+                //e.buttonColours.value = 0.f;
+				//e.manifestOfWisdomButton.value = 0.f;
+                //e.buttonColours.repaint();
+				//e.manifestOfWisdomButton.repaint();
+                //e.parameterEditor.setActive(false);
+                e.giveAwayKeyboardFocus();
+                return;
             }
         };
     }
@@ -60,15 +69,43 @@ namespace gui
         utils(*this, p),
         layout(),
         evtMember(utils.eventSystem, makeEvt(*this)),
-        tooltip(utils)
+        tooltip(utils),
+        toast(utils),
+		parameterEditor(utils),
+        callback([&]()
+        {
+            const auto& modeParam = utils.audioProcessor.params(PID::Mode);
+            const auto val = static_cast<int>(std::round(modeParam.getValModDenorm()));
+            duckEditor.setVisible(val == 0);
+        }, 0, cbFPS::k7_5, true),
+        title(utils),
+		mode(utils),
+        duckEditor(utils),
+		ioEditor(utils)
     {
         layout.init
         (
-            { 1 },
-            { 13, 1 }
+            { 5, 3 },
+            { 1, 1, 21, 1 }
         );
+        addChildComponent(toast);
+		addAndMakeVisible(title);
+		addAndMakeVisible(mode);
+		addAndMakeVisible(duckEditor);
+		addAndMakeVisible(ioEditor);
+        addChildComponent(parameterEditor);
+
+        makeTextLabel(title, "Absorbiere", font::flx(), Just::centred, CID::Txt, "");
+        title.autoMaxHeight = true;
+        mode.attach(PID::Mode);
+        {
+            const auto& modeParam = utils.audioProcessor.params(PID::Mode);
+            const auto val = static_cast<int>(std::round(modeParam.getValModDenorm()));
+            duckEditor.setVisible(val == 0);
+        }
 
 		addAndMakeVisible(tooltip);
+        utils.add(&callback);
         loadSize(*this);
     }
 
@@ -79,7 +116,7 @@ namespace gui
     
     void Editor::paintOverChildren(Graphics&)
     {
-        //layout.paint(g, getColour(CID::Hover));
+       // layout.paint(g, getColour(CID::Hover));
     }
 
     void Editor::resized()
@@ -87,10 +124,19 @@ namespace gui
 		if (!canResize(*this))
 			return;
         saveSize(*this);
-
         utils.resized();
         layout.resized(getLocalBounds());
         tooltip.setBounds(layout.bottom().toNearestInt());
+
+		layout.place(title, 0, 0, 1, 1);
+		layout.place(mode, 0, 1, 1, 1);
+		layout.place(duckEditor, 0, 2, 1, 1);
+		layout.place(ioEditor, 1, 0, 1, 3);
+
+        const auto toastWidth = static_cast<int>(utils.thicc * 28.f);
+        const auto toastHeight = toastWidth * 3 / 4;
+        toast.setSize(toastWidth, toastHeight);
+		parameterEditor.setSize(toastWidth * 3, toastHeight);
 	}
 
     void Editor::mouseEnter(const Mouse&)
@@ -103,3 +149,5 @@ namespace gui
         evtMember(evt::Type::ClickedEmpty);
     }
 }
+
+// WANNA implement hold in duck compressor

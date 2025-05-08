@@ -64,14 +64,16 @@ namespace gui
         randomizables.push_back(p);
     }
 
-    void ButtonRandomizer::add(std::vector<Param*>&& p)
+    void ButtonRandomizer::add(std::vector<Param*>&& ps)
     {
-        randomizables = p;
+        for (auto p : ps)
+            add(p);
     }
 
-    void ButtonRandomizer::add(const std::vector<Param*>& p)
+    void ButtonRandomizer::add(const std::vector<Param*>& ps)
     {
-        randomizables = p;
+        for (const auto p : ps)
+            add(p);
     }
 
     void ButtonRandomizer::add(const RandFunc& p)
@@ -133,8 +135,11 @@ namespace gui
                     }
                 }
                 randomizable->setValueWithGesture(valY);
-                randomizable->setModDepth(mdY);
-				randomizable->setModBias(bsY);
+                if (randomizable->isModulatable())
+                {
+                    randomizable->setModDepth(mdY);
+                    randomizable->setModBias(bsY);
+                }
             }
         }
         for (auto& func : randFuncs)
@@ -152,7 +157,7 @@ namespace gui
     String ButtonRandomizer::makeTooltip()
     {
         Random rand;
-        static constexpr auto count = 269;
+        static constexpr auto count = 270;
         const auto v = rand.nextInt(count + 1);
         switch (v)
         {
@@ -425,6 +430,7 @@ namespace gui
         case 267: return "This is not my final form yet.";
         case 268: return "Making plugins is easy, but it's kinda hard.";
         case 269: return "Let's do it! :)";
+        case 270: return "hfggddfssdsff, oh sry my cat walked over my keyboard. (tbh i wrote that myself)";
         default: "Are you sure?";
         }
         return "You are not supposed to read this message!";

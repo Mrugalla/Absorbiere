@@ -34,6 +34,8 @@ namespace dsp
 			static double getXFromFc(double) noexcept;
 			// decay, Fs
 			static double getXFromHz(double, double) noexcept;
+			// decay, Fs
+			static double getXFromMs(double, double) noexcept;
 
 			// decay
 			void makeFromDecayInSamples(double) noexcept;

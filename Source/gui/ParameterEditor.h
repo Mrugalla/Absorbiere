@@ -9,7 +9,6 @@ namespace gui
 		ParameterEditor(Utils&);
 
 		void setActive(bool) override;
-
 	private:
 		std::vector<param::PID> pIDs;
 	};

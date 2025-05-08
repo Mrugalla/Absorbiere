@@ -41,6 +41,12 @@ namespace dsp
 				return { pos, inc };
 			}
 
+			double getLengthSamples(double numQuarterNotes, double sampleRate) const noexcept
+			{
+				const auto beatsPerSecs = getBeatsPerSec();
+				return sampleRate * numQuarterNotes / beatsPerSecs;
+			}
+
 			double ppq, bpm, timeSecs, numerator, denominator;
 			Int64 timeSamples;
 			bool playing;

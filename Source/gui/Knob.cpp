@@ -13,34 +13,35 @@ namespace gui
         onUp([](const Mouse&) {}), onWheel([](const Mouse&) {}),
         onPaint([](Graphics& g, Knob&) { g.fillAll(juce::Colours::red); }),
         dragXY(), lastPos(),
-        hidesCursor(true)
+        hidesCursor(true),
+        active(false)
     {
         const auto fps = cbFPS::k60;
         const auto speed = msToInc(AniLengthMs, fps);
 
         add(Callback([&, speed]()
-            {
-                auto& phase = callbacks[kEnterExitCB].phase;
-                const auto pol = isMouseOverOrDragging() ? 1.f : -1.f;
-                phase += speed * pol;
-                if (phase >= 1.f)
-                    phase = 1.f;
-                else if (phase < 0.f)
-                    callbacks[kEnterExitCB].stop(0.f);
-                repaint();
-            }, kEnterExitCB, fps, false));
+        {
+            auto& phase = callbacks[kEnterExitCB].phase;
+            const auto pol = isMouseOverOrDragging() ? 1.f : -1.f;
+            phase += speed * pol;
+            if (phase >= 1.f)
+                phase = 1.f;
+            else if (phase < 0.f)
+                callbacks[kEnterExitCB].stop(0.f);
+            repaint();
+        }, kEnterExitCB, fps, false));
 
         add(Callback([&, speed]()
-            {
-                auto& phase = callbacks[kDownUpCB].phase;
-                const auto pol = isMouseButtonDown() ? 1.f : -1.f;
-                phase += speed * pol;
-                if (phase >= 1.f)
-                    phase = 1.f;
-                else if (phase < 0.f)
-                    callbacks[kDownUpCB].stop(0.f);
-                repaint();
-            }, kDownUpCB, fps, false));
+        {
+            auto& phase = callbacks[kDownUpCB].phase;
+            const auto pol = isMouseButtonDown() ? 1.f : -1.f;
+            phase += speed * pol;
+            if (phase >= 1.f)
+                phase = 1.f;
+            else if (phase < 0.f)
+                callbacks[kDownUpCB].stop(0.f);
+            repaint();
+        }, kDownUpCB, fps, false));
     }
 
     void Knob::mouseEnter(const Mouse& mouse)
@@ -74,6 +75,7 @@ namespace gui
         if (mouse.mods.isCtrlDown())
         {
 			const auto screenBounds = getScreenBounds();
+            //WANNA rewrite these events to describe what's happening, isntead of what should happen in response
             notify(evt::Type::ParameterEditorShowUp, &screenBounds);
 			notify(evt::Type::ParameterEditorAssignParam, &pIDs);
         }
@@ -90,7 +92,7 @@ namespace gui
 
         dragXY -= posShift;
         const auto shiftDown = juce::ComponentPeer::getCurrentModifiersRealtime().isShiftDown();
-        const auto dragSpeed = DragSpeed * (shiftDown ? SensitiveDrag : 1.f);
+        const auto dragSpeed = shiftDown ? SensitiveDrag : 1.f;
         const auto dragOffset = (mouse.position - dragXY) * dragSpeed;
         onDrag(dragOffset, mouse);
         dragXY = mouse.position;
@@ -163,6 +165,7 @@ namespace gui
             auto knobBounds = getScreenBounds();
 			knobBounds.setX(knobBounds.getX() - windowPos.x);
 			knobBounds.setY(knobBounds.getY() - windowPos.y);
+            // WANNA rewrite event thing again
             notify(evt::Type::ToastShowUp, &knobBounds);
             updateToast(utils, *prms[0]);
         };
@@ -174,7 +177,6 @@ namespace gui
 
         onDrag = [&](const PointF& dragOffset, const Mouse& mouse)
         {
-
             auto dragXY = verticalDrag ? -dragOffset.y : dragOffset.x;
             const auto speed = 1.f / utils.getDragSpeed();
             dragXY *= speed;
@@ -250,14 +252,17 @@ namespace gui
     void ModDial::attach(PID* _pIDs, int numPIDs)
     {
         prms.clear();
-        prms.reserve(numPIDs);
         for (auto i = 0; i < numPIDs; ++i)
-            prms.emplace_back(&utils.getParam(_pIDs[i]));
+        {
+			auto& prm = utils.audioProcessor.params(_pIDs[i]);
+            if(prm.isModulatable())
+                prms.push_back(&prm);
+        }
     }
 
     void ModDial::attach(PID pID)
     {
-        attach(&pID, 1);
+		attach(&pID, 1);
     }
 
     void ModDial::paint(Graphics& g)
@@ -303,7 +308,8 @@ namespace gui
 
     // Parameters and Look&Feel
 
-    void makeParameters(const std::vector<PID>& _pIDs, Knob& knob, bool verticalDrag)
+    void makeParameters(const std::vector<PID>& _pIDs, Knob& knob,
+        bool verticalDrag, bool inverted)
     {
 		knob.pIDs = _pIDs;
         knob.setTooltip(toTooltip(knob.pIDs[0]));
@@ -333,19 +339,28 @@ namespace gui
 
         knob.onDown = [&k = knob, prms]()
         {
+            k.active = true;
+            for (const auto prm : prms)
+                if (prm->isInGesture())
+                {
+					k.active = false;
+                    return;
+                }
             for (auto prm : prms)
-                if (!prm->isInGesture())
-                    prm->beginGesture();
-
+                prm->beginGesture();
             const String message(prms[0]->getCurrentValueAsText());
             k.notify(evt::Type::ToastUpdateMessage, &message);
         };
 
-        knob.onDrag = [&k = knob, prms, verticalDrag](const PointF& dragOffset, const Mouse&)
+        knob.onDrag = [&k = knob, prms, verticalDrag, inverted](const PointF& dragOffset, const Mouse&)
         {
+            if (!k.active)
+                return;
             auto dragVal = verticalDrag ? -dragOffset.y : dragOffset.x;
             const auto speed = 1.f / k.utils.getDragSpeed();
             dragVal *= speed;
+			if (inverted)
+				dragVal = -dragVal;
 
             for (auto prm : prms)
             {
@@ -359,6 +374,8 @@ namespace gui
 
         knob.onUp = [&k = knob, prms](const Mouse& mouse)
         {
+			if (!k.active)
+				return;
             if (!mouse.mouseWasDraggedSinceMouseDown())
                 if (mouse.mods.isAltDown())
                     for (auto prm : prms)
@@ -371,8 +388,11 @@ namespace gui
             k.notify(evt::Type::ToastUpdateMessage, &message);
         };
 
-        knob.onWheel = [&k = knob, prms](const Mouse&)
+        knob.onWheel = [&k = knob, prms, inverted](const Mouse&)
         {
+			for (auto prm : prms)
+				if (prm->isInGesture())
+					return;
             for (auto prm : prms)
             {
                 const auto& range = prm->range;
@@ -382,12 +402,14 @@ namespace gui
                 {
                     const auto nStep = interval / range.getRange().getLength();
                     k.dragXY.setY(k.dragXY.y > 0.f ? nStep : -nStep);
+					k.dragXY.setY(k.dragXY.y * (inverted ? -1.f : 1.f));
                     auto newValue = juce::jlimit(0.f, 1.f, prm->getValue() + k.dragXY.y);
                     newValue = range.convertTo0to1(range.snapToLegalValue(range.convertFrom0to1(newValue)));
                     prm->setValueWithGesture(newValue);
                 }
                 else
                 {
+					k.dragXY.setY(k.dragXY.y * (inverted ? -1.f : 1.f));
                     const auto newValue = juce::jlimit(0.f, 1.f, prm->getValue() + k.dragXY.y);
                     prm->setValueWithGesture(newValue);
                 }
@@ -400,54 +422,59 @@ namespace gui
         knob.onDoubleClick = [&k = knob, prms]()
         {
             for (auto prm : prms)
-                if (!prm->isInGesture())
-                    prm->setValueWithGesture(prm->getDefaultValue());
+                prm->setValueWithGesture(prm->getDefaultValue());
 
             const String message(prms[0]->getCurrentValueAsText());
             k.notify(evt::Type::ToastUpdateMessage, &message);
         };
 
-        knob.values.resize(Knob::kVals::NumValTypes, 0.f);
+        const auto modulatable = prms[0]->isModulatable();
+        knob.values.resize(modulatable ? Knob::kVals::NumValTypes : Knob::kVals::Value + 1, 0.f);
 
-        knob.add(Callback([&k = knob, &prm = *prms[0]]()
-        {
-            bool shallRepaint = false;
-
-            k.setLocked(prm.isLocked());
-
-            const auto vn = prm.getValue();
-            const auto md = prm.getModDepth();
-            const auto vm = prm.getValMod();
-            const auto mb = prm.getModBias();
-
-            auto& vals = k.values;
-
-            if (vals[Knob::kVals::Value] != vn || vals[Knob::kVals::ModDepth] != md ||
-                vals[Knob::kVals::ValMod] != vm || vals[Knob::kVals::ModBias] != mb)
+        if(modulatable)
+            knob.add(Callback([&k = knob, &prm = *prms[0]]()
             {
-                vals[Knob::kVals::Value] = vn;
-                vals[Knob::kVals::ModDepth] = md;
-                vals[Knob::kVals::ValMod] = vm;
-                vals[Knob::kVals::ModBias] = mb;
-                shallRepaint = true;
-            }
+                k.setLocked(prm.isLocked());
 
-            if (shallRepaint)
-                k.repaint();
-        }, Knob::kCBs::kUpdateParameterCB, cbFPS::k60, true));
+                const auto vn = prm.getValue();
+                const auto md = prm.getModDepth();
+                const auto vm = prm.getValMod();
+                const auto mb = prm.getModBias();
 
-        // still to do:
-        // label behaviour
+                auto& vals = k.values;
+
+                if (vals[Knob::kVals::Value] != vn || vals[Knob::kVals::ModDepth] != md ||
+                    vals[Knob::kVals::ValMod] != vm || vals[Knob::kVals::ModBias] != mb)
+                {
+                    vals[Knob::kVals::Value] = vn;
+                    vals[Knob::kVals::ModDepth] = md;
+                    vals[Knob::kVals::ValMod] = vm;
+                    vals[Knob::kVals::ModBias] = mb;
+                    k.repaint();
+                }
+            }, Knob::kCBs::kUpdateParameterCB, cbFPS::k60, true));
+        else
+			knob.add(Callback([&k = knob, &prm = *prms[0]]()
+			{
+                    k.setLocked(prm.isLocked());
+                    const auto vn = prm.getValue();
+                    auto& vals = k.values;
+                    if (vals[Knob::kVals::Value] != vn)
+                    {
+                        vals[Knob::kVals::Value] = vn;
+                        k.repaint();
+                    }
+			}, Knob::kCBs::kUpdateParameterCB, cbFPS::k60, true));
     }
 
-    void makeParameter(PID pID, Knob& knob, bool verticalDrag)
+    void makeParameter(PID pID, Knob& knob, bool verticalDrag, bool inverted)
     {
-        makeParameters({ pID }, knob, verticalDrag);
+        makeParameters({ pID }, knob, verticalDrag, inverted);
     }
 
-    void makeKnob(Knob& knob, bool showModulation)
+    void makeKnob(Knob& knob)
     {
-        knob.onPaint = [showModulation](Graphics& g, Knob& k)
+        knob.onPaint = [](Graphics& g, Knob& k)
         {
             static constexpr float AngleWidth = PiQuart * 3.f;
             static constexpr float AngleRange = AngleWidth * 2.f;
@@ -492,7 +519,7 @@ namespace gui
             const auto valNormAngle = valMain * AngleRange;
             const auto valAngle = -AngleWidth + valNormAngle;
 
-            const auto angleOffset = Pi32 * thicc;
+            const auto angleOffset = Pi32 * thicc * 1.5f;
 
             const auto arcOutlineAStart = -AngleWidth;
             const auto arcOutlineAEnd = valAngle - angleOffset;
@@ -529,46 +556,50 @@ namespace gui
             const auto shortenB = innerRad - innerArcThicc * .5f;
             const auto shorten = shortenA + enterExitPhase * (shortenB - shortenA);
 
-            const auto modDepth = showModulation ? vals[Knob::ModDepth] : 0.f;
-            if(modDepth != 0.f)
+            const auto modulatable = vals.size() > 1;
+            if (modulatable)
             {
-                const auto modDepthAngle = juce::jlimit(-AngleWidth, AngleWidth, valNormAngle + modDepth * AngleRange - AngleWidth);
+                const auto modDepth = vals[Knob::ModDepth];
+                if (modDepth != 0.f)
+                {
+                    const auto modDepthAngle = juce::jlimit(-AngleWidth, AngleWidth, valNormAngle + modDepth * AngleRange - AngleWidth);
 
-                Path modPath;
+                    Path modPath;
 
-				if (modDepthAngle < valAngle)
-                    modPath.addCentredArc
-					(
-						centre.x, centre.y,
-						radius, radius,
-						0.f,
-                        modDepthAngle, valAngle,
-						true
-					);
-				else if (modDepthAngle > valAngle)
-                    modPath.addCentredArc
-					(
-						centre.x, centre.y,
-						radius, radius,
-						0.f,
-                        valAngle, modDepthAngle,
-						true
-					);
-                
-                const auto valMod = vals[Knob::ValMod];
-                const auto valModAngle = valMod * AngleRange;
-                const auto modAngle = -AngleWidth + valModAngle;
+                    if (modDepthAngle < valAngle)
+                        modPath.addCentredArc
+                        (
+                            centre.x, centre.y,
+                            radius, radius,
+                            0.f,
+                            modDepthAngle, valAngle,
+                            true
+                        );
+                    else if (modDepthAngle > valAngle)
+                        modPath.addCentredArc
+                        (
+                            centre.x, centre.y,
+                            radius, radius,
+                            0.f,
+                            valAngle, modDepthAngle,
+                            true
+                        );
 
-                const auto modTick = LineF::fromStartAndAngle(centre, radius, modAngle).withShortenedStart(radius - thicc3);
+                    const auto valMod = vals[Knob::ValMod];
+                    const auto valModAngle = valMod * AngleRange;
+                    const auto modAngle = -AngleWidth + valModAngle;
 
-                modPath.startNewSubPath(modTick.getEnd());
-				modPath.lineTo(modTick.getStart());
+                    const auto modTick = LineF::fromStartAndAngle(centre, radius, modAngle).withShortenedStart(radius - thicc3);
 
-                setCol(g, CID::Mod);
-                stroke = Stroke(outterArcThicc + thicc * .5f, Stroke::JointStyle::mitered, Stroke::EndCapStyle::rounded);
-                g.strokePath(modPath, stroke);
+                    modPath.startNewSubPath(modTick.getEnd());
+                    modPath.lineTo(modTick.getStart());
+
+                    setCol(g, CID::Mod);
+                    stroke = Stroke(outterArcThicc + thicc * .5f, Stroke::JointStyle::mitered, Stroke::EndCapStyle::rounded);
+                    g.strokePath(modPath, stroke);
+                }
             }
-
+            
             // paint tick
             {
                 const auto tickLine = LineF::fromStartAndAngle(centre, radius + thicc2, valAngle);
@@ -580,9 +611,9 @@ namespace gui
         };
     }
 
-    void makeSlider(Knob& knob, bool showModulation)
+    void makeSlider(Knob& knob)
     {
-        knob.onPaint = [showModulation](Graphics& g, Knob& k)
+        knob.onPaint = [](Graphics& g, Knob& k)
         {
             const auto& vals = k.values;
             const auto valNorm = vals[Knob::Value];
@@ -631,7 +662,8 @@ namespace gui
                 }
             }
 
-            if (showModulation)
+			const auto modulatable = vals.size() > 1;
+            if (modulatable)
             {
                 const auto modDepth = vals[Knob::ModDepth];
 
@@ -683,9 +715,9 @@ namespace gui
         };
     }
 
-    void makeTextKnob(Knob& knob, bool showModulation)
+    void makeTextKnob(Knob& knob)
     {
-        knob.onPaint = [showModulation](Graphics& g, Knob& k)
+        knob.onPaint = [](Graphics& g, Knob& k)
         {
             const auto thicc = k.utils.thicc;
             const auto thicc2 = thicc * 2.f;
@@ -727,8 +759,9 @@ namespace gui
 				g.setColour(colInteract);
 				g.drawFittedText(text, boundsInner.toNearestInt(), Just::centred, 1);
             }
-                
-            if (showModulation)
+            
+			const auto modulatable = vals.size() > 1;
+            if (modulatable)
             {
                 const auto valMod = vals[Knob::ValMod];
                 const auto modDepth = vals[Knob::ModDepth];
@@ -750,22 +783,22 @@ namespace gui
         };
     }
 
-    void makeKnob(PID pID, Knob& knob, bool showModulation)
+    void makeKnob(PID pID, Knob& knob, bool verticalDrag, bool inverted)
     {
-        makeParameter(pID, knob, true);
-        makeKnob(knob, showModulation);
+        makeParameter(pID, knob, verticalDrag, inverted);
+        makeKnob(knob);
     }
 
-    void makeSlider(PID pID, Knob& knob, bool showModulation)
+    void makeSlider(PID pID, Knob& knob)
     {
         makeParameter(pID, knob, false);
-        makeSlider(knob, showModulation);
+        makeSlider(knob);
     }
 
-	void makeTextKnob(PID pID, Knob& knob, bool showModulation)
+	void makeTextKnob(PID pID, Knob& knob)
 	{
 		makeParameter(pID, knob, true);
-		makeTextKnob(knob, showModulation);
+		makeTextKnob(knob);
 	}
 
     void locateAtKnob(ModDial& modDial, const Knob& knob)

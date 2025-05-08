@@ -47,7 +47,8 @@ namespace audio
 #endif
         ),
         midiSubBuffer(),
-        mixProcessor()
+        mixProcessor(),
+        scGainer(params(PID::SCGain))
     {
         const auto& user = *state.props.getUserSettings();
         const auto& settingsFile = user.getFile();
@@ -205,7 +206,7 @@ namespace audio
 
     bool Processor::hasEditor() const
     {
-        return false;
+        return true;
     }
 
     juce::AudioProcessorEditor* Processor::createEditor()
@@ -241,13 +242,15 @@ namespace audio
 
         auto mainBus = getBus(true, 0);
         auto mainBuffer = mainBus->getBusBuffer(buffer);
+		const auto mainNumSamples = mainBuffer.getNumSamples();
         dsp::ProcessorBufferView bufferView;
 		bufferView.assignMain
         (
             mainBuffer.getArrayOfWritePointers(),
             mainBuffer.getNumChannels(),
-            mainBuffer.getNumSamples()
+            mainNumSamples
         );
+        transport(playHead);
 #if PPDHasSidechain
         if (wrapperType != wrapperType_Standalone)
         {
@@ -255,15 +258,16 @@ namespace audio
             if (scBus)
                 if (scBus->isEnabled())
                 {
-                    const auto scEnabled = params(PID::Sidechain).getValue() > .5f;
-                    const auto& scGainParam = params(PID::SCGain);
+                    auto& scGainParam = params(PID::SCGain);
                     const auto scGainDb = scGainParam.getValModDenorm();
                     const auto scGain = math::dbToAmp(scGainDb);
+					const auto scListen = params(PID::SCListen).getValue() > .5f;
 
                     auto scBuffer = scBus->getBusBuffer(buffer);
                     auto scSamples = scBuffer.getArrayOfWritePointers();
                     const auto numChannelsSC = scBuffer.getNumChannels();
-                    bufferView.assignSC(scSamples, scGain, numChannelsSC, scEnabled);
+					scGainer.operator()(scSamples, numChannelsSC, mainNumSamples);
+                    bufferView.assignSC(scSamples, scGain, numChannelsSC, scListen);
                 }
         }
         bufferView.useMainForSCIfRequired();
@@ -276,11 +280,10 @@ namespace audio
             const auto totalNumInputChannels = getTotalNumInputChannels();
             const auto totalNumOutputChannels = getTotalNumOutputChannels();
             for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-                buffer.clear(i, 0, bufferView.getNumSamples());
+                buffer.clear(i, 0, mainNumSamples);
         }
-        if (bufferView.getNumSamples() == 0)
+        if (mainNumSamples == 0)
             return;
-        transport(playHead);
 #if PPDHasStereoConfig
         bool midSide = false;
         if (numChannels == 2)
@@ -316,7 +319,7 @@ namespace audio
         const auto masterTune = std::round(params(PID::MasterTune).getValModDenorm());
         const auto anchor = std::round(params(PID::AnchorPitch).getValModDenorm());
         const auto pitchbendRange = std::round(params(PID::PitchbendRange).getValModDenorm());
-        xenManager({ xen, masterTune, anchor, pitchbendRange }, numChannels);
+        xenManager({ xen, masterTune, anchor, pitchbendRange }, bufferView.getNumChannelsMain());
 #endif
 
         for (auto s = 0; s < bufferView.getNumSamples(); s += dsp::BlockSize)
@@ -366,10 +369,11 @@ namespace audio
             pluginProcessor(bufferViewBlock, midiSubBuffer, transport.info);
             transport(numSamples);
 
+#if JucePlugin_ProducesMidiOutput
             midiMessages.clear();
             for (auto it : midiSubBuffer)
                 midiMessages.addEvent(it.getMessage(), it.samplePosition + s);
-
+#endif
 #if PPDIO == PPDIOOut
 #if PPDIsNonlinear
             mixProcessor.join

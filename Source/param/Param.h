@@ -14,8 +14,8 @@ namespace param
 		// high level parameters
 		Macro,
 #if PPDHasSidechain
-		Sidechain,
 		SCGain,
+		SCListen,
 #endif
 #if PPDIsNonlinear
 		GainIn,
@@ -56,6 +56,18 @@ namespace param
 		Power,
 
 		// low level parameters
+		Mode,
+		DuckRingModBlend,
+		DuckCompBlend,
+		DuckCompThreshold,
+		DuckCompRatio,
+		DuckCompKnee,
+		DuckCompAttack,
+		DuckCompRelease,
+		DuckCompBPBlend,
+		DuckCompBPFreqLow,
+		DuckCompBPFreqHigh,
+		DuckCompBPListen,
 		//
 		
 		NumParams
@@ -131,10 +143,9 @@ namespace param
 	public:
 		struct CB
 		{
-			float denorm() const noexcept
-			{
-				return param.range.convertFrom0to1(norm);
-			}
+			float denorm() const noexcept;
+
+			bool getBool() const noexcept;
 
 			const Param& param;
 			float norm;
@@ -149,10 +160,10 @@ namespace param
 			std::atomic<float> depth, bias;
 		};
 
-		// pID, range, valDenormDefault, valToStr, strToVal, unit
+		// pID, range, valDenormDefault, valToStr, strToVal, unit, modulatable
 		Param(const PID, const Range&, const float,
 			const ValToStrFunc&, const StrToValFunc&,
-			const Unit = Unit::NumUnits);
+			const Unit, bool);
 
 		void prepare() noexcept;
 
@@ -224,7 +235,7 @@ namespace param
 		// string to denorm val
 		float getValForTextDenorm(const String&) const;
 
-		String _toString();
+		//String _toString();
 
 		int getNumSteps() const override;
 
@@ -237,6 +248,11 @@ namespace param
 		// start, end, bias[0,1], x
 		static float biased(float, float, float, float) noexcept;
 
+		bool isModulatable() const noexcept
+		{
+			return modulatable;
+		}
+
 		const PID id;
 		const Range range;
 		ParameterChangedCallback callback;
@@ -247,8 +263,8 @@ namespace param
 		ValToStrFunc valToStr;
 		StrToValFunc strToVal;
 		Unit unit;
-
 		std::atomic<bool> locked, inGesture;
+		const bool modulatable;
 
 		bool modDepthAbsolute;
 	};

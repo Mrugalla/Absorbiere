@@ -58,7 +58,8 @@ namespace dsp
 
 	int getOffset(const arch::XenManager& xen) noexcept
 	{
-		const auto oct = xen.getXen();
+		const auto& info = xen.getInfo();
+		const auto oct = info.xen;
 		const auto offset = 4. * oct;
 		return static_cast<int>(std::round(offset));
 	}

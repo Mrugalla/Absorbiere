@@ -8,7 +8,7 @@ namespace gui
 	{
         static constexpr float DragSpeed = .3f;
         static constexpr float SensitiveDrag = .15f;
-        static constexpr float WheelSpeed = .0001f;
+        static constexpr float WheelSpeed = .02f;
 
 		using Func = std::function<void()>;
 		using OnDrag = std::function<void(const PointF&, const Mouse&)>;
@@ -43,7 +43,7 @@ namespace gui
         OnMouse onUp, onWheel;
         OnPaint onPaint;
         PointF dragXY, lastPos;
-        bool hidesCursor;
+        bool hidesCursor, active;
 	};
 
     struct ModDial :
@@ -68,28 +68,28 @@ namespace gui
     };
 
     // pIDs, knob, verticalDrag
-    void makeParameters(const std::vector<PID>&, Knob&, bool = true);
+    void makeParameters(const std::vector<PID>&, Knob&, bool = true, bool = false);
 
     // pID, knob, verticalDrag
-    void makeParameter(PID, Knob&, bool = true);
+    void makeParameter(PID, Knob&, bool = true, bool = false);
 
-    // knob, showModulation
-    void makeKnob(Knob&, bool = true);
+    // knob
+    void makeKnob(Knob&);
 
-    // knob, showModulation
-    void makeSlider(Knob&, bool = true);
+    // knob
+    void makeSlider(Knob&);
 
-    // knob, showModulation
-    void makeTextKnob(Knob&, bool = true);
+    // knob
+    void makeTextKnob(Knob&);
 
-    // pID, knob, showModulation
-    void makeKnob(PID, Knob&, bool = true);
+    // pID, knob, verticalDrag, inverted
+    void makeKnob(PID, Knob&, bool = true, bool = false);
 
-    // pID, knob, showModulation
-    void makeSlider(PID, Knob&, bool = true);
+    // pID, knob
+    void makeSlider(PID, Knob&);
 
-    // pID, knob, showModulation
-    void makeTextKnob(PID, Knob&, bool = true);
+    // pID, knob
+    void makeTextKnob(PID, Knob&);
 
     // modDial, knob
     void locateAtKnob(ModDial&, const Knob&);
@@ -100,6 +100,5 @@ namespace gui
 
 /*
 low stepsizes reveil that it picks the wrong points for the parameter values
-
 wanna implement linear interpolation between points
 */

@@ -2,7 +2,8 @@
 #include "dsp/Transport.h"
 #include "../param/Param.h"
 
-#include "dsp/Resonator.h"
+#include "dsp/Oscilloscope.h"
+#include "dsp/Ducker.h"
 
 namespace dsp
 {
@@ -22,7 +23,7 @@ namespace dsp
 		);
 
 		// sampleRate
-		void prepare(float);
+		void prepare(double);
 
 		// samples, midiBuffer, transport
 		void operator()(ProcessorBufferView& buffer, MidiBuffer&, const Transport::Info&) noexcept;
@@ -34,6 +35,8 @@ namespace dsp
 		
 		void loadPatch(const State&);
 
-		float sampleRate;
+		double sampleRate;
+		Oscilloscope scope;
+		Ducker ducker;
 	};
 }

@@ -26,12 +26,12 @@ namespace gui
         // seedUp, isAbsolute
         void operator()(bool, bool);
 
+        void mouseEnter(const Mouse&) override;
+    private:
         std::vector<Param*> randomizables;
         std::vector<RandFunc> randFuncs;
         RandomSeed randomizer;
-    protected:
-        void mouseEnter(const Mouse&) override;
-
+    
         String makeTooltip();
     };
 }

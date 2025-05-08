@@ -1,6 +1,9 @@
 #pragma once
 #include "audio/PluginProcessor.h"
 #include "audio/dsp/MixProcessor.h"
+#if PPDHasSidechain
+#include "audio/dsp/SCGain.h"
+#endif
 
 namespace audio
 {
@@ -64,6 +67,9 @@ namespace audio
         dsp::PluginProcessor pluginProcessor;
         MidiBuffer midiSubBuffer;
         dsp::MixProcessor mixProcessor;
+#if PPDHasSidechain
+        dsp::SCGain scGainer;
+#endif
 
         //JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Processor)
     };

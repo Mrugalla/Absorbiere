@@ -25,6 +25,7 @@ namespace dsp
 	using String = juce::String;
 	using BoundsF = juce::Rectangle<float>;
 	using Random = juce::Random;
+	using PointF = juce::Point<float>;
 
 	static constexpr float Pi = 3.1415926535897932384626433832795f;
 	static constexpr float Tau = Pi * 2.f;
@@ -40,8 +41,8 @@ namespace dsp
 	static constexpr float PitchbendRange = 16383.f;
 	static constexpr float PitchbendCenter = PitchbendRange * .5f;
 
-	static constexpr int NumChannels = PPDHasSidechain ? 4 : 2;
-    static constexpr int BlockSize = 16;
+	static constexpr int NumChannels = 2;
+    static constexpr int BlockSize = 32;
 
 	static constexpr auto BlockSizeF = static_cast<float>(BlockSize);
 	static constexpr auto BlockSizeD = static_cast<double>(BlockSize);
@@ -73,6 +74,16 @@ namespace dsp
 				SIMD::multiply(view[ch], gain, numSamples);
 		}
 
+		const float* operator[](int ch) const noexcept
+		{
+			return view[ch];
+		}
+
+		float* operator[](int ch) noexcept
+		{
+			return view[ch];
+		}
+
 		BufferView2 view;
 		int numChannels;
 	};
@@ -94,7 +105,8 @@ namespace dsp
 			scEnabled = false;
 		}
 
-		void assignSC(float* const* samples, float scGain, int numChannels, bool enabled) noexcept
+		void assignSC(float* const* samples, float scGain,
+			int numChannels, bool listenSC) noexcept
 		{
 			sc.assign(samples, numChannels);
 			if (scGain == 0.f)
@@ -104,7 +116,19 @@ namespace dsp
 			}
 			if (scGain != 1.f)
 				sc.applyGain(scGain, numSamples);
-			scEnabled = enabled;
+			if (listenSC)
+			{
+				for (auto ch = 0; ch < main.numChannels; ++ch)
+				{
+					auto smplsMain = main.view[ch];
+					auto chSC = ch;
+					if (chSC >= sc.numChannels)
+						chSC -= sc.numChannels;
+					const auto smplsSC = sc.view[chSC];
+					SIMD::copy(smplsMain, smplsSC, numSamples);
+				}
+			}
+			scEnabled = !listenSC;
 		}
 
 		void useMainForSCIfRequired() noexcept
@@ -129,7 +153,22 @@ namespace dsp
 			scEnabled = buffer.scEnabled;
 		}
 
+		BufferView2X getViewMain() noexcept
+		{
+			return main;
+		}
+
+		BufferView2X getViewSC() noexcept
+		{
+			return sc;
+		}
+
 		float* getSamplesMain(int ch) noexcept
+		{
+			return main.view[ch];
+		}
+
+		const float* getSamplesMain(int ch) const noexcept
 		{
 			return main.view[ch];
 		}
@@ -139,9 +178,19 @@ namespace dsp
 			return sc.view[ch];
 		}
 
+		const float* getSamplesSC(int ch) const noexcept
+		{
+			return sc.view[ch];
+		}
+
 		int getNumChannelsMain() const noexcept
 		{
 			return main.numChannels;
+		}
+
+		int getNumChannelsSC() const noexcept
+		{
+			return sc.numChannels;
 		}
 
 		int getNumSamples() const noexcept

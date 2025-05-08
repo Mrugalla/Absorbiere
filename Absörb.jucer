@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="sxi35P" name="Abs&#246;rb" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="sxi35P" name="Absorbiere" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="Mrugalla"
               companyWebsite="https://github.com/Mrugalla" companyEmail="beatsbasteln@web.de"
-              pluginFormats="buildStandalone,buildVST3" pluginName="Abs&#246;rb"
+              pluginFormats="buildStandalone,buildVST3" pluginName="Absorbiere"
               pluginDesc="A sidechain ringmod with extra steps" pluginManufacturer="Mrugalla"
               pluginManufacturerCode="BBBB" pluginCode="SCRM" pluginVST3Category="Distortion,Fx"
               pluginAAXCategory="64" pluginVSTCategory="kPlugCategEffect" cppLanguageStandard="latest"
               defines="PPDIOOut=0&#10;PPDIODryWet=1&#10;PPDIOWetMix=2&#10;&#10;PPDIsNonlinear=true&#10;PPDIO=PPDIOWetMix&#10;&#10;PPDHasStereoConfig=0&#10;PPDHasSidechain=1&#10;PPDHasLookahead=0&#10;PPDHasTuningEditor=0"
               includeBinaryInJuceHeader="1" pluginAUMainType="'aufx'" maxBinaryFileSize="20971520"
               pluginCharacteristicsValue="pluginWantsMidiIn">
-  <MAINGROUP id="WYhkvs" name="Abs&#246;rb">
+  <MAINGROUP id="WYhkvs" name="Absorbiere">
     <GROUP id="{266E5E69-4D9A-EB45-6039-F732E39E290B}" name="Source">
       <GROUP id="{B2DD672C-3747-AD06-804C-97143B931D2A}" name="arch">
         <FILE id="dpeeDR" name="FormulaParser.cpp" compile="1" resource="0"
@@ -28,6 +28,16 @@
       </GROUP>
       <GROUP id="{BDD2C9EC-5D51-F998-00A7-68F46D9ECD50}" name="audio">
         <GROUP id="{46DD4EC8-38A2-51F4-A277-D310BC24E85C}" name="dsp">
+          <GROUP id="{3613B959-2237-EC58-2E5C-9559A7B454BB}" name="absorbiere">
+            <FILE id="yUp0Fu" name="AbsorbiereAxiom.cpp" compile="1" resource="0"
+                  file="Source/audio/dsp/AbsorbiereAxiom.cpp"/>
+            <FILE id="gnZdzZ" name="AbsorbiereAxiom.h" compile="0" resource="0"
+                  file="Source/audio/dsp/AbsorbiereAxiom.h"/>
+            <FILE id="E3RSV8" name="Ducker.cpp" compile="1" resource="0" file="Source/audio/dsp/Ducker.cpp"/>
+            <FILE id="p09AoY" name="Ducker.h" compile="0" resource="0" file="Source/audio/dsp/Ducker.h"/>
+            <FILE id="tEP0lS" name="SCGain.cpp" compile="1" resource="0" file="Source/audio/dsp/SCGain.cpp"/>
+            <FILE id="cOSVZm" name="SCGain.h" compile="0" resource="0" file="Source/audio/dsp/SCGain.h"/>
+          </GROUP>
           <GROUP id="{548F7174-FAF7-657A-8F29-CB9DDFF6204B}" name="midi">
             <FILE id="SelAAW" name="AutoMPE.cpp" compile="1" resource="0" file="Source/audio/dsp/midi/AutoMPE.cpp"/>
             <FILE id="GOAmiC" name="AutoMPE.h" compile="0" resource="0" file="Source/audio/dsp/midi/AutoMPE.h"/>
@@ -79,6 +89,9 @@
           <FILE id="R0qNs6" name="MixProcessor.h" compile="0" resource="0" file="Source/audio/dsp/MixProcessor.h"/>
           <FILE id="MpCZU0" name="NoiseSynth.cpp" compile="1" resource="0" file="Source/audio/dsp/NoiseSynth.cpp"/>
           <FILE id="A2bEqS" name="NoiseSynth.h" compile="0" resource="0" file="Source/audio/dsp/NoiseSynth.h"/>
+          <FILE id="p5p0Pw" name="Oscilloscope.cpp" compile="1" resource="0"
+                file="Source/audio/dsp/Oscilloscope.cpp"/>
+          <FILE id="R11ukd" name="Oscilloscope.h" compile="0" resource="0" file="Source/audio/dsp/Oscilloscope.h"/>
           <FILE id="q1fEKU" name="Oversampler.cpp" compile="1" resource="0" file="Source/audio/dsp/Oversampler.cpp"/>
           <FILE id="DWZ2hj" name="Oversampler.h" compile="0" resource="0" file="Source/audio/dsp/Oversampler.h"/>
           <FILE id="lrNj9S" name="ParallelProcessor.cpp" compile="1" resource="0"
@@ -157,6 +170,20 @@
         <FILE id="VW6OHT" name="nel19.ttf" compile="0" resource="1" file="Source/fonts/nel19.ttf"/>
       </GROUP>
       <GROUP id="{88960760-0BAF-5D10-9A65-2B917D16B3C4}" name="gui">
+        <GROUP id="{B5593774-38A4-5910-2637-47C5C36A2DC0}" name="absorbiere">
+          <FILE id="MWzsh0" name="DuckCompEditor.cpp" compile="1" resource="0"
+                file="Source/gui/DuckCompEditor.cpp"/>
+          <FILE id="iDIEIS" name="DuckCompEditor.h" compile="0" resource="0"
+                file="Source/gui/DuckCompEditor.h"/>
+          <FILE id="hcnIbY" name="DuckEditor.cpp" compile="1" resource="0" file="Source/gui/DuckEditor.cpp"/>
+          <FILE id="KooYy8" name="DuckEditor.h" compile="0" resource="0" file="Source/gui/DuckEditor.h"/>
+          <FILE id="ZfU3YS" name="IOEditor.cpp" compile="1" resource="0" file="Source/gui/IOEditor.cpp"/>
+          <FILE id="O6JJf3" name="IOEditor.h" compile="0" resource="0" file="Source/gui/IOEditor.h"/>
+          <FILE id="vws9Bv" name="KnobAbsorb.cpp" compile="1" resource="0" file="Source/gui/KnobAbsorb.cpp"/>
+          <FILE id="HE9jlB" name="KnobAbsorb.h" compile="0" resource="0" file="Source/gui/KnobAbsorb.h"/>
+          <FILE id="Aq7hwn" name="PanelEffect.cpp" compile="1" resource="0" file="Source/gui/PanelEffect.cpp"/>
+          <FILE id="LFXDLP" name="PanelEffect.h" compile="0" resource="0" file="Source/gui/PanelEffect.h"/>
+        </GROUP>
         <FILE id="jBvW0d" name="Button.cpp" compile="1" resource="0" file="Source/gui/Button.cpp"/>
         <FILE id="M6p04W" name="Button.h" compile="0" resource="0" file="Source/gui/Button.h"/>
         <FILE id="Cfm4S3" name="ButtonLink.cpp" compile="1" resource="0" file="Source/gui/ButtonLink.cpp"/>
@@ -167,6 +194,10 @@
               file="Source/gui/ButtonRandomizer.cpp"/>
         <FILE id="YujhaU" name="ButtonRandomizer.h" compile="0" resource="0"
               file="Source/gui/ButtonRandomizer.h"/>
+        <FILE id="JwZvME" name="ButtonSCAutogain.cpp" compile="1" resource="0"
+              file="Source/gui/ButtonSCAutogain.cpp"/>
+        <FILE id="xnYx6R" name="ButtonSCAutogain.h" compile="0" resource="0"
+              file="Source/gui/ButtonSCAutogain.h"/>
         <FILE id="wnh6gO" name="Colours.cpp" compile="1" resource="0" file="Source/gui/Colours.cpp"/>
         <FILE id="hPSKXT" name="Colours.h" compile="0" resource="0" file="Source/gui/Colours.h"/>
         <FILE id="uqRtiz" name="ColoursEditor.cpp" compile="1" resource="0"
@@ -209,6 +240,9 @@
               file="Source/gui/ManifestOfWisdom.cpp"/>
         <FILE id="sBqoKb" name="ManifestOfWisdom.h" compile="0" resource="0"
               file="Source/gui/ManifestOfWisdom.h"/>
+        <FILE id="ru9vCA" name="Oscilloscope.cpp" compile="1" resource="0"
+              file="Source/gui/Oscilloscope.cpp"/>
+        <FILE id="ZaIYRI" name="Oscilloscope.h" compile="0" resource="0" file="Source/gui/Oscilloscope.h"/>
         <FILE id="wnyKwm" name="ParameterEditor.cpp" compile="1" resource="0"
               file="Source/gui/ParameterEditor.cpp"/>
         <FILE id="kWxJ07" name="ParameterEditor.h" compile="0" resource="0"
@@ -255,10 +289,10 @@
   <EXPORTFORMATS>
     <VS2022 targetFolder="Builds/VisualStudio2022">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="Absoerb" enablePluginBinaryCopyStep="1"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="Absoerb" enablePluginBinaryCopyStep="1"
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Absorbiere" enablePluginBinaryCopyStep="1"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Absorbiere" enablePluginBinaryCopyStep="1"
                        useRuntimeLibDLL="0"/>
-        <CONFIGURATION isDebug="0" name="DebugRelease" targetName="Absoerb" enablePluginBinaryCopyStep="1"/>
+        <CONFIGURATION isDebug="0" name="DebugRelease" targetName="Absorbiere" enablePluginBinaryCopyStep="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../PluginDevelopment/JUCE/modules"/>

@@ -10,23 +10,6 @@ namespace dsp
 		{
 		}
 
-		/*
-		void Block::operator()(float* bufferOut, float* bufferIn, int numSamples) noexcept
-		{
-			auto x = 0.f;
-			const auto inc = 1.f / static_cast<float>(numSamples);
-
-			for (auto s = 0; s < numSamples; ++s, x += inc)
-			{
-				const auto sIn = bufferIn[s];
-				const auto sOut = bufferOut[s];
-				bufferOut[s] = sIn + x * (sOut - sIn);
-			}
-
-			curVal = bufferOut[numSamples - 1];
-		}
-		*/
-
 		void Block::operator()(float* buffer, float dest, int numSamples) noexcept
 		{
 			const auto dist = dest - curVal;
@@ -56,6 +39,15 @@ namespace dsp
 		double Lowpass<AutoGain>::getXFromHz(double hz, double Fs) noexcept
 		{
 			return getXFromFc(hz / Fs);
+		}
+
+		template<bool AutoGain>
+		double Lowpass<AutoGain>::getXFromMs(double ms, double Fs) noexcept
+		{
+			const auto sec = ms * .001;
+			const auto secSamples = sec * Fs;
+			const auto fc = 1. / secSamples;
+			return getXFromFc(fc);
 		}
 
 		// Lowpass

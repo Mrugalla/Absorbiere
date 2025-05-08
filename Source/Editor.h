@@ -1,6 +1,9 @@
 #pragma once
 #include "gui/Tooltip.h"
-#include "gui/Knob.h"
+#include "gui/RadioButton.h"
+#include "gui/ParameterEditor.h"
+#include "gui/IOEditor.h"
+#include "gui/DuckEditor.h"
 
 namespace gui
 {
@@ -21,8 +24,15 @@ namespace gui
         Utils utils;
         Layout layout;
         evt::Member evtMember;
-        
         Tooltip tooltip;
+        Toast toast;
+        ParameterEditor parameterEditor;
+        Callback callback;
+
+        Label title;
+        RadioButton mode;
+        DuckEditor duckEditor;
+        IOEditor ioEditor;
 
         //JUCE_HEAVYWEIGHT_LEAK_DETECTOR(Editor)
     };
