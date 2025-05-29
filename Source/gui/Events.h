@@ -19,6 +19,7 @@ namespace gui
             ParameterEditorShowUp,
             ParameterEditorAssignParam,
 			ParameterEditorVanish,
+            UpdateEditLayout,
             NumTypes
         };
 

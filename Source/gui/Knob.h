@@ -18,7 +18,24 @@ namespace gui
         enum kCBs { kEnterExitCB, kDownUpCB, kUpdateParameterCB, kNumCallbacks };
         enum kVals { Value, ValMod, ModDepth, ModBias, NumValTypes };
 
-        Knob(Utils&);
+        Knob(Utils&, const String& uID);
+
+        bool hitTest(int x, int y) override
+        {
+            if (!radialHitbox)
+                return true;
+            const auto bounds = maxQuadIn(getLocalBounds());
+            const auto rad = bounds.getWidth() * .5f;
+			const PointF centre
+			(
+				bounds.getX() + rad,
+				bounds.getY() + rad
+			);
+            const auto pt = Point(x, y).toFloat();
+            const LineF line(centre, pt);
+			const auto dist = line.getLength();
+			return dist <= rad;
+        }
 
         void mouseEnter(const Mouse&) override;
 
@@ -43,13 +60,13 @@ namespace gui
         OnMouse onUp, onWheel;
         OnPaint onPaint;
         PointF dragXY, lastPos;
-        bool hidesCursor, active;
+        bool hidesCursor, active, radialHitbox;
 	};
 
     struct ModDial :
         public Knob
     {
-        ModDial(Utils&);
+        ModDial(Utils&, const String&);
 
         // pIDs, numPIDs
         void attach(PID*, int);

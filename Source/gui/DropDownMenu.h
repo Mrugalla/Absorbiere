@@ -6,14 +6,16 @@ namespace gui
 	struct DropDownMenu :
 		public Comp
 	{
-		DropDownMenu(Utils&);
+		// u, uID
+		DropDownMenu(Utils&, const String&);
 
 		void paint(Graphics&) override;
 
-		void add(Button::OnPaint, Button::OnClick);
+		// onPaint, onClick, uID
+		void add(Button::OnPaint, Button::OnClick, const String&);
 
-		// onClick, text, tooltip
-		void add(Button::OnClick, const String&, const String&);
+		// onClick, text, uID, tooltip
+		void add(Button::OnClick, const String&, const String&, const String&);
 
 		void init();
 

@@ -331,19 +331,19 @@ namespace audio
 #if PPDIsNonlinear
             mixProcessor.split
             (
-                samples, gainInDb, numChannels, numSamples
+                bufferViewBlock, gainInDb
             );
 #endif
 #elif PPDIO == PPDIODryWet
 #if PPDIsNonlinear
             mixProcessor.split
             (
-                samples, gainDryDb, gainInDb, numChannels, numSamples
+                bufferViewBlock, gainDryDb, gainInDb
             );
 #else
             mixProcessor.split
             (
-                samples, gainDryDb, numChannels, numSamples
+                bufferViewBlock, gainDryDb
             );
 #endif
 #else
@@ -352,7 +352,7 @@ namespace audio
 #else
             mixProcessor.split
             (
-                samples, numChannels, numSamples
+                bufferViewBlock
             );
 #endif
 #endif
@@ -378,24 +378,24 @@ namespace audio
 #if PPDIsNonlinear
             mixProcessor.join
             (
-                samples, gainOutDb, numChannels, numSamples, unityGain
+                bufferViewBlock, gainOutDb, unityGain
             );
 #else
             mixProcessor.join
             (
-                samples, gainOutDb, numChannels, numSamples
+                bufferViewBlock, gainOutDb
             );
 #endif
 #elif PPDIO == PPDIODryWet
 #if PPDIsNonlinear
             mixProcessor.join
             (
-                samples, gainWetDb, gainOutDb, numChannels, numSamples, unityGain
+                bufferViewBlock, gainWetDb, gainOutDb, unityGain
             );
 #else
             mixProcessor.join
             (
-                samples, gainWetDb, gainOutDb, numChannels, numSamples
+                bufferViewBlock, gainWetDb, gainOutDb
             );
 #endif
 #else
@@ -407,7 +407,7 @@ namespace audio
 #else
             mixProcessor.join
             (
-                samples, mix, gainWetDb, gainOutDb, numChannels, numSamples, delta
+                bufferViewBlock, mix, gainWetDb, gainOutDb, delta
             );
 #endif
 #endif

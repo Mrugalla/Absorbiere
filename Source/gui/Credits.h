@@ -24,7 +24,8 @@ namespace gui
 		struct ZoomImage :
 			public Comp
 		{
-			ZoomImage(Utils&);
+			// u, uID
+			ZoomImage(Utils&, const String&);
 
 			void paint(Graphics&) override;
 
@@ -56,7 +57,8 @@ namespace gui
 		struct LinksPage :
 			public Comp
 		{
-			LinksPage(Utils&);
+			// u, uID
+			LinksPage(Utils&, const String&);
 
 			void init(const Links&);
 
@@ -71,7 +73,8 @@ namespace gui
 		struct Entry :
 			public Comp
 		{
-			Entry(Utils&);
+			// u, uID
+			Entry(Utils&, const String&);
 
 			void init(const Page&, int);
 

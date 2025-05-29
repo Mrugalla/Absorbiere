@@ -2,8 +2,8 @@
 
 namespace gui
 {
-    ButtonRandomizer::ButtonRandomizer(Utils& u, String&& id) :
-        Button(u),
+    ButtonRandomizer::ButtonRandomizer(Utils& u, const String& uID, String&& id) :
+        Button(u, uID),
         randomizables(),
         randFuncs(),
         randomizer(*u.audioProcessor.state.props.getUserSettings(), std::move(id))
@@ -94,7 +94,9 @@ namespace gui
         {
             const auto pID = randomizable->id;
             if (pID != PID::Power
+#if PPDIO == PPDIODryWet || PPDIO == PPDIOWetMix
                 && pID != PID::GainWet
+#endif
                 && pID != PID::GainOut
                 && pID != PID::Macro)
             {

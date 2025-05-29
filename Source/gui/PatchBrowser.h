@@ -11,7 +11,8 @@ namespace gui
 		struct Patch :
 			public Comp
 		{
-			Patch(Utils&);
+			// u, uID
+			Patch(Utils&, const String&);
 
 			// name, author, file
 			void activate(const String&, const String&, const File&);
@@ -78,15 +79,15 @@ namespace gui
 		struct ButtonSavePatch :
 			public Button
 		{
-			// u, name, author
-			ButtonSavePatch(Utils&, const TextEditor&,
+			// name, author
+			ButtonSavePatch(const TextEditor&,
 				const TextEditor&);
 		};
 
 		struct ButtonReveal :
 			public Button
 		{
-			ButtonReveal(Utils&, Patches&);
+			ButtonReveal(Patches&);
 		};
 
 		struct Browser :
@@ -118,14 +119,14 @@ namespace gui
 		{
 			enum cb { kPresetNameAni, kNumAnis };
 
-			BrowserButton(Utils&, Browser&);
+			BrowserButton(Browser&);
 		};
 
 		struct NextPatchButton :
 			public Button
 		{
-			// u, browser, next
-			NextPatchButton(Utils&, Browser&, bool);
+			// browser, next
+			NextPatchButton(Browser&, bool);
 		};
 	}
 }

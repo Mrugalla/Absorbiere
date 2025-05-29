@@ -8,9 +8,28 @@ namespace gui
 		pluginTop(_pluginTop),
 		audioProcessor(_audioProcessor),
 		params(audioProcessor.params),
-		thicc(2.f)
+		thicc(2.f),
+		editingLayout(false)
 	{
 		Colours::c.init(audioProcessor.state.props.getUserSettings());
+	}
+
+	void Utils::editLayout(bool e)
+	{
+		if (editingLayout == e)
+			return;
+		editingLayout = e;
+		eventSystem.notify(evt::Type::UpdateEditLayout);
+	}
+
+	void Utils::switchEditLayout()
+	{
+		editLayout(!editingLayout);
+	}
+
+	bool Utils::isEditingLayout() const noexcept
+	{
+		return editingLayout;
 	}
 
 	void Utils::add(Callback* ncb)

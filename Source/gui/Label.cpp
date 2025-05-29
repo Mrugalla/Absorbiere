@@ -2,8 +2,8 @@
 
 namespace gui
 {
-	Label::Label(Utils& u, bool _autoMaxHeight) :
-		Comp(u),
+	Label::Label(Utils& u, const String& uID, bool _autoMaxHeight) :
+		Comp(u, uID),
 		text(""),
 		font(FontOptions()),
 		just(Just::centred),
@@ -116,7 +116,7 @@ namespace gui
 	//////
 
 	Toast::Toast(Utils& u) :
-		Label(u, true),
+		Label(u, "toast", true),
 		events(),
 		alphaAniWeight(false)
 	{

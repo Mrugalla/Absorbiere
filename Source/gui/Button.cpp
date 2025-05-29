@@ -2,9 +2,9 @@
 
 namespace gui
 {
-	Button::Button(Utils& u) :
-		Comp(u),
-		label(u),
+	Button::Button(Utils& u, const String& uID) :
+		Comp(u, uID),
+		label(u, uID + "l"),
 		onPaint([](Graphics&, const Button&) {}),
 		onClick([](const Mouse&) {}),
 		onWheel([](const Mouse&, const MouseWheel&) {}),

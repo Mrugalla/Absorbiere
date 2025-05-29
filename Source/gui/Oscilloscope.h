@@ -9,8 +9,8 @@ namespace gui
 	{
 		using Oscope = dsp::Oscilloscope;
 
-		OscilloscopeEditor(Utils& u, Oscope& _oscope) :
-			Button(u),
+		OscilloscopeEditor(Utils& u, const String& uID, Oscope& _oscope) :
+			Button(u, uID),
 			oscope(_oscope),
 			curve(),
 			bipolar(false)

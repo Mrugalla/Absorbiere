@@ -61,13 +61,13 @@ namespace gui
 	{
 		// Patch
 
-		Patch::Patch(Utils& u) :
-			Comp(u),
+		Patch::Patch(Utils& u, const String& uID) :
+			Comp(u, uID),
 			name(""),
 			author(""),
 			file(),
-			buttonLoad(u),
-			buttonDelete(u)
+			buttonLoad(u, uID + "l"),
+			buttonDelete(u, uID + "d")
 		{
 			layout.init
 			(
@@ -130,7 +130,7 @@ namespace gui
 		// ScrollBar
 
 		ScrollBar::ScrollBar(Utils& u) :
-			Comp(u),
+			Comp(u, "pbrowsscrollbar"),
 			onScroll(),
 			viewIdx(0),
 			numFiles(1)
@@ -164,12 +164,12 @@ namespace gui
 		// Patches
 
 		Patches::Patches(Utils& u) :
-			Comp(u),
+			Comp(u, "patches"),
 			patches
 			{
-				Patch(u), Patch(u), Patch(u), Patch(u),
-				Patch(u), Patch(u), Patch(u), Patch(u),
-				Patch(u), Patch(u), Patch(u), Patch(u)
+				Patch(u , "patch0"), Patch(u, "patch1"), Patch(u, "patch2"), Patch(u, "patch3"),
+				Patch(u, "patch4"), Patch(u, "patch5"), Patch(u, "patch6"), Patch(u, "patch7"),
+				Patch(u, "patch8"), Patch(u, "patch9"), Patch(u, "patch10"), Patch(u, "patch11")
 			},
 			selected(nullptr),
 			scrollBar(u),
@@ -405,9 +405,9 @@ namespace gui
 
 		// ButtonSavePatch
 
-		ButtonSavePatch::ButtonSavePatch(Utils& u, const TextEditor& editorName,
+		ButtonSavePatch::ButtonSavePatch(const TextEditor& editorName,
 			const TextEditor& editorAuthor) :
-			Button(u)
+			Button(editorName.utils, "pbrowssave")
 		{
 			onClick = [&, &eName = editorName, &eAuthor = editorAuthor](const Mouse&)
 				{
@@ -478,8 +478,8 @@ namespace gui
 
 		// ButtonReveal
 
-		ButtonReveal::ButtonReveal(Utils& u, Patches& patches) :
-			Button(u)
+		ButtonReveal::ButtonReveal(Patches& patches) :
+			Button(patches.utils, "pbrowsreveal")
 		{
 			onClick = [&, &p = patches](const Mouse&)
 				{
@@ -547,13 +547,13 @@ namespace gui
 		// Browser
 
 		Browser::Browser(Utils& u) :
-			Comp(u),
-			title(u),
-			editorAuthor(u, "enter author"),
-			editorName(u, "enter name"),
+			Comp(u, "patchbrowser"),
+			title(u, "pbrowstitle"),
+			editorAuthor(u, "pbrowseauthor", "enter author"),
+			editorName(u, "pbrowsname", "enter name"),
 			patches(u),
-			saveButton(u, editorName, editorAuthor),
-			revealButton(u, patches),
+			saveButton(editorName, editorAuthor),
+			revealButton(patches),
 			nameText(""),
 			authorText("")
 		{
@@ -637,8 +637,8 @@ namespace gui
 
 		// BrowserButton
 
-		BrowserButton::BrowserButton(Utils& u, Browser& browser) :
-			Button(u)
+		BrowserButton::BrowserButton(Browser& browser) :
+			Button(browser.utils, "button" + browser.getName())
 		{
 			makeTextButton(*this, "Patches", "Click here to save, browse or manage patches.", CID::Interact);
 			label.autoMaxHeight = true;
@@ -663,8 +663,8 @@ namespace gui
 
 		// NextPatchButton
 
-		NextPatchButton::NextPatchButton(Utils& u, Browser& browser, bool next) :
-			Button(u)
+		NextPatchButton::NextPatchButton(Browser& browser, bool next) :
+			Button(browser.utils, browser.getName() + (next ? "+" : "-"))
 		{
 			const String text(next ? ">" : "<");
 			makeTextButton(*this, text, "Click here to load the " + text + " patch.", CID::Interact);

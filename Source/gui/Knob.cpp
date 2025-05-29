@@ -4,8 +4,8 @@ namespace gui
 {
     // Knob
 
-    Knob::Knob(Utils& u) :
-        Comp(u),
+    Knob::Knob(Utils& u, const String& uID) :
+        Comp(u, uID),
         pIDs(),
         values(),
         onEnter([]() {}), onExit([]() {}), onDown([]() {}), onDoubleClick([]() {}),
@@ -14,7 +14,8 @@ namespace gui
         onPaint([](Graphics& g, Knob&) { g.fillAll(juce::Colours::red); }),
         dragXY(), lastPos(),
         hidesCursor(true),
-        active(false)
+        active(false),
+		radialHitbox(true)
     {
         const auto fps = cbFPS::k60;
         const auto speed = msToInc(AniLengthMs, fps);
@@ -148,8 +149,8 @@ namespace gui
         utils.eventSystem.notify(evt::Type::ToastUpdateMessage, &msg);
     }
 
-    ModDial::ModDial(Utils& u) :
-        Knob(u),
+    ModDial::ModDial(Utils& u, const String& uID) :
+        Knob(u, uID),
         prms(),
         path(),
         showBias(false),
@@ -474,6 +475,7 @@ namespace gui
 
     void makeKnob(Knob& knob)
     {
+        knob.radialHitbox = true;
         knob.onPaint = [](Graphics& g, Knob& k)
         {
             static constexpr float AngleWidth = PiQuart * 3.f;
@@ -613,6 +615,7 @@ namespace gui
 
     void makeSlider(Knob& knob)
     {
+        knob.radialHitbox = false;
         knob.onPaint = [](Graphics& g, Knob& k)
         {
             const auto& vals = k.values;
@@ -717,6 +720,7 @@ namespace gui
 
     void makeTextKnob(Knob& knob)
     {
+        knob.radialHitbox = false;
         knob.onPaint = [](Graphics& g, Knob& k)
         {
             const auto thicc = k.utils.thicc;

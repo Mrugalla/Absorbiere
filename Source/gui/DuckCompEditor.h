@@ -11,10 +11,10 @@ namespace gui
 		struct Curve :
 			public Comp
 		{
-			Curve(Utils& u) :
-				Comp(u),
-				thresholdKnob(u),
-				ratioKnob(u),
+			Curve(Utils& u, const String& uID, PID pThreshold, PID pRatio) :
+				Comp(u, uID),
+				thresholdKnob(u, uID + "th"),
+				ratioKnob(u, uID + "r"),
 				path(),
 				threshold(-420.f),
 				ratio(1.f),
@@ -23,8 +23,8 @@ namespace gui
 				addAndMakeVisible(ratioKnob);
 				addAndMakeVisible(thresholdKnob);
 
-				makeKnob(PID::DuckCompThreshold, thresholdKnob);
-				makeKnob(PID::DuckCompRatio, ratioKnob, true, true);
+				makeKnob(pThreshold, thresholdKnob);
+				makeKnob(pRatio, ratioKnob, true, true);
 				thresholdKnob.onPaint = [](Graphics&, const Knob&) {};
 				ratioKnob.onPaint = [](Graphics&, const Knob&) {};
 			}
@@ -159,8 +159,8 @@ namespace gui
 		struct Meter :
 			public Comp
 		{
-			Meter(Utils& u) :
-				Comp(u),
+			Meter(Utils& u, const String& uID) :
+				Comp(u, uID),
 				data(0.f, 0.f),
 				pos(0, 0),
 				lineThicc(1.f)
@@ -207,22 +207,22 @@ namespace gui
 		};
 	public:
 
-		TransferFuncEditor(Utils& u) :
-			Comp(u),
-			curve(u),
-			meter(u)
+		TransferFuncEditor(Utils& u, const String& uID,
+			PID pThreshold, PID pRatio, PID pKnee, const std::atomic<PointF>& v) :
+			Comp(u, uID),
+			curve(u, uID + "c", pThreshold, pRatio),
+			meter(u, uID + "m")
 		{
 			addAndMakeVisible(curve);
 			addAndMakeVisible(meter);
 
 			add(Callback([&]()
 			{
-				const auto& v = u.audioProcessor.pluginProcessor.ducker.getMeter();
 				meter.update(v);
 
-				const auto& thresholdParam = utils.getParam(PID::DuckCompThreshold);
-				const auto& ratioParam = utils.getParam(PID::DuckCompRatio);
-				const auto& kneeParam = utils.getParam(PID::DuckCompKnee);
+				const auto& thresholdParam = utils.getParam(pThreshold);
+				const auto& ratioParam = utils.getParam(pRatio);
+				const auto& kneeParam = utils.getParam(pKnee);
 
 				const auto _threshold = thresholdParam.getValueDenorm();
 				const auto _ratio = ratioParam.getValueDenorm();
@@ -254,14 +254,15 @@ namespace gui
 	struct DuckCompEditor :
 		public PanelEffect
 	{
-		DuckCompEditor(Utils& u) :
-			PanelEffect(u, "Comp:"),
-			blend(u),
-			atk(u),
-			rls(u),
-			knee(u),
+		DuckCompEditor(Utils& u, const String& uID,
+			PID pThreshold, PID pRatio, PID pKnee, PID pBlend, PID pAtk, PID pRls, const std::atomic<PointF>& v) :
+			PanelEffect(u, uID, "Comp:"),
+			blend(u, uID + "b"),
+			atk(u, uID + "a"),
+			rls(u, uID + "r"),
+			knee(u, uID + "k"),
 			labelGroup(),
-			transferFuncEditor(u)
+			transferFuncEditor(u, uID + "tfe", pThreshold, pRatio, pKnee, v)
 		{
 			layout.init
 			(
@@ -275,10 +276,10 @@ namespace gui
 			addAndMakeVisible(knee);
 			addAndMakeVisible(transferFuncEditor);
 
-			blend.init(PID::DuckCompBlend, "Blend");
-			atk.init(PID::DuckCompAttack, "Attack");
-			rls.init(PID::DuckCompRelease, "Release");
-			knee.init(PID::DuckCompKnee, "Knee");
+			blend.init(pBlend, "Blend");
+			atk.init(pAtk, "Attack");
+			rls.init(pRls, "Release");
+			knee.init(pKnee, "Knee");
 			labelGroup.add(blend.label);
 			labelGroup.add(atk.label);
 			labelGroup.add(rls.label);
@@ -302,3 +303,4 @@ namespace gui
 		TransferFuncEditor transferFuncEditor;
 	};
 }
+// WANNA implement hold in duck compressor

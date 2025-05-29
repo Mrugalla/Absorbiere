@@ -275,10 +275,9 @@ namespace dsp
 			gainOut(samples, gainOutDb, numChannels, numSamples);
 		}
 	#else
-		void join(float* const* samples, float gainOutDb,
-			int numChannels, int numSamples) noexcept
+		void join(ProcessorBufferView& view, float gainOutDb) noexcept
 		{
-			gainOut(samples, gainOutDb, numChannels, numSamples);
+			gainOut(view, gainOutDb);
 		}
 	#endif
 #elif PPDIO == PPDIODryWet

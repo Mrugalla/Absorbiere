@@ -3,8 +3,8 @@
 namespace gui
 {
 	template<size_t NumVoices>
-	VoiceGrid<NumVoices>::VoiceGrid(Utils& u) :
-		Comp(u),
+	VoiceGrid<NumVoices>::VoiceGrid(Utils& u, const String& uID) :
+		Comp(u, uID),
 		voices(),
 		poly(NumVoices)
 	{

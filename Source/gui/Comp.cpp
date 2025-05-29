@@ -2,13 +2,21 @@
 
 namespace gui
 {
-	Comp::Comp(Utils& u, const String& _tooltip) :
+	Comp::Comp(Utils& u, const String& uID) :
 		utils(u),
 		layout(),
-		tooltip(_tooltip),
+		tooltip(""),
 		members(),
-		callbacks()
+		callbacks(),
+		scale(1.f),
+		shearX(0.f),
+		shearY(0.f)
 	{
+		setName(uID);
+		const auto& props = utils.getProps();
+		const auto transformString = props.getValue("cmp_" + getName(), "");
+		setTransformFromString(transformString);
+
 		setMouseCursor(makeCursor());
 
 		addEvt([this](const evt::Type type, const void* stuff)
@@ -25,8 +33,13 @@ namespace gui
 	Comp::~Comp()
 	{
 		deregisterCallbacks();
+		
+		const auto transformString = getTransformString();
+		const auto name = getName();
+		auto& props = utils.getProps();
+		props.setValue("cmp_" + name, transformString);
 	}
-	
+
 	void Comp::setLocked(bool e)
 	{
 		setAlpha(e ? LockAlpha : 1.f);

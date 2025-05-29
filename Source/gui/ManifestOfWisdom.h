@@ -25,7 +25,7 @@ namespace gui
 	struct ButtonWisdom :
 		public Button
 	{
-		ButtonWisdom(Utils&, ManifestOfWisdom&);
+		ButtonWisdom(ManifestOfWisdom&);
 
 		void resized() override;
 

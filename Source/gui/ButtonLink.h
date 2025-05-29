@@ -6,12 +6,13 @@ namespace gui
 	struct ButtonLink :
 		public Button
 	{
-		struct Link { String name; URL url; };
+		struct Link { String name, uID; URL url; };
 		using Links = std::vector<Link>;
 
+		// u
 		ButtonLink(Utils&);
 
-		// name, url
-		void init(const String&, const URL&);
+		// name, uID, url
+		void init(const String&, const String&, const URL&);
 	};
 }

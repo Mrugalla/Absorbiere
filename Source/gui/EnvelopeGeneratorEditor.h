@@ -25,8 +25,8 @@ namespace gui
 		struct EnvGenView :
 			public Comp
 		{
-			// utils, sustain
-			EnvGenView(Utils&, PID);
+			// utils, uID, sustain
+			EnvGenView(Utils&, const String&, PID);
 
 			// attack, decay, release, isTemposync
 			void init(PID, PID, PID, bool);
@@ -52,9 +52,9 @@ namespace gui
 			bool updateCurve() noexcept;
 		};
 
-		// utils, title, attack, decay, sustain, release, temposync, temposyncPIDs
+		// utils, uID, title, attack, decay, sustain, release, temposync, temposyncPIDs
 		EnvelopeGeneratorMultiVoiceEditor(Utils&, const String&,
-			PID, PID, PID, PID, PID, PIDsTemposync* = nullptr);
+			const String&, PID, PID, PID, PID, PID, PIDsTemposync* = nullptr);
 
 		void paint(Graphics&) override;
 

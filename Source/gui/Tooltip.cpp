@@ -8,11 +8,11 @@ namespace gui
 	}
 
 	Tooltip::Tooltip(Utils& u) :
-		Comp(u),
+		Comp(u, "bottombar"),
 		labels
 		{
-			Label(u),
-			Label(u)
+			Label(u, "tooltip"),
+			Label(u, "builddate")
 		}
 	{
 		layout.init

@@ -8,7 +8,8 @@ namespace gui
     {
 		using Labels = std::vector<std::unique_ptr<Label>>;
 
-		Ruler(Utils&);
+		// u, uID
+		Ruler(Utils&, const String&);
 
 		// https://oeis.org/search?q=1%2C2%2C5%2C10%2C20%2C50%2C100%2C200%2C500%2C1000&language=english&go=Search
 		void makeIncExpansionOfGF();

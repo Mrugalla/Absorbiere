@@ -77,6 +77,7 @@ namespace gui
 	using DragAndDropContainer = juce::DragAndDropContainer;
     using DnDSrc = DragAndDropTarget::SourceDetails;
 	using URL = juce::URL;
+	using FineAssTransform = juce::AffineTransform;
 
     using Processor = audio::Processor;
 
@@ -91,9 +92,8 @@ namespace gui
 	static constexpr float PiEight = Tau * .0625f;
 	static constexpr float PiSixteenth = Tau * .03125f;
 	static constexpr float Pi32 = Pi / 32.f;
-
-    static constexpr int EditorWidth = 1082;
-    static constexpr int EditorHeight = 722;
+    static constexpr int EditorWidth = 596;
+    static constexpr int EditorHeight = 468;
     static constexpr int EditorMinWidth = 100;
     static constexpr int EditorMinHeight = 100;
     static constexpr int FPS = 60;

@@ -2,8 +2,8 @@
 
 namespace gui
 {
-	DropDownMenu::DropDownMenu(Utils& u) :
-		Comp(u),
+	DropDownMenu::DropDownMenu(Utils& u, const String& uID) :
+		Comp(u, uID),
 		buttons(),
 		labelGroup()
 	{
@@ -26,17 +26,17 @@ namespace gui
 		}
 	}
 
-	void DropDownMenu::add(Button::OnPaint onPaint, Button::OnClick onClick)
+	void DropDownMenu::add(Button::OnPaint onPaint, Button::OnClick onClick, const String& uID)
 	{
-		buttons.push_back(std::make_unique<Button>(utils));
+		buttons.push_back(std::make_unique<Button>(utils, uID));
 		auto& btn = *buttons.back().get();
 		btn.onClick = onClick;
 		btn.onPaint = onPaint;
 	}
 
-	void DropDownMenu::add(Button::OnClick onClick, const String& text, const String& _tooltip)
+	void DropDownMenu::add(Button::OnClick onClick, const String& text, const String& uID, const String& _tooltip)
 	{
-		buttons.push_back(std::make_unique<Button>(utils));
+		buttons.push_back(std::make_unique<Button>(utils, uID));
 		auto& btn = *buttons.back().get();
 		makeTextButton(btn, text, _tooltip, CID::Interact);
 		btn.onClick = onClick;
@@ -78,29 +78,30 @@ namespace gui
 	//
 
 	ButtonDropDown::ButtonDropDown(Utils& u) :
-		Button(u)
+		Button(u, "")
 	{
 	}
 
 	void ButtonDropDown::init(DropDownMenu& dropDown, const String& title, const String& _tooltip)
 	{
+		setName("btn" + dropDown.getName());
 		makeTextButton(*this, title, _tooltip, CID::Interact);
 		type = Button::Type::kToggle;
 		onPaint = makeButtonOnPaint(true, getColour(CID::Bg));
 		onClick = [&m = dropDown](const Mouse&)
-			{
-				auto e = !m.isVisible();
-				m.notify(evt::Type::ClickedEmpty);
-				m.setVisible(e);
-			};
+		{
+			auto e = !m.isVisible();
+			m.notify(evt::Type::ClickedEmpty);
+			m.setVisible(e);
+		};
 		add(Callback([&]()
-			{
-				const auto v = value > .5f;
-				const auto e = dropDown.isVisible();
-				if (v == e)
-					return;
-				value = e ? 1.f : 0.f;
-				repaint();
-			}, 3, cbFPS::k15, true));
+		{
+			const auto v = value > .5f;
+			const auto e = dropDown.isVisible();
+			if (v == e)
+				return;
+			value = e ? 1.f : 0.f;
+			repaint();
+		}, 3, cbFPS::k15, true));
 	}
 }

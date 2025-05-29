@@ -56,18 +56,6 @@ namespace param
 		Power,
 
 		// low level parameters
-		Mode,
-		DuckRingModBlend,
-		DuckCompBlend,
-		DuckCompThreshold,
-		DuckCompRatio,
-		DuckCompKnee,
-		DuckCompAttack,
-		DuckCompRelease,
-		DuckCompBPBlend,
-		DuckCompBPFreqLow,
-		DuckCompBPFreqHigh,
-		DuckCompBPListen,
 		//
 		
 		NumParams

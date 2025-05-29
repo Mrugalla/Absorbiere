@@ -3,19 +3,19 @@
 namespace gui
 {
 	ColoursEditor::ColoursEditor(Utils& u) :
-		Comp(u),
+		Comp(u, "colourseditor"),
 		selector(std::make_unique<ColourSelector>(26, 4, 7)),
 		buttonsColour
 		{
-			Button(u),
-			Button(u),
-			Button(u),
-			Button(u),
-			Button(u),
-			Button(u)
+			Button(u, "coledb0"),
+			Button(u, "coledb1"),
+			Button(u, "coledb2"),
+			Button(u, "coledb3"),
+			Button(u, "coledb4"),
+			Button(u, "coledb5")
 		},
-		buttonRevert(u),
-		buttonDefault(u),
+		buttonRevert(u, "coledrev"),
+		buttonDefault(u, "coleddef"),
 		cIdx(0),
 		lastColour(Colours::c(cIdx))
 	{
@@ -153,7 +153,7 @@ namespace gui
 	}
 
 	ButtonColours::ButtonColours(ColoursEditor& menu) :
-		Button(menu.utils),
+		Button(menu.utils, "button" + menu.getName()),
 		img()
 	{
 		value = 0.f;

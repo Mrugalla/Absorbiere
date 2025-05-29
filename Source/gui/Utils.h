@@ -12,6 +12,12 @@ namespace gui
 		// pluginTop, processor
 		Utils(Component&, Processor&);
 
+		void editLayout(bool e);
+
+		void switchEditLayout();
+
+		bool isEditingLayout() const noexcept;
+
 		void add(Callback*);
 		void remove(Callback*);
 
@@ -43,5 +49,7 @@ namespace gui
 		Processor& audioProcessor;
 		Params& params;
 		float thicc;
+	private:
+		bool editingLayout;
 	};
 }

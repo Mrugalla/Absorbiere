@@ -4,8 +4,8 @@ namespace gui
 {
 	// Visualizer
 
-	RandomizerEditor::Visualizer::Visualizer(Utils& u, const RandMod& randMod) :
-		Comp(u),
+	RandomizerEditor::Visualizer::Visualizer(Utils& u, const String& uID, const RandMod& randMod) :
+		Comp(u, uID),
 		img(),
 		y0(0.f)
 	{
@@ -55,14 +55,24 @@ namespace gui
 
 	// Editor
 
-	RandomizerEditor::RandomizerEditor(const RandMod& randMod, Utils& u,
-		PID pRateSync, PID pSmooth, PID pComplex, PID pDropout) :
-		Comp(u),
-		visualizer(u, randMod),
-		title(u), rateSyncLabel(u), smoothLabel(u), complexLabel(u), dropoutLabel(u),
-		rateSync(u), smooth(u), complex(u), dropout(u),
-		rateSyncMod(u), smoothMod(u), complexMod(u), dropoutMod(u),
-		randomizer(u, "randmod"),
+	RandomizerEditor::RandomizerEditor(Utils& u, const String& uID,
+		const RandMod& randMod, PID pRateSync, PID pSmooth, PID pComplex, PID pDropout) :
+		Comp(u, uID),
+		visualizer(u, uID + "v", randMod),
+		title(u, uID + "t"),
+		rateSyncLabel(u, uID + "rsl"),
+		smoothLabel(u, uID + "sl"),
+		complexLabel(u, uID + "cl"),
+		dropoutLabel(u, uID + "dol"),
+		rateSync(u, uID + "rs"),
+		smooth(u, uID + "s"),
+		complex(u, uID + "c"),
+		dropout(u, uID + "do"),
+		rateSyncMod(u, uID + "rsm"),
+		smoothMod(u, uID + "sm"),
+		complexMod(u, uID + "cm"),
+		dropoutMod(u, uID + "dom"),
+		randomizer(u, uID + "rand", "randmod"),
 		labelGroup()
 
 	{

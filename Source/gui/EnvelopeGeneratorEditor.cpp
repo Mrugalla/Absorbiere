@@ -4,11 +4,11 @@ namespace gui
 {
 	//EnvGenView
 
-	EnvelopeGeneratorMultiVoiceEditor::EnvGenView::EnvGenView(Utils& u, PID susPID) :
-		Comp(u),
+	EnvelopeGeneratorMultiVoiceEditor::EnvGenView::EnvGenView(Utils& u, const String& uID, PID susPID) :
+		Comp(u, uID),
 		susParam(u.getParam(susPID)),
 		atkParam(nullptr), dcyParam(nullptr), rlsParam(nullptr),
-		ruler(u),
+		ruler(u, uID + "rl"),
 		curve(), curveMod(),
 		atkV(-1.f), dcyV(-1.f), susV(-1.f), rlsV(-1.f),
 		atkModV(-1.f), dcyModV(-1.f), susModV(-1.f), rlsModV(-1.f)
@@ -201,16 +201,35 @@ namespace gui
 	
 	//EnvelopeGeneratorMultiVoiceEditor
 
-	EnvelopeGeneratorMultiVoiceEditor::EnvelopeGeneratorMultiVoiceEditor(Utils& u, const String& title,
-		PID atk, PID dcy, PID sus, PID rls, PID isTemposync, PIDsTemposync* temposyncPIDs) :
-		Comp(u),
-		labels{ Label(u), Label(u), Label(u), Label(u), Label(u) },
-		envGenView(u, sus),
-		knobs{ Knob(u), Knob(u), Knob(u), Knob(u) },
-		modDials{ ModDial(u), ModDial(u), ModDial(u), ModDial(u) },
+	EnvelopeGeneratorMultiVoiceEditor::EnvelopeGeneratorMultiVoiceEditor(Utils& u, const String& uID,
+		const String& title, PID atk, PID dcy, PID sus, PID rls, PID isTemposync, PIDsTemposync* temposyncPIDs) :
+		Comp(u, uID),
+		labels
+		{
+			Label(u, uID + "l0"),
+			Label(u, uID + "l1"),
+			Label(u, uID + "l2"),
+			Label(u, uID + "l3"),
+			Label(u, uID + "l4")
+		},
+		envGenView(u, uID + "view", sus),
+		knobs
+		{
+			Knob(u, uID + "k0"),
+			Knob(u, uID + "k1"),
+			Knob(u, uID + "k2"),
+			Knob(u, uID + "k3")
+		},
+		modDials
+		{
+			ModDial(u, uID + "m0"),
+			ModDial(u, uID + "m1"),
+			ModDial(u, uID + "m2"),
+			ModDial(u, uID + "m3")
+		},
 		adsrLabelsGroup(),
-		temposync(u),
-		buttonRandomizer(u, "randenv" + title),
+		temposync(u, uID + "ts"),
+		buttonRandomizer(u, uID + "rand", "randenv" + title),
 		temposyncEnabled(false)
 	{
 		layout.init

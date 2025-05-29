@@ -115,18 +115,6 @@ namespace param
 		case PID::Power: return "Power";
 
 		// LOW LEVEL PARAMS:
-		case PID::Mode: return "Mode";
-		case PID::DuckRingModBlend: return "Duck RM Blend";
-		case PID::DuckCompBlend: return "Duck Comp Blend";
-		case PID::DuckCompThreshold: return "Duck Comp Threshold";
-		case PID::DuckCompRatio: return "Duck Comp Ratio";
-		case PID::DuckCompKnee: return "Duck Comp Knee";
-		case PID::DuckCompAttack: return "Duck Comp Attack";
-		case PID::DuckCompRelease: return "Duck Comp Release";
-		case PID::DuckCompBPBlend: return "Duck Comp BP Blend";
-		case PID::DuckCompBPFreqLow: return "Duck Comp BP Freq Low";
-		case PID::DuckCompBPFreqHigh: return "Duck Comp BP Freq High";
-		case PID::DuckCompBPListen: return "Duck Comp BP Listen";
 
 		default: return "Invalid Parameter Name";
 		}
@@ -248,18 +236,6 @@ namespace param
 		case PID::Power: return "Dis/Enable the plugin.";
 
 		// LOW LEVEL PARAMS:
-		case PID::Mode: return "Select the mode of the plugin.";
-		case PID::DuckRingModBlend: return "The amount of sidechain ring modulation.";
-		case PID::DuckCompBlend: return "The amount of sidechain compression.";
-		case PID::DuckCompThreshold: return "The threshold of the sidechain compressor.";
-		case PID::DuckCompRatio: return "The ratio of the sidechain compressor.";
-		case PID::DuckCompKnee: return "The knee of the sidechain compressor.";
-		case PID::DuckCompAttack: return "The attack time of the sidechain compressor.";
-		case PID::DuckCompRelease: return "The release time of the sidechain compressor.";
-		case PID::DuckCompBPBlend: return "The amount of sidechain bandpass filter.";
-		case PID::DuckCompBPFreqLow: return "The lower limit of the sidechain bandpass filter.";
-		case PID::DuckCompBPFreqHigh: return "The upper limit of the sidechain bandpass filter.";
-		case PID::DuckCompBPListen: return "Isolate the sidechain bandpass to adjust it.";
 
 		default: return "Invalid Tooltip.";
 		}
@@ -1562,31 +1538,7 @@ namespace param
 			params.push_back(makeParam(PID::Power, 1.f, makeRange::toggle(), Unit::Power, false));
 		}
 
-		// LOW LEVEL PARAMS:
-		params.push_back(makeParam(PID::Mode, 0.f, makeRange::stepped(0.f, 3.f), [](float v)
-			{
-				auto i = static_cast<int>(std::round(v));
-				switch (i)
-				{
-				case 0: return "Duck";
-				case 1: return "Erosion";
-				case 2: return "Texture";
-				case 3: return "Tremolo";
-				default: return "Invalid!";
-				}
-			}, strToVal::standard(0.f), false));
-		params.push_back(makeParam(PID::DuckRingModBlend, 1));
-		params.push_back(makeParam(PID::DuckCompBlend, 0));
-		params.push_back(makeParam(PID::DuckCompThreshold, -48.f, makeRange::lin(dsp::ThresholdMin, dsp::ThresholdMax), Unit::Decibel));
-		params.push_back(makeParam(PID::DuckCompRatio, 48.f, makeRange::quad(dsp::RatioMin, dsp::RatioMax, 2), Unit::Decibel));
-		params.push_back(makeParam(PID::DuckCompKnee, 2.f, makeRange::lin(dsp::KneeMin, dsp::KneeMax), Unit::Decibel));
-		params.push_back(makeParam(PID::DuckCompAttack, 0.1f, makeRange::quad(1, 420, 2), Unit::Ms));
-		params.push_back(makeParam(PID::DuckCompRelease, 0.1f, makeRange::quad(1, 420, 2), Unit::Ms));
-		params.push_back(makeParam(PID::DuckCompBPBlend, 1.f));
-		params.push_back(makeParamPitch(PID::DuckCompBPFreqLow, 118.f, false));
-		params.push_back(makeParamPitch(PID::DuckCompBPFreqHigh, 127.f, false));
-		params.push_back(makeParam(PID::DuckCompBPListen, 0.f, makeRange::toggle(), Unit::Power, false));
-		
+		// LOW LEVEL PARAMS:		
 		// LOW LEVEL PARAMS END
 
 		for (auto param : params)

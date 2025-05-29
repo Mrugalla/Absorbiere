@@ -8,7 +8,7 @@ namespace gui
 	}
 
 	LabelPluginRecorder::LabelPluginRecorder(Utils& u, Recorder& _recorder) :
-		Label(u),
+		Label(u, "labelpluginrecorder"),
 		bgImg(Image::RGB, 1, 1, true),
 		recorder(_recorder),
 		dragImage(Image::ARGB, 20, 20, true),

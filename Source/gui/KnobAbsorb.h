@@ -6,20 +6,21 @@ namespace gui
 	struct KnobAbsorb :
 		public Comp
 	{
-		KnobAbsorb(Utils& u) :
-			Comp(u),
-			knob(u),
-			label(u),
-			modDial(u)
+		KnobAbsorb(Utils& u, const String& uID) :
+			Comp(u, uID),
+			knob(u, uID + "k"),
+			label(u, uID + "l"),
+			modDial(u, uID + "m")
 		{
 			layout.init
 			(
 				{ 1 },
-				{ 2, 1 }
+				{ 8, 2 }
 			);
 
 			addAndMakeVisible(knob);
 			addAndMakeVisible(label);
+			setInterceptsMouseClicks(false, true);
 		}
 
 		void init(PID pID, const String& txt)

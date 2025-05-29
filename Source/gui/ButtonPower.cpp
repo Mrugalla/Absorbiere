@@ -3,14 +3,14 @@
 namespace gui
 {
 	CompPower::CompPower(Utils& u) :
-		Comp(u)
+		Comp(u, "powercomp")
 	{
 		setInterceptsMouseClicks(false, false);
 		add(Callback([&]()
-			{
-				const auto val = utils.audioProcessor.params(PID::Power).getValMod();
-				setVisible(val < .5f);
-			}, 0, cbFPS::k7_5, true));
+		{
+			const auto val = utils.audioProcessor.params(PID::Power).getValMod();
+			setVisible(val < .5f);
+		}, 0, cbFPS::k7_5, true));
 	}
 
 	void CompPower::paint(Graphics& g)
@@ -22,7 +22,7 @@ namespace gui
 	//
 
 	ButtonPower::ButtonPower(Utils& u) :
-		Button(u)
+		Button(u, "buttonpower")
 	{
 		makeParameter(*this, PID::Power, Button::Type::kToggle, makeButtonOnPaintPower());
 		type = Button::Type::kToggle;

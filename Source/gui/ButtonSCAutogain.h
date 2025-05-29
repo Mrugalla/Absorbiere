@@ -7,8 +7,8 @@ namespace gui
 		public Comp
 	{
 		ButtonSCAutogain(Utils& u) :
-			Comp(u),
-			btn(u)
+			Comp(u, "scautogain"),
+			btn(u, "buttonscautogain")
 		{
 			const auto fps = cbFPS::k15;
 			add(Callback([&, speed = msToInc(5000.f, fps)]()
@@ -100,6 +100,5 @@ namespace gui
 
 	private:
 		Button btn;
-		
 	};
 }

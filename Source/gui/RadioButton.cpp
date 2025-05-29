@@ -2,8 +2,8 @@
 
 namespace gui
 {
-	RadioButton::RadioButton(Utils& u) :
-		Comp(u),
+	RadioButton::RadioButton(Utils& u, const String& uID) :
+		Comp(u, uID),
 		buttons(),
 		labelGroup()
 	{
@@ -19,12 +19,13 @@ namespace gui
 
 	void RadioButton::attach(PID pID)
 	{
+		const auto uID = getName() + param::toString(pID);
 		clear();
 		auto& param = utils.getParam(pID);
 		const auto& range = param.range;
 		const auto numSteps = static_cast<int>(range.end - range.start) + 1;
 		for (auto i = 0; i < numSteps; ++i)
-			buttons.push_back(std::make_unique<Button>(utils));
+			buttons.push_back(std::make_unique<Button>(utils, uID + String(i + 1)));
 		makeParameter(buttons, pID);
 		for (auto& button : buttons)
 		{

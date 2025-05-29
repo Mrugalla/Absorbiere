@@ -123,6 +123,91 @@ namespace dsp
 			float env;
 		};
 
+		// things to try:
+		// 2 pole smoother for attack and release
+		// rms based level detection instead of abs
+		// lookahead
+
+		struct CompChatGPT
+		{
+			CompChatGPT() :
+				gainSmooth(0.f)
+			{ }
+
+			void prepare(double _sampleRate) noexcept
+			{
+				sampleRate = _sampleRate;
+			}
+
+			void setLevelDetector(double _atkMs, double _rlsMs) noexcept
+			{
+				atkMs = _atkMs;
+				rlsMs = _rlsMs;
+				atk = std::exp(-1. / (.001 * atkMs * sampleRate));
+				rls = std::exp(-1. / (.001 * rlsMs * sampleRate));
+			}
+
+			void copyLevelDetector(const CompChatGPT& other) noexcept
+			{
+				atkMs = other.atkMs;
+				rlsMs = other.rlsMs;
+				atk = other.atk;
+				rls = other.rls;
+			}
+
+			void operator()(float* smplsMain, const float* smplsSC,
+				float thresholdDb, float ratioDb, float kneeDb, float blend,
+				int numSamples) noexcept
+			{
+				for (auto s = 0; s < numSamples; ++s)
+				{
+					auto y = process(smplsMain[s], smplsSC[s], thresholdDb, ratioDb, kneeDb);
+					smplsMain[s] = smplsMain[s] + blend * (y - smplsMain[s]);
+				}
+					
+			}
+
+			PointF getMeter(float thresholdDb, float ratioDb, float kneeDb) const noexcept
+			{
+				return { gainSmooth, computeGainReduction(gainSmooth, thresholdDb, ratioDb, kneeDb) };
+			}
+		private:
+			double sampleRate, atkMs, rlsMs, atk, rls;
+			float gainSmooth;
+
+			float process(float main, float sc, float thresholdDb, float ratioDb, float kneeDb) noexcept
+			{
+				const auto xDb = math::ampToDecibel(std::fabs(sc) + 1e-6f);
+				const auto gainDb = computeGainReduction(xDb, thresholdDb, ratioDb, kneeDb);
+				const auto targetGain = math::dbToAmp(-gainDb);
+				const auto dist = static_cast<double>(gainSmooth - targetGain);
+				if (targetGain < gainSmooth)
+					gainSmooth = targetGain + static_cast<float>(atk * dist);
+				else
+					gainSmooth = targetGain + static_cast<float>(rls * dist);
+				return main * gainSmooth;
+			}
+
+			float computeGainReduction(float xDb, float thresholdDb, float ratioDb, float kneeDb) const noexcept
+			{
+				const auto overThreshold = xDb - thresholdDb;
+
+				if (kneeDb > 0.f)
+				{
+					const auto halfKnee = kneeDb * .5f;
+					if (overThreshold < -halfKnee)
+						return 0.f;
+					else if (overThreshold <= halfKnee) {
+						const auto x = (overThreshold + halfKnee) / kneeDb;
+						const auto softGain = ((1.f / ratioDb - 1.f) * x * x) / 2.f;
+						return -softGain * overThreshold;
+					}
+				}
+
+				return overThreshold > 0.f ? overThreshold * (1.f - 1.f / ratioDb) : 0.f;
+			}
+		};
+
 		struct Compressor
 		{
 			Compressor() :
@@ -226,7 +311,7 @@ namespace dsp
 				return meter;
 			}
 		private:
-			std::array<Compressor, 2> compressors;
+			std::array<CompChatGPT, 2> compressors;
 			double atkMs, rlsMs;
 			std::atomic<PointF> meter;
 
@@ -238,135 +323,23 @@ namespace dsp
 			}
 		};
 	public:
-		Ducker() :
-			params(),
-			bufferSC(),
-			sidechainFilter(),
-			compressor(),
-			sampleRate(1.)
+		Ducker()
 		{}
-
-		void setRMBlend(float e) noexcept
-		{
-			params.rmBlend = e;
-		}
-
-		void setCompBlend(float e) noexcept
-		{
-			params.compBlend = e;
-		}
-
-		void setCompThreshold(float e) noexcept
-		{
-			params.compThreshold = e;
-		}
-
-		void setCompRatio(float e) noexcept
-		{
-			params.compRatio = e;
-		}
-
-		void setCompKnee(float e) noexcept
-		{
-			params.compKnee = e;
-		}
-
-		void setCompAtk(float e, int numChannels) noexcept
-		{
-			params.compAtk = e;
-			compressor.setAttack(e, numChannels);
-		}
-
-		void setCompRls(float e, int numChannels) noexcept
-		{
-			params.compRls = e;
-			compressor.setRelease(e, numChannels);
-		}
-
-		void setCompBPFreqLow(float e, int numChannels) noexcept
-		{
-			params.compBPFreqLow = e;
-			updateFrequencies(numChannels);
-		}
-
-		void setCompBPFreqHigh(float e, int numChannels) noexcept
-		{
-			params.compBPFreqHigh = e;
-			updateFrequencies(numChannels);
-		}
-
-		void setCompBPBlend(float e)
-		{
-			params.compBPBlend = e;
-		}
-
-		void setCompBPListen(bool e) noexcept
-		{
-			params.compBPListen = e;
-		}
-
-		void prepare(double _sampleRate) noexcept
-		{
-			sampleRate = _sampleRate;
-			compressor.prepare(sampleRate);
-			sidechainFilter.prepare(sampleRate);
-		}
 
 		void operator()(ProcessorBufferView& view) noexcept
 		{
 			if (!view.scEnabled)
 				return;
-			copySCBuffer(view);
 			applyRingMod(view);
-			filterSC(view);
-			if (params.compBPListen)
-				return listenSC(view);
-			applyCompressor(view);
-		}
-
-		const std::atomic<PointF>& getMeter() const noexcept
-		{
-			return compressor.getMeter();
 		}
 	private:
-		Params params;
-		BufferSC bufferSC;
-		SidechainFilter sidechainFilter;
-		CompressorStereo compressor;
-		double sampleRate;
-
-		void updateFrequencies(int numChannels) noexcept
-		{
-			auto f0 = params.compBPFreqLow;
-			auto f1 = params.compBPFreqHigh;
-			if (f0 > f1)
-				std::swap(f0, f1);
-			sidechainFilter.setRange(f0, f1, numChannels);
-		}
-
-		void copySCBuffer(ProcessorBufferView& view) noexcept
-		{
-			const auto numSamples = view.numSamples;
-			const auto numChannelsMain = view.getNumChannelsMain();
-			const auto numChannelsSC = view.getNumChannelsSC();
-			for (auto ch = 0; ch < numChannelsMain; ++ch)
-			{
-				auto chSC = ch;
-				if (chSC >= numChannelsSC)
-					chSC = chSC - numChannelsSC;
-				auto smplsSC = view.getSamplesSC(chSC);
-				auto smplsBuf = bufferSC[ch].data();
-				SIMD::copy(smplsBuf, smplsSC, numSamples);
-			}
-		}
-		
 		void applyRingMod(ProcessorBufferView& view)
 		{
 			const auto numSamples = view.numSamples;
 			const auto numChannelsMain = view.getNumChannelsMain();
 			for (auto ch = 0; ch < numChannelsMain; ++ch)
 			{
-				const auto smplsSC = bufferSC[ch].data();
+				const auto smplsSC = view.getSamplesSC(ch);
 				auto smplsMain = view.getSamplesMain(ch);
 				
 				for (auto s = 0; s < numSamples; ++s)
@@ -376,45 +349,9 @@ namespace dsp
 					const auto x = smplsMain[s];
 					const auto ringModSmpl = x * smplPol;
 					const auto y = x + ringModSmpl;
-					smplsMain[s] = x + params.rmBlend * (y - x);
+					smplsMain[s] = y;
 				}
 			}
-		}
-
-		void filterSC(ProcessorBufferView& view) noexcept
-		{
-			const auto numChannels = view.getNumChannelsMain();
-			for (auto ch = 0; ch < numChannels; ++ch)
-			{
-				auto smplsSC = bufferSC[ch].data();
-				sidechainFilter(smplsSC, params.compBPBlend, view.numSamples, ch);
-			}
-		}
-
-		void listenSC(ProcessorBufferView& view) noexcept
-		{
-			const auto numSamples = view.numSamples;
-			const auto numChannelsMain = view.getNumChannelsMain();
-			for (auto ch = 0; ch < numChannelsMain; ++ch)
-			{
-				const auto smplsSC = bufferSC[ch].data();
-				auto smplsMain = view.getSamplesMain(ch);
-				SIMD::copy(smplsMain, smplsSC, numSamples);
-			}
-		}
-
-		void applyCompressor(ProcessorBufferView& view)
-		{
-			compressor
-			(
-				view.getViewMain(),
-				bufferSC,
-				params.compThreshold,
-				params.compRatio,
-				params.compKnee,
-				params.compBlend,
-				view.numSamples
-			);
 		}
 	};
 }

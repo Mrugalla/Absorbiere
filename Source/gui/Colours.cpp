@@ -98,12 +98,12 @@ namespace gui
     {
         switch (cID)
         {
-        case Colours::ID::Bg: return Colour(0xff0c6066);
-        case Colours::ID::Txt: return Colour(0xffe2ffd3);
-        case Colours::ID::Interact: return Colour(0xffd5ff00);
-        case Colours::ID::Mod: return Colour(0xff001014);
-        case Colours::ID::Hover: return Colour(0x84ffffff);
-        case Colours::ID::Darken: return Colour(0xad15133b);
+        case Colours::ID::Bg: return Colour(0xff163a3c);
+        case Colours::ID::Txt: return Colour(0xff87f350);
+        case Colours::ID::Interact: return Colour(0xffd4ef4c);
+        case Colours::ID::Mod: return Colour(0xff3e8a9d);
+        case Colours::ID::Hover: return Colour(0x84e6d2ee);
+        case Colours::ID::Darken: return Colour(0xad1f1c4a);
         default: return Colour(0xff000000);
         }
     }

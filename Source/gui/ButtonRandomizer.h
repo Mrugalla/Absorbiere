@@ -10,8 +10,8 @@ namespace gui
         using RandomSeed = arch::RandSeed;
         using RandFunc = arch::RandFunc;
 
-        // utils, randomizerID
-        ButtonRandomizer(Utils&, String&&);
+        // utils, uID, randomizerID
+        ButtonRandomizer(Utils&, const String&, String&&);
 
         void add(PID);
 

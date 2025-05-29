@@ -7,7 +7,7 @@
               pluginDesc="A sidechain ringmod with extra steps" pluginManufacturer="Mrugalla"
               pluginManufacturerCode="BBBB" pluginCode="SCRM" pluginVST3Category="Distortion,Fx"
               pluginAAXCategory="64" pluginVSTCategory="kPlugCategEffect" cppLanguageStandard="latest"
-              defines="PPDIOOut=0&#10;PPDIODryWet=1&#10;PPDIOWetMix=2&#10;&#10;PPDIsNonlinear=true&#10;PPDIO=PPDIOWetMix&#10;&#10;PPDHasStereoConfig=0&#10;PPDHasSidechain=1&#10;PPDHasLookahead=0&#10;PPDHasTuningEditor=0"
+              defines="PPDIOOut=0&#10;PPDIODryWet=1&#10;PPDIOWetMix=2&#10;&#10;PPDIsNonlinear=false&#10;PPDIO=PPDIOOut&#10;&#10;PPDHasStereoConfig=0&#10;PPDHasSidechain=1&#10;PPDHasLookahead=0&#10;PPDHasTuningEditor=0"
               includeBinaryInJuceHeader="1" pluginAUMainType="'aufx'" maxBinaryFileSize="20971520"
               pluginCharacteristicsValue="pluginWantsMidiIn">
   <MAINGROUP id="WYhkvs" name="Absorbiere">
@@ -175,10 +175,6 @@
                 file="Source/gui/DuckCompEditor.cpp"/>
           <FILE id="iDIEIS" name="DuckCompEditor.h" compile="0" resource="0"
                 file="Source/gui/DuckCompEditor.h"/>
-          <FILE id="hcnIbY" name="DuckEditor.cpp" compile="1" resource="0" file="Source/gui/DuckEditor.cpp"/>
-          <FILE id="KooYy8" name="DuckEditor.h" compile="0" resource="0" file="Source/gui/DuckEditor.h"/>
-          <FILE id="ZfU3YS" name="IOEditor.cpp" compile="1" resource="0" file="Source/gui/IOEditor.cpp"/>
-          <FILE id="O6JJf3" name="IOEditor.h" compile="0" resource="0" file="Source/gui/IOEditor.h"/>
           <FILE id="vws9Bv" name="KnobAbsorb.cpp" compile="1" resource="0" file="Source/gui/KnobAbsorb.cpp"/>
           <FILE id="HE9jlB" name="KnobAbsorb.h" compile="0" resource="0" file="Source/gui/KnobAbsorb.h"/>
           <FILE id="Aq7hwn" name="PanelEffect.cpp" compile="1" resource="0" file="Source/gui/PanelEffect.cpp"/>
@@ -212,6 +208,11 @@
         <FILE id="EOoT3v" name="DropDownMenu.cpp" compile="1" resource="0"
               file="Source/gui/DropDownMenu.cpp"/>
         <FILE id="cdOiR2" name="DropDownMenu.h" compile="0" resource="0" file="Source/gui/DropDownMenu.h"/>
+        <FILE id="hJkRp4" name="LayoutEditor.cpp" compile="1" resource="0"
+              file="Source/gui/LayoutEditor.cpp"/>
+        <FILE id="QbsagV" name="LayoutEditor.h" compile="0" resource="0" file="Source/gui/LayoutEditor.h"/>
+        <FILE id="QWFFmk" name="EditorComp.cpp" compile="1" resource="0" file="Source/gui/EditorComp.cpp"/>
+        <FILE id="FWDgwy" name="EditorComp.h" compile="0" resource="0" file="Source/gui/EditorComp.h"/>
         <FILE id="d8tR2z" name="EnvelopeFollowerEditor.cpp" compile="1" resource="0"
               file="Source/gui/EnvelopeFollowerEditor.cpp"/>
         <FILE id="IzByeW" name="EnvelopeFollowerEditor.h" compile="0" resource="0"

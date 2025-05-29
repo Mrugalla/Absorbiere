@@ -4,8 +4,8 @@ namespace gui
 {
 	// ZoomImage
 
-	Credits::ZoomImage::ZoomImage(Utils& u) :
-		Comp(u),
+	Credits::ZoomImage::ZoomImage(Utils& u, const String& uID) :
+		Comp(u, uID),
 		img(),
 		pos(),
 		zoomFactor(1.f)
@@ -87,8 +87,8 @@ namespace gui
 
 	// LinksPage
 
-	Credits::LinksPage::LinksPage(Utils& u) :
-		Comp(u)
+	Credits::LinksPage::LinksPage(Utils& u, const String& uID) :
+		Comp(u, uID)
 	{
 	}
 
@@ -99,7 +99,7 @@ namespace gui
 		{
 			buttons.push_back(std::make_unique<ButtonLink>(utils));
 			auto& button = *buttons.back();
-			button.init(link.name, link.url);
+			button.init(link.name, link.uID, link.url);
 		}
 		for (auto& button : buttons)
 			addAndMakeVisible(*button);
@@ -130,13 +130,13 @@ namespace gui
 
 	// Entry
 
-	Credits::Entry::Entry(Utils& u) :
-		Comp(u),
-		linksPage(u),
-		img(u),
-		info(u),
-		idx(u),
-		footer(u),
+	Credits::Entry::Entry(Utils& u, const String& uID) :
+		Comp(u, uID),
+		linksPage(u, uID + "lp"),
+		img(u, uID + "img"),
+		info(u, uID + "info"),
+		idx(u, uID + "idx"),
+		footer(u, uID + "foot"),
 		mode(Mode::Image)
 	{
 		layout.init
@@ -198,12 +198,12 @@ namespace gui
 	// Credits
 
 	Credits::Credits(Utils& u) :
-		Comp(u),
+		Comp(u, "credits"),
 		pages(),
-		titleLabel(u),
-		previous(u),
-		next(u),
-		entry(u),
+		titleLabel(u, "creditstitle"),
+		previous(u, "creditsprev"),
+		next(u, "creditsnext"),
+		entry(u, "creditsentry"),
 		idx(0)
 	{
 		layout.init
@@ -284,7 +284,7 @@ namespace gui
 	// Button
 
 	ButtonCredits::ButtonCredits(Utils& u, Credits& credits) :
-		Button(u)
+		Button(u, "button" + credits.getName())
 	{
 		type = Button::Type::kToggle;
 		makeTextButton(*this, "Credits", "Click here to check out the credits and stuff! :)", CID::Interact);
