@@ -22,41 +22,30 @@ namespace gui
 			void updateTranslation() noexcept
 			{
 				const auto& top = c.utils.pluginTop;
-				const auto topScreen = top.getScreenBounds().toFloat();
-				const auto minDimen = std::min(topScreen.getWidth(), topScreen.getHeight());
+				const auto tBounds = top.getScreenBounds().toFloat();
+				const auto tW = tBounds.getWidth();
+				const auto tH = tBounds.getHeight();
+				const auto minDimen = std::min(tW, tH);
 				const auto x = transX * minDimen;
 				const auto y = transY * minDimen;
+				const auto transform = c.getTransform().withAbsoluteTranslation(x, y);
+				const auto boundsPost = c.getBounds().toFloat().transformedBy(transform);
+				const auto parent = c.getParentComponent();
+				if (parent == nullptr)
+					return;
+				const auto pScreen = parent->getScreenBounds().toFloat();
+				const auto screenPost = boundsPost
+					.withX(boundsPost.getX() + pScreen.getX())
+					.withY(boundsPost.getY() + pScreen.getY());
+				const bool intersects = screenPost.intersects(tBounds);
+				if(intersects)
+					return c.setTransform(transform);
+				transX = 0.f;
+				transY = 0.f;
 				c.setTransform
 				(
-					c.getTransform().withAbsoluteTranslation(x, y)
+					c.getTransform().withAbsoluteTranslation(0.f, 0.f)
 				);
-				/*
-				const auto postBounds = getBoundsPostTransform();
-				
-				const auto w = postBounds.getWidth();
-				const auto h = postBounds.getHeight();
-				const auto postX = postBounds.getX();
-				const auto eWidth = editor.getWidth();
-				const auto eHeight = editor.getHeight();
-				if (postX < -w)
-					x -= postX;
-				const auto postY = postBounds.getY();
-				if (postY < -h)
-					y -= postY;
-				const auto postRight = postBounds.getRight();
-				if (postRight > eWidth + w)
-					x -= (postRight - eWidth);
-				const auto postBottom = postBounds.getBottom();
-				if (postBottom > eHeight + h)
-					y -= (postBottom - eHeight);
-				transX = x;
-				transY = y;
-
-				c.setTransform
-				(
-					c.getTransform().withAbsoluteTranslation(transX, transY)
-				);
-				*/
 			}
 
 			void translateRelative(float x, float y) noexcept
@@ -171,11 +160,7 @@ namespace gui
 
 		~Comp();
 
-		void resized() override
-		{
-			transformInfo.updateTranslation();
-			layout.resized(getLocalBounds());
-		}
+		void resized() override;
 
 		// adding and removing components
 		// child, visible

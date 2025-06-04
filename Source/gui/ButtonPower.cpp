@@ -3,7 +3,7 @@
 namespace gui
 {
 	CompPower::CompPower(Utils& u) :
-		Comp(u, "powercomp")
+		Comp(u, "")
 	{
 		setInterceptsMouseClicks(false, false);
 		add(Callback([&]()
@@ -21,8 +21,8 @@ namespace gui
 
 	//
 
-	ButtonPower::ButtonPower(Utils& u) :
-		Button(u, "buttonpower")
+	ButtonPower::ButtonPower(CompPower& editor) :
+		Button(editor.utils, "buttonpower")
 	{
 		makeParameter(*this, PID::Power, Button::Type::kToggle, makeButtonOnPaintPower());
 		type = Button::Type::kToggle;

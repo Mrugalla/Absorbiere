@@ -148,10 +148,12 @@ namespace gui
 		public Comp
 	{
 		LayoutEditor(Utils& u) :
-			Comp(u, "layouteditor")
+			Comp(u)
 		{
 			setInterceptsMouseClicks(false, false);
 		}
+
+		void init(Comp*) {}
 	};
 #endif
 	struct ButtonLayoutEditor :

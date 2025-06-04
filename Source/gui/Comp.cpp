@@ -41,6 +41,14 @@ namespace gui
 #endif
 	}
 
+	void Comp::resized()
+	{
+#if PPDHasLayoutEditor
+		transformInfo.updateTranslation();
+#endif
+		layout.resized(getLocalBounds());
+	}
+
 	void Comp::add(Comp& comp, bool visible)
 	{
 		addChildComponent(comp);

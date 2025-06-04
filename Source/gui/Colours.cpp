@@ -103,7 +103,7 @@ namespace gui
         case Colours::ID::Interact: return Colour(0xffd4ef4c);
         case Colours::ID::Mod: return Colour(0xff3e8a9d);
         case Colours::ID::Hover: return Colour(0x84e6d2ee);
-        case Colours::ID::Darken: return Colour(0xad1f1c4a);
+        case Colours::ID::Darken: return Colour(0xad111029);
         default: return Colour(0xff000000);
         }
     }

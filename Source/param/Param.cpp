@@ -1491,7 +1491,7 @@ namespace param
 		{ // HIGH LEVEL PARAMS:
 			params.push_back(makeParam(PID::Macro, 1.f, makeRange::lin(0, 1), Unit::Percent, false));
 #if PPDHasSidechain
-			params.push_back(makeParam(PID::SCGain, 0.f, makeRange::lin(-60, 60), Unit::Decibel));
+			params.push_back(makeParam(PID::SCGain, 0.f, makeRange::lin(-24, 24), Unit::Decibel));
 			params.push_back(makeParam(PID::SCListen, 0.f, makeRange::toggle(), Unit::Power, false));
 #endif
 #if PPDIsNonlinear

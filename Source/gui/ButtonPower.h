@@ -14,6 +14,6 @@ namespace gui
 	struct ButtonPower :
 		public Button
 	{
-		ButtonPower(Utils&);
+		ButtonPower(CompPower&);
 	};
 }

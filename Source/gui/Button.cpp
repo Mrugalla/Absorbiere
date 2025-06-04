@@ -168,10 +168,8 @@ namespace gui
 
 	Button::OnPaint makeButtonOnPaintPower()
 	{
-		return [op = makeButtonOnPaint(false, getColour(CID::Bg))] (Graphics& g, const Button& b)
+		return [] (Graphics& g, const Button& b)
 		{
-			op(g, b);
-
 			const auto& utils = b.utils;
 			const auto thicc = utils.thicc;
 			const auto thicc2 = thicc * 2.f;
@@ -210,7 +208,7 @@ namespace gui
 				true
 			);
 
-			const auto lineThicc = thicc + togglePhase * thicc * .5f;
+			const auto lineThicc = thicc + togglePhase * thicc;
 			const Stroke stroke(lineThicc, Stroke::JointStyle::curved, Stroke::EndCapStyle::rounded);
 			const auto linesColour = getColour(CID::Interact).overlaidWith(getColour(CID::Txt).withAlpha(clickPhase));
 			g.setColour(linesColour);

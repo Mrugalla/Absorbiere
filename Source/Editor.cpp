@@ -72,21 +72,23 @@ namespace gui
         }, 0, cbFPS::k_1_875, false),
         title(utils, "title"),
         layoutEditor(utils),
-        editorComp(layoutEditor)
+        powerComp(utils),
+        editorComp(powerComp, layoutEditor)
     {
         layout.init
         (
             { 1 },
             { 1, 13, 1 }
         );
-        addChildComponent(toast);
+        
 		addAndMakeVisible(title);
         addAndMakeVisible(tooltip);
 		addAndMakeVisible(editorComp);
-        addChildComponent(parameterEditor);
         addChildComponent(layoutEditor);
-
         layoutEditor.init(&editorComp);
+        addChildComponent(parameterEditor);
+        addChildComponent(toast);
+		addChildComponent(powerComp);
         makeTextLabel(title, "Absorbiere, by Florian Mrugalla", font::flx(), Just::centred, CID::Txt, "");
         title.autoMaxHeight = true;
         utils.add(&callback);
@@ -95,7 +97,8 @@ namespace gui
 
     void Editor::paint(Graphics& g)
     {
-        g.fillAll(getColour(CID::Bg));
+		const auto bgCol = getColour(CID::Bg);
+        g.fillAll(bgCol);
     }
     
     void Editor::paintOverChildren(Graphics&)
@@ -109,6 +112,8 @@ namespace gui
 			return;
         saveSize(*this);
 		layoutEditor.setBounds(getLocalBounds());
+        powerComp.setBounds(getLocalBounds());
+
         utils.resized();
         layout.resized(getLocalBounds());
         tooltip.setBounds(layout.bottom().toNearestInt());
@@ -117,7 +122,7 @@ namespace gui
 		layout.place(editorComp, 0, 1, 1, 1);
 		layout.place(layoutEditor, 0, 1, 1, 1);
 
-        const auto toastWidth = static_cast<int>(utils.thicc * 28.f);
+        const auto toastWidth = static_cast<int>(utils.thicc * 36.f);
         const auto toastHeight = toastWidth * 3 / 4;
         toast.setSize(toastWidth, toastHeight);
 		parameterEditor.setSize(toastWidth * 3, toastHeight);

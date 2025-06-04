@@ -12,7 +12,7 @@ namespace gui
 	struct EditorComp :
 		public Comp
 	{
-		EditorComp(LayoutEditor& layoutEditor) :
+		EditorComp(CompPower& compPower, LayoutEditor& layoutEditor) :
 			Comp(layoutEditor.utils),
 			scope(utils, "scope", utils.audioProcessor.pluginProcessor.scope),
 			macro(utils, "macro"),
@@ -20,8 +20,7 @@ namespace gui
 			scListen(utils, "listen"),
 			scAuto(utils),
 			gainOut(utils, "gainout"),
-			power(utils),
-			buttonLayout(layoutEditor),
+			power(compPower),
 			coloursEditor(utils),
 			buttonColours(coloursEditor),
 			manifest(utils),
@@ -30,8 +29,8 @@ namespace gui
 		{
 			layout.init
 			(
-				{ 2, 2, 2, 2, 3, 3, 2, 2, 2 },
-				{ 21, 1, 3, 1 }
+				{ 2, 2, 3, 3, 2, 2 },
+				{ 13, 2, 2 }
 			);
 
 			addAndMakeVisible(scope);
@@ -43,7 +42,6 @@ namespace gui
 			add(scListen);
 			add(gainOut);
 			add(power);
-			add(buttonLayout);
 			add(buttonColours);
 			add(buttonManifest);
 
@@ -59,6 +57,18 @@ namespace gui
 			labelGroup.add(gainOut.label);
 		}
 
+		void paint(Graphics& g) override
+		{
+			const auto c0 = getColour(CID::Bg);
+			const auto c1 = c0.overlaidWith(getColour(CID::Darken));
+			const auto bounds = layout(0, 1, 6, 2);
+			const PointF p0(bounds.getX(), bounds.getY());
+			const PointF p1(bounds.getX(), bounds.getBottom());
+			Gradient gradient(c1, p0, c0, p1, false);
+			g.setGradientFill(gradient);
+			g.fillRect(bounds);
+		}
+
 		void resized() override
 		{
 			layout.resized(getLocalBounds());
@@ -66,18 +76,16 @@ namespace gui
 			scope.setBounds(top);
 			coloursEditor.setBounds(top);
 			manifest.setBounds(top);
-			layout.place(buttonLayout, 0, 2, 1, 1);
-			layout.place(buttonColours, 1, 2, 1, 1);
-			layout.place(buttonManifest, 2, 2, 1, 1);
-			layout.place(macro, 3, 2, 1, 1);
-			layout.place(scGain, 4, 1, 1, 2);
-			layout.place(scAuto, 5, 1, 1, 2);
-			layout.place(scListen, 6, 2, 1, 1);
-			layout.place(gainOut, 7, 2, 1, 1);
-			layout.place(power, 8, 2, 1, 1);
+			layout.place(buttonColours, 0, 1, 1, 1);
+			layout.place(buttonManifest, 0, 2, 1, 1);
+			layout.place(macro, 1, 1, 1, 2);
+			layout.place(scGain, 2, 1, 1, 2);
+			layout.place(scAuto, 3, 1, 1, 2);
+			layout.place(scListen, 4, 1, 1, 1);
+			layout.place(power, 4, 2, 1, 1);
+			layout.place(gainOut, 5, 1, 1, 2);
 			labelGroup.setMaxHeight(utils.thicc);
 		}
-
 	private:
 		OscilloscopeEditor scope;
 		KnobAbsorb macro;
@@ -86,7 +94,6 @@ namespace gui
 		Button scListen;
 		KnobAbsorb gainOut;
 		ButtonPower power;
-		ButtonLayoutEditor buttonLayout;
 		ColoursEditor coloursEditor;
 		ButtonColours buttonColours;
 		ManifestOfWisdom manifest;

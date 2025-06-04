@@ -28,8 +28,8 @@ namespace gui
         Callback callback;
         Label title;
         LayoutEditor layoutEditor;
+        CompPower powerComp;
 		EditorComp editorComp;
-		
 
         //JUCE_HEAVYWEIGHT_LEAK_DETECTOR(Editor)
     };
