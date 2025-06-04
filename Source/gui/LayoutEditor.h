@@ -14,6 +14,17 @@ namespace gui
 			selected(nullptr)
 		{
 			setOpaque(false);
+
+			addEvt([&](evt::Type type, const void*)
+			{
+				switch (type)
+				{
+				case evt::Type::ClickedEmpty:
+					u.editLayout(false);
+					setVisible(false);
+					return;
+				}
+			});
 		}
 
 		void init(Comp* _editor)
@@ -95,6 +106,11 @@ namespace gui
 			{
 				selected->setScale(1.f);
 			}
+		}
+
+		void mouseUp(const Mouse&) override
+		{
+			// this is important lol
 		}
 	private:
 		Comp *editor, *hovered, *selected;
