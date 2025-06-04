@@ -3,6 +3,7 @@
 
 namespace gui
 {
+#if PPDHasLayoutEditor
 	struct LayoutEditor :
 		public Comp
 	{
@@ -63,6 +64,10 @@ namespace gui
 			}
 			else
 			{
+				const auto& top = utils.pluginTop;
+				const auto topScreen = top.getScreenBounds().toFloat();
+				const auto minDimen = std::min(topScreen.getWidth(), topScreen.getHeight());
+				nXY /= minDimen;
 				selected->translateRelative(nXY.x, nXY.y);
 			}
 			dragXY = nPos;
@@ -90,14 +95,6 @@ namespace gui
 			{
 				selected->setScale(1.f);
 			}
-		}
-
-		void mouseUp(const Mouse& mouse) override
-		{
-			if (mouse.mouseWasDraggedSinceMouseDown())
-				mouseUpDrag(mouse);
-			else
-				mouseUpClick(mouse);
 		}
 	private:
 		Comp *editor, *hovered, *selected;
@@ -129,17 +126,18 @@ namespace gui
 			const auto screenPos = mouse.getScreenPosition();
 			return editor->getHovered(screenPos);
 		}
-
-		void mouseUpDrag(const Mouse&)
+	};
+#else
+	struct LayoutEditor :
+		public Comp
+	{
+		LayoutEditor(Utils& u) :
+			Comp(u, "layouteditor")
 		{
-		}
-
-		void mouseUpClick(const Mouse&)
-		{
-			
+			setInterceptsMouseClicks(false, false);
 		}
 	};
-
+#endif
 	struct ButtonLayoutEditor :
 		public Button
 	{

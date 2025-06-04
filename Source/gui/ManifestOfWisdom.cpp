@@ -24,6 +24,16 @@ namespace gui
 		paste(u, "mowpaste"),
 		buttonLabelsGroup()
 	{
+		addEvt([&](evt::Type type, const void*)
+		{
+			switch (type)
+			{
+			case evt::Type::ClickedEmpty:
+				setVisible(false);
+				return;
+			}
+		});
+
 		setOpaque(true);
 
 		layout.init
@@ -205,7 +215,7 @@ namespace gui
 
 	void ManifestOfWisdom::resized()
 	{
-		layout.resized(getLocalBounds());
+		Comp::resized();
 		const auto thicc = utils.thicc;
 		title.setBounds(layout.top().toNearestInt());
 		subTitle.setBounds(layout(0, 1, 5, 1).toNearestInt());
@@ -250,15 +260,14 @@ namespace gui
 		onClick = [&](const Mouse&)
 		{
 			const auto e = !menu.isVisible();
-			if (e)
-				utils.eventSystem.notify(evt::Type::ClickedEmpty);
+			utils.eventSystem.notify(evt::Type::ClickedEmpty);
 			menu.setVisible(e);
-			value = e ? 1.f : 0.f;
 		};
 	}
 
 	void ButtonWisdom::resized()
 	{
+		Comp::resized();
 		const auto w = static_cast<float>(getWidth());
 		const auto h = static_cast<float>(getHeight());
 

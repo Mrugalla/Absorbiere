@@ -55,6 +55,7 @@ namespace gui
 
 	void DropDownMenu::resized()
 	{
+		Comp::resized();
 		const auto width = static_cast<float>(getWidth());
 		const auto height = static_cast<float>(getHeight());
 		const auto numButtons = buttons.size();

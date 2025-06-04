@@ -138,7 +138,7 @@ namespace gui
 
 	void KeySelectorEditor::resized()
 	{
-		layout.resized(getLocalBounds().toFloat());
+		Comp::resized();
 		layout.place(keysEnabled, 0, 0, 1, 1);
 
 		bool sharps[12] =

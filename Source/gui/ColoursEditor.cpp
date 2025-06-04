@@ -19,6 +19,16 @@ namespace gui
 		cIdx(0),
 		lastColour(Colours::c(cIdx))
 	{
+		addEvt([&](evt::Type type, const void*)
+		{
+			switch (type)
+			{
+			case evt::Type::ClickedEmpty:
+				setVisible(false);
+				return;
+			}
+		});
+
 		setOpaque(true);
 		selector->setMouseCursor(makeCursor());
 
@@ -189,16 +199,15 @@ namespace gui
 		notify(evt::Type::TooltipUpdated, &tooltip);
 		onClick = [&](const Mouse&)
 		{
-			const auto e = value < .5f;
-			if (e)
-				utils.eventSystem.notify(evt::Type::ClickedEmpty);
+			const auto e = !menu.isVisible();
+			utils.eventSystem.notify(evt::Type::ClickedEmpty);
 			menu.setVisible(e);
-			value = std::round(1.f - value);
 		};
 	}
 
 	void ButtonColours::resized()
 	{
+		Comp::resized();
 		img = Image(Image::PixelFormat::ARGB, getWidth(), getHeight(), true);
 		fixStupidJUCEImageThingie(img);
 

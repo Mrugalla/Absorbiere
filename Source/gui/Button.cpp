@@ -96,6 +96,7 @@ namespace gui
 
 	void Button::resized()
 	{
+		Comp::resized();
 		const auto thicc = utils.thicc;
 		label.setBounds(getLocalBounds());
 		if(label.type == Label::Type::Text)

@@ -109,6 +109,7 @@ namespace gui
 
 	void Credits::LinksPage::resized()
 	{
+		Comp::resized();
 		auto bounds = getLocalBounds().toFloat();
 		const auto x = 0.f;
 		const auto w = bounds.getWidth();
@@ -175,7 +176,7 @@ namespace gui
 
 	void Credits::Entry::resized()
 	{
-		layout.resized(getLocalBounds());
+		Comp::resized();
 		switch (mode)
 		{
 		case Mode::Image:
@@ -267,7 +268,7 @@ namespace gui
 
 	void Credits::resized()
 	{
-		layout.resized(getLocalBounds());
+		Comp::resized();
 		layout.place(titleLabel, 1, 0, 1, 1);
 		layout.place(previous, 0, 1, 1, 1);
 		layout.place(next, 2, 1, 1, 1);

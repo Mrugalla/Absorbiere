@@ -50,8 +50,7 @@ namespace gui
 
 	void Tooltip::resized()
 	{
-		layout.resized(getLocalBounds());
-
+		Comp::resized(); 
 		layout.place(labels[kTooltip], 0, 0, 1, 1, false);
 		layout.place(labels[kBuildDate], 2, 0, 1, 1, false);
 

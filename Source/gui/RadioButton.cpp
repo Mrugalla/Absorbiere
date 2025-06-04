@@ -38,6 +38,7 @@ namespace gui
 
 	void RadioButton::resized()
 	{
+		Comp::resized();
 		const auto numButtons = buttons.size();
 		const auto w = static_cast<float>(getWidth());
 		const auto h = static_cast<float>(getHeight());

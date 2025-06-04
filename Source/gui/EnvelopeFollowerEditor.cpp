@@ -38,6 +38,7 @@ namespace gui
 
 	void EnvelopeFollowerEditor::Visualizer::resized()
 	{
+		Comp::resized();
 		if (img.isValid())
 		{
 			img = img.rescaled(getWidth(), getHeight(), Graphics::lowResamplingQuality);
@@ -147,7 +148,7 @@ namespace gui
 	void EnvelopeFollowerEditor::resized()
 	{
 		const auto thicc = utils.thicc;
-		layout.resized(getLocalBounds().toFloat());
+		Comp::resized();
 		layout.place(title, 0, 0, 2, 1);
 		title.setMaxHeight(thicc);
 		visualizer.setBounds(layout(0, 1, 4, 1).reduced(thicc).toNearestInt());

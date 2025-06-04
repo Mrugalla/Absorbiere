@@ -36,7 +36,7 @@ namespace gui
 
 	void EnvelopeGeneratorMultiVoiceEditor::EnvGenView::resized()
 	{
-		layout.resized(getLocalBounds().toFloat());
+		Comp::resized();
 		layout.place(ruler, 0, 0, 1, 1);
 		updateCurve();
 	}
@@ -345,7 +345,7 @@ namespace gui
 	void EnvelopeGeneratorMultiVoiceEditor::resized()
 	{
 		const auto thicc = utils.thicc;
-		layout.resized(getLocalBounds().toFloat());
+		Comp::resized();
 		layout.place(labels[kTitle], 0, 0, 2, 1);
 		labels[kTitle].setMaxHeight(thicc);
 		envGenView.setBounds(layout(0, 1, 4, 1).reduced(thicc).toNearestInt());

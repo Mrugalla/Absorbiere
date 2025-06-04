@@ -37,6 +37,7 @@ namespace gui
 
 	void RandomizerEditor::Visualizer::resized()
 	{
+		Comp::resized();
 		if (img.isValid())
 		{
 			img = img.rescaled(getWidth(), getHeight(), Graphics::lowResamplingQuality);

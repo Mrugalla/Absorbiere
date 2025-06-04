@@ -18,6 +18,7 @@ namespace gui
 
 	void Label::resized()
 	{
+		Comp::resized();
 		if (autoMaxHeight)
 			setMaxHeight();
 	}

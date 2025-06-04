@@ -12,7 +12,7 @@ namespace gui
 		static constexpr int NumTypes = static_cast<int>(Type::NumTypes);
 
 		// u, uID, autoMaxHeight
-		Label(Utils&, const String&, bool = false);
+		Label(Utils&, const String& = "", bool = false);
 
 		void resized() override;
 

@@ -29,6 +29,7 @@ namespace gui
 
 		void resized() override
 		{
+			Comp::resized();
 			const auto thicc = utils.thicc;
 			bounds = getLocalBounds().toFloat().reduced(thicc);
 			curve.clear();

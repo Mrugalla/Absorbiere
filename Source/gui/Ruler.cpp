@@ -64,6 +64,7 @@ namespace gui
 
 	void Ruler::resized()
 	{
+		Comp::resized();
 		update();
 	}
 

@@ -95,6 +95,7 @@ namespace gui
 
 		void resized() override
 		{
+			Comp::resized();
 			btn.setBounds(getLocalBounds());
 		}
 

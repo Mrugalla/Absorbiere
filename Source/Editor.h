@@ -27,8 +27,6 @@ namespace gui
         ParameterEditor parameterEditor;
         Callback callback;
         Label title;
-        ManifestOfWisdom manifestOfWisdom;
-		ColoursEditor coloursEditor;
         LayoutEditor layoutEditor;
 		EditorComp editorComp;
 		

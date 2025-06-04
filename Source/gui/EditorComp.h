@@ -5,8 +5,7 @@
 #include "ButtonPower.h"
 #include "KnobAbsorb.h"
 #include "ButtonSCAutogain.h"
-#include "Oscilloscope.h"
-
+#include "OscilloscopeEditor.h"
 
 namespace gui
 {
@@ -14,7 +13,7 @@ namespace gui
 		public Comp
 	{
 		EditorComp(LayoutEditor& layoutEditor) :
-			Comp(layoutEditor.utils, "editorcomp"),
+			Comp(layoutEditor.utils),
 			scope(utils, "scope", utils.audioProcessor.pluginProcessor.scope),
 			macro(utils, "macro"),
 			scGain(utils, "scgain"),
@@ -35,7 +34,9 @@ namespace gui
 				{ 21, 1, 3, 1 }
 			);
 
-			add(scope);
+			addAndMakeVisible(scope);
+			addChildComponent(manifest);
+			addChildComponent(coloursEditor);
 			add(macro);
 			add(scGain);
 			add(scAuto);
@@ -45,7 +46,6 @@ namespace gui
 			add(buttonLayout);
 			add(buttonColours);
 			add(buttonManifest);
-			utils.getProps().getFile().revealToUser();
 
 			macro.init(PID::Macro, "Macro");
 			scGain.init(PID::SCGain, "SC Gain");
@@ -62,7 +62,10 @@ namespace gui
 		void resized() override
 		{
 			layout.resized(getLocalBounds());
-			scope.setBounds(layout.top().toNearestInt());
+			const auto top = layout.top().toNearestInt();
+			scope.setBounds(top);
+			coloursEditor.setBounds(top);
+			manifest.setBounds(top);
 			layout.place(buttonLayout, 0, 2, 1, 1);
 			layout.place(buttonColours, 1, 2, 1, 1);
 			layout.place(buttonManifest, 2, 2, 1, 1);

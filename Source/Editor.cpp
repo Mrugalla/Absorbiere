@@ -11,8 +11,6 @@ namespace gui
             case evt::Type::ThemeUpdated:
                 return e.repaint();
             case evt::Type::ClickedEmpty:
-				e.coloursEditor.setVisible(false);
-                e.manifestOfWisdom.setVisible(false);
                 e.utils.editLayout(false);
                 //e.patchBrowser.setVisible(false);
                 e.parameterEditor.setActive(false);
@@ -74,8 +72,6 @@ namespace gui
         {
         }, 0, cbFPS::k_1_875, false),
         title(utils, "title"),
-        manifestOfWisdom(utils),
-		coloursEditor(utils),
         layoutEditor(utils),
         editorComp(layoutEditor)
     {
@@ -88,8 +84,6 @@ namespace gui
 		addAndMakeVisible(title);
         addAndMakeVisible(tooltip);
 		addAndMakeVisible(editorComp);
-        addChildComponent(coloursEditor);
-        addChildComponent(manifestOfWisdom);
         addChildComponent(parameterEditor);
         addChildComponent(layoutEditor);
 
@@ -122,8 +116,6 @@ namespace gui
 
 		layout.place(title, 0, 0, 1, 1);
 		layout.place(editorComp, 0, 1, 1, 1);
-		layout.place(coloursEditor, 0, 1, 1, 1);
-		layout.place(manifestOfWisdom, 0, 1, 1, 1);
 		layout.place(layoutEditor, 0, 1, 1, 1);
 
         const auto toastWidth = static_cast<int>(utils.thicc * 28.f);

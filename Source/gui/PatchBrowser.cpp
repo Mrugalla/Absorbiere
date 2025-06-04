@@ -121,7 +121,7 @@ namespace gui
 
 		void Patch::resized()
 		{
-			layout.resized(getLocalBounds().toFloat());
+			Comp::resized();
 			layout.place(buttonLoad, 0, 0, 1, 1);
 			buttonLoad.label.setMaxHeight(utils.thicc);
 			layout.place(buttonDelete, 1, 0, 1, 1);
@@ -225,7 +225,7 @@ namespace gui
 
 		void Patches::resized()
 		{
-			layout.resized(getLocalBounds().toFloat());
+			Comp::resized();
 			layout.place(scrollBar, 1, 0, 1, 1);
 
 			const auto w = layout.getW(0);
@@ -626,7 +626,7 @@ namespace gui
 
 		void Browser::resized()
 		{
-			layout.resized(getLocalBounds().toFloat());
+			Comp::resized();
 			layout.place(title, 0, 0, 4, 1);
 			layout.place(editorName, 0, 1, 1, 1);
 			layout.place(editorAuthor, 1, 1, 1, 1);
