@@ -266,7 +266,7 @@ namespace audio
                     auto scBuffer = scBus->getBusBuffer(buffer);
                     auto scSamples = scBuffer.getArrayOfWritePointers();
                     const auto numChannelsSC = scBuffer.getNumChannels();
-					scGainer.operator()(scSamples, numChannelsSC, mainNumSamples);
+					scGainer(scSamples, numChannelsSC, mainNumSamples);
                     bufferView.assignSC(scSamples, scGain, numChannelsSC, scListen);
                 }
         }

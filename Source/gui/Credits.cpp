@@ -4,8 +4,8 @@ namespace gui
 {
 	// ZoomImage
 
-	Credits::ZoomImage::ZoomImage(Utils& u, const String& uID) :
-		Comp(u, uID),
+	Credits::ZoomImage::ZoomImage(Utils& u) :
+		Comp(u),
 		img(),
 		pos(),
 		zoomFactor(1.f)
@@ -87,8 +87,8 @@ namespace gui
 
 	// LinksPage
 
-	Credits::LinksPage::LinksPage(Utils& u, const String& uID) :
-		Comp(u, uID)
+	Credits::LinksPage::LinksPage(Utils& u) :
+		Comp(u)
 	{
 	}
 
@@ -131,13 +131,13 @@ namespace gui
 
 	// Entry
 
-	Credits::Entry::Entry(Utils& u, const String& uID) :
-		Comp(u, uID),
-		linksPage(u, uID + "lp"),
-		img(u, uID + "img"),
-		info(u, uID + "info"),
-		idx(u, uID + "idx"),
-		footer(u, uID + "foot"),
+	Credits::Entry::Entry(Utils& u) :
+		Comp(u),
+		linksPage(u),
+		img(u),
+		info(u),
+		idx(u),
+		footer(u),
 		mode(Mode::Image)
 	{
 		layout.init
@@ -199,12 +199,12 @@ namespace gui
 	// Credits
 
 	Credits::Credits(Utils& u) :
-		Comp(u, "credits"),
+		Comp(u),
 		pages(),
-		titleLabel(u, "creditstitle"),
-		previous(u, "creditsprev"),
-		next(u, "creditsnext"),
-		entry(u, "creditsentry"),
+		titleLabel(u),
+		previous(u),
+		next(u),
+		entry(u),
 		idx(0)
 	{
 		layout.init
@@ -285,7 +285,7 @@ namespace gui
 	// Button
 
 	ButtonCredits::ButtonCredits(Utils& u, Credits& credits) :
-		Button(u, "button" + credits.getName())
+		Button(u)
 	{
 		type = Button::Type::kToggle;
 		makeTextButton(*this, "Credits", "Click here to check out the credits and stuff! :)", CID::Interact);

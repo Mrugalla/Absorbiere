@@ -223,8 +223,6 @@ namespace param
 		// string to denorm val
 		float getValForTextDenorm(const String&) const;
 
-		//String _toString();
-
 		int getNumSteps() const override;
 
 		bool isLocked() const noexcept;

@@ -4,11 +4,11 @@ namespace gui
 {
 	//EnvGenView
 
-	EnvelopeGeneratorMultiVoiceEditor::EnvGenView::EnvGenView(Utils& u, const String& uID, PID susPID) :
-		Comp(u, uID),
+	EnvelopeGeneratorMultiVoiceEditor::EnvGenView::EnvGenView(Utils& u, PID susPID) :
+		Comp(u),
 		susParam(u.getParam(susPID)),
 		atkParam(nullptr), dcyParam(nullptr), rlsParam(nullptr),
-		ruler(u, uID + "rl"),
+		ruler(u),
 		curve(), curveMod(),
 		atkV(-1.f), dcyV(-1.f), susV(-1.f), rlsV(-1.f),
 		atkModV(-1.f), dcyModV(-1.f), susModV(-1.f), rlsModV(-1.f)
@@ -201,35 +201,35 @@ namespace gui
 	
 	//EnvelopeGeneratorMultiVoiceEditor
 
-	EnvelopeGeneratorMultiVoiceEditor::EnvelopeGeneratorMultiVoiceEditor(Utils& u, const String& uID,
+	EnvelopeGeneratorMultiVoiceEditor::EnvelopeGeneratorMultiVoiceEditor(Utils& u,
 		const String& title, PID atk, PID dcy, PID sus, PID rls, PID isTemposync, PIDsTemposync* temposyncPIDs) :
-		Comp(u, uID),
+		Comp(u),
 		labels
 		{
-			Label(u, uID + "l0"),
-			Label(u, uID + "l1"),
-			Label(u, uID + "l2"),
-			Label(u, uID + "l3"),
-			Label(u, uID + "l4")
+			Label(u),
+			Label(u),
+			Label(u),
+			Label(u),
+			Label(u)
 		},
-		envGenView(u, uID + "view", sus),
+		envGenView(u, sus),
 		knobs
 		{
-			Knob(u, uID + "k0"),
-			Knob(u, uID + "k1"),
-			Knob(u, uID + "k2"),
-			Knob(u, uID + "k3")
+			Knob(u),
+			Knob(u),
+			Knob(u),
+			Knob(u)
 		},
 		modDials
 		{
-			ModDial(u, uID + "m0"),
-			ModDial(u, uID + "m1"),
-			ModDial(u, uID + "m2"),
-			ModDial(u, uID + "m3")
+			ModDial(u),
+			ModDial(u),
+			ModDial(u),
+			ModDial(u)
 		},
 		adsrLabelsGroup(),
-		temposync(u, uID + "ts"),
-		buttonRandomizer(u, uID + "rand", "randenv" + title),
+		temposync(u),
+		buttonRandomizer(u, "randenv" + title),
 		temposyncEnabled(false)
 	{
 		layout.init

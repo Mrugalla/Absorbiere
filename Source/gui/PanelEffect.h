@@ -6,9 +6,9 @@ namespace gui
 	struct PanelEffect :
 		public Comp
 	{
-		PanelEffect(Utils& u, const String& uID, const String& name) :
-			Comp(u, uID),
-			title(u, uID + "t")
+		PanelEffect(Utils& u, const String& name) :
+			Comp(u),
+			title(u)
 		{
 			addAndMakeVisible(title);
 			makeTextLabel(title, name, font::dosisExtraBold(), Just::centred, CID::Txt);

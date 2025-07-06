@@ -12,16 +12,16 @@ namespace gui
 	// ManifestOfWisdom
 
 	ManifestOfWisdom::ManifestOfWisdom(Utils& u) :
-		Comp(u, "mow"),
-		title(u, "mowtitle"),
-		subTitle(u, "mowsub"),
-		alert(u, "mowalert"),
-		editor(u, "moweditor"),
-		manifest(u, "mowmani"),
-		inspire(u, "mowinspire"),
-		reveal(u, "mowreveal"),
-		clear(u, "mowclear"),
-		paste(u, "mowpaste"),
+		Comp(u),
+		title(u),
+		subTitle(u),
+		alert(u),
+		editor(u),
+		manifest(u),
+		inspire(u),
+		reveal(u),
+		clear(u),
+		paste(u),
 		buttonLabelsGroup()
 	{
 		addEvt([&](evt::Type type, const void*)
@@ -242,7 +242,7 @@ namespace gui
 	// ButtonWisdom
 
 	ButtonWisdom::ButtonWisdom(ManifestOfWisdom& menu) :
-		Button(menu.utils, "button" + menu.getName()),
+		Button(menu.utils),
 		book(ImageCache::getFromMemory(BinaryData::mow_png, BinaryData::mow_pngSize)),
 		bookHover(book),
 		bookX(0), bookY(0)

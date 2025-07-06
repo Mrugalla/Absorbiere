@@ -3,7 +3,7 @@
 namespace gui
 {
 	ParameterEditor::ParameterEditor(Utils& u) :
-		TextEditor(u, "parametereditor"),
+		TextEditor(u),
 		pIDs()
 	{
 		onEnter = [&]()

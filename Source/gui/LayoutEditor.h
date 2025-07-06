@@ -160,7 +160,7 @@ namespace gui
 		public Button
 	{
 		ButtonLayoutEditor(LayoutEditor& editor) :
-			Button(editor.utils, "buttonlayouteditor")
+			Button(editor.utils)
 		{
 			const auto symbol = juce::CharPointer_UTF8("\xf0\x9f\xa7\xb1");
 			makeTextButton(*this, String(symbol), "Click here to edit the layout of the interface's components.", CID::Interact);

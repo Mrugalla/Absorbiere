@@ -7,7 +7,7 @@
               pluginDesc="A sidechain ringmod with extra steps" pluginManufacturer="Mrugalla"
               pluginManufacturerCode="BBBB" pluginCode="SCRM" pluginVST3Category="Distortion,Fx"
               pluginAAXCategory="64" pluginVSTCategory="kPlugCategEffect" cppLanguageStandard="latest"
-              defines="PPDIOOut=0&#10;PPDIODryWet=1&#10;PPDIOWetMix=2&#10;&#10;PPDIsNonlinear=false&#10;PPDIO=PPDIOOut&#10;&#10;PPDHasStereoConfig=0&#10;PPDHasSidechain=1&#10;PPDHasLookahead=0&#10;PPDHasTuningEditor=0&#10;&#10;PPDHasLayoutEditor=0&#10;PPDResetsLayoutEditor=1"
+              defines="PPDIOOut=0&#10;PPDIODryWet=1&#10;PPDIOWetMix=2&#10;&#10;PPDIsNonlinear=false&#10;PPDIO=PPDIOWetMix&#10;&#10;PPDHasStereoConfig=0&#10;PPDHasSidechain=1&#10;PPDHasLookahead=0&#10;PPDHasTuningEditor=0&#10;&#10;PPDHasLayoutEditor=0&#10;PPDResetsLayoutEditor=1"
               includeBinaryInJuceHeader="1" pluginAUMainType="'aufx'" maxBinaryFileSize="20971520"
               pluginCharacteristicsValue="pluginWantsMidiIn">
   <MAINGROUP id="WYhkvs" name="Absorbiere">

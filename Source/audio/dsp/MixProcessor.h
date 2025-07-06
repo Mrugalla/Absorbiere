@@ -328,19 +328,16 @@ namespace dsp
 			gainOut(view, gainOutDb);
 		}
 	#else
-		// samples, numChannels, numSamples
-		void split(float* const* samples,
-			int numChannels, int numSamples) noexcept
+		void split(ProcessorBufferView& view) noexcept
 		{
-			mixProcessor.splitLinear(samples, numChannels, numSamples);
+			mixProcessor.splitLinear(view);
 		}
 
 		// samples, mix, gainWetDb, gainOutDb, numChannels, numSamples, delta
-		void join(float* const* samples, float mix, float gainWetDb, float gainOutDb,
-			int numChannels, int numSamples, bool delta) noexcept
+		void join(ProcessorBufferView& view, float mix, float gainWetDb, float gainOutDb, bool delta) noexcept
 		{
-			mixProcessor.joinLinear(samples, mix, gainWetDb, numChannels, numSamples, delta);
-			gainOut(samples, gainOutDb, numChannels, numSamples);
+			mixProcessor.joinLinear(view, mix, gainWetDb, delta);
+			gainOut(view, gainOutDb);
 		}
 	#endif
 #endif

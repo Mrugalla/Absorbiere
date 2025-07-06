@@ -13,8 +13,7 @@ namespace gui
 		struct Visualizer :
 			public Comp
 		{
-			// u, uID, randMod
-			Visualizer(Utils&, const String&, const RandMod&);
+			Visualizer(Utils&, const RandMod&);
 
 			void resized() override;
 
@@ -24,9 +23,9 @@ namespace gui
 			float y0;
 		};
 
-		// u, uID, randMod, rateSync, smooth, complex, dropout
-		RandomizerEditor(Utils&, const String&,
-			const RandMod&, PID, PID, PID, PID);
+		// randMod, rateSync, smooth, complex, dropout
+		RandomizerEditor(Utils&, const RandMod&,
+			PID, PID, PID, PID);
 
 		void paint(Graphics&);
 

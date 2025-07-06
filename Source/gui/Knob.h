@@ -18,7 +18,7 @@ namespace gui
         enum kCBs { kEnterExitCB, kDownUpCB, kUpdateParameterCB, kNumCallbacks };
         enum kVals { Value, ValMod, ModDepth, ModBias, NumValTypes };
 
-        Knob(Utils&, const String& uID);
+        Knob(Utils&);
 
         bool hitTest(int x, int y) override
         {
@@ -66,7 +66,7 @@ namespace gui
     struct ModDial :
         public Knob
     {
-        ModDial(Utils&, const String&);
+        ModDial(Utils&);
 
         // pIDs, numPIDs
         void attach(PID*, int);

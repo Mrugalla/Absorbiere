@@ -14,12 +14,14 @@ namespace gui
 	{
 		EditorComp(CompPower& compPower, LayoutEditor& layoutEditor) :
 			Comp(layoutEditor.utils),
-			scope(utils, "scope", utils.audioProcessor.pluginProcessor.scope),
-			macro(utils, "macro"),
-			scGain(utils, "scgain"),
-			scListen(utils, "listen"),
+			scope(utils, utils.audioProcessor.pluginProcessor.scope),
+			macro(utils),
+			scGain(utils),
+			scListen(utils),
 			scAuto(utils),
-			gainOut(utils, "gainout"),
+			gainWet(utils),
+			mix(utils),
+			gainOut(utils),
 			power(compPower),
 			coloursEditor(utils),
 			buttonColours(coloursEditor),
@@ -29,7 +31,7 @@ namespace gui
 		{
 			layout.init
 			(
-				{ 2, 2, 3, 3, 2, 2 },
+				{ 2, 2, 3, 3, 2, 2, 2, 2 },
 				{ 13, 2, 2 }
 			);
 
@@ -40,6 +42,8 @@ namespace gui
 			add(scGain);
 			add(scAuto);
 			add(scListen);
+			add(gainWet);
+			add(mix);
 			add(gainOut);
 			add(power);
 			add(buttonColours);
@@ -47,6 +51,8 @@ namespace gui
 
 			macro.init(PID::Macro, "Macro");
 			scGain.init(PID::SCGain, "SC Gain");
+			gainWet.init(PID::GainWet, "Gain Wet");
+			mix.init(PID::Mix, "Mix");
 			gainOut.init(PID::GainOut, "Gain Out");
 			makeParameter(scListen, PID::SCListen, Button::Type::kToggle, "Listen");
 			makeParameter(power, PID::Power);
@@ -61,7 +67,7 @@ namespace gui
 		{
 			const auto c0 = getColour(CID::Bg);
 			const auto c1 = c0.overlaidWith(getColour(CID::Darken));
-			const auto bounds = layout(0, 1, 6, 2);
+			const auto bounds = layout(0, 1, 8, 2);
 			const PointF p0(bounds.getX(), bounds.getY());
 			const PointF p1(bounds.getX(), bounds.getBottom());
 			Gradient gradient(c1, p0, c0, p1, false);
@@ -83,7 +89,9 @@ namespace gui
 			layout.place(scAuto, 3, 1, 1, 2);
 			layout.place(scListen, 4, 1, 1, 1);
 			layout.place(power, 4, 2, 1, 1);
-			layout.place(gainOut, 5, 1, 1, 2);
+			layout.place(gainWet, 5, 1, 1, 2);
+			layout.place(mix, 6, 1, 1, 2);
+			layout.place(gainOut, 7, 1, 1, 2);
 			labelGroup.setMaxHeight(utils.thicc);
 		}
 	private:
@@ -92,7 +100,7 @@ namespace gui
 		KnobAbsorb scGain;
 		ButtonSCAutogain scAuto;
 		Button scListen;
-		KnobAbsorb gainOut;
+		KnobAbsorb gainWet, mix, gainOut;
 		ButtonPower power;
 		ColoursEditor coloursEditor;
 		ButtonColours buttonColours;

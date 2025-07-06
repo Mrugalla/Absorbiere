@@ -11,10 +11,10 @@ namespace gui
 		struct Curve :
 			public Comp
 		{
-			Curve(Utils& u, const String& uID, PID pThreshold, PID pRatio) :
-				Comp(u, uID),
-				thresholdKnob(u, uID + "th"),
-				ratioKnob(u, uID + "r"),
+			Curve(Utils& u, PID pThreshold, PID pRatio) :
+				Comp(u),
+				thresholdKnob(u),
+				ratioKnob(u),
 				path(),
 				threshold(-420.f),
 				ratio(1.f),
@@ -159,8 +159,8 @@ namespace gui
 		struct Meter :
 			public Comp
 		{
-			Meter(Utils& u, const String& uID) :
-				Comp(u, uID),
+			Meter(Utils& u) :
+				Comp(u),
 				data(0.f, 0.f),
 				pos(0, 0),
 				lineThicc(1.f)
@@ -207,11 +207,11 @@ namespace gui
 		};
 	public:
 
-		TransferFuncEditor(Utils& u, const String& uID,
+		TransferFuncEditor(Utils& u,
 			PID pThreshold, PID pRatio, PID pKnee, const std::atomic<PointF>& v) :
-			Comp(u, uID),
-			curve(u, uID + "c", pThreshold, pRatio),
-			meter(u, uID + "m")
+			Comp(u),
+			curve(u, pThreshold, pRatio),
+			meter(u)
 		{
 			addAndMakeVisible(curve);
 			addAndMakeVisible(meter);
@@ -254,15 +254,15 @@ namespace gui
 	struct DuckCompEditor :
 		public PanelEffect
 	{
-		DuckCompEditor(Utils& u, const String& uID,
+		DuckCompEditor(Utils& u, 
 			PID pThreshold, PID pRatio, PID pKnee, PID pBlend, PID pAtk, PID pRls, const std::atomic<PointF>& v) :
-			PanelEffect(u, uID, "Comp:"),
-			blend(u, uID + "b"),
-			atk(u, uID + "a"),
-			rls(u, uID + "r"),
-			knee(u, uID + "k"),
+			PanelEffect(u, "Comp:"),
+			blend(u),
+			atk(u),
+			rls(u),
+			knee(u),
 			labelGroup(),
-			transferFuncEditor(u, uID + "tfe", pThreshold, pRatio, pKnee, v)
+			transferFuncEditor(u, pThreshold, pRatio, pKnee, v)
 		{
 			layout.init
 			(

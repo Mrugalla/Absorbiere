@@ -7,8 +7,8 @@ namespace gui
 		public Comp
 	{
 		ButtonSCAutogain(Utils& u) :
-			Comp(u, "scautogain"),
-			btn(u, "buttonscautogain")
+			Comp(u),
+			btn(u)
 		{
 			const auto fps = cbFPS::k15;
 			add(Callback([&, speed = msToInc(5000.f, fps)]()
@@ -52,8 +52,9 @@ namespace gui
 			btn.type = Button::Type::kToggle;
 			btn.onClick = [&](const Mouse&)
 			{
-					btn.value = 1.f - btn.value;
-				u.audioProcessor.scGainer.setListening(btn.value);
+				auto& scGainer = u.audioProcessor.scGainer;
+				btn.value = scGainer.isListening() ? 0.f : 1.f;
+				scGainer.setListening(btn.value);
 			};
 			btn.value = 0.f;
 		}

@@ -4,8 +4,8 @@ namespace gui
 {
     // Knob
 
-    Knob::Knob(Utils& u, const String& uID) :
-        Comp(u, uID),
+    Knob::Knob(Utils& u) :
+        Comp(u),
         pIDs(),
         values(),
         onEnter([]() {}), onExit([]() {}), onDown([]() {}), onDoubleClick([]() {}),
@@ -149,8 +149,8 @@ namespace gui
         utils.eventSystem.notify(evt::Type::ToastUpdateMessage, &msg);
     }
 
-    ModDial::ModDial(Utils& u, const String& uID) :
-        Knob(u, uID),
+    ModDial::ModDial(Utils& u) :
+        Knob(u),
         prms(),
         path(),
         showBias(false),

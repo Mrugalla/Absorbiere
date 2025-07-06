@@ -6,11 +6,11 @@ namespace gui
 	struct KnobAbsorb :
 		public Comp
 	{
-		KnobAbsorb(Utils& u, const String& uID) :
-			Comp(u, uID),
-			knob(u, uID + "k"),
-			label(u, uID + "l"),
-			modDial(u, uID + "m")
+		KnobAbsorb(Utils& u) :
+			Comp(u),
+			knob(u),
+			label(u),
+			modDial(u)
 		{
 			layout.init
 			(

@@ -12,8 +12,8 @@ namespace gui
 		enum class Type { kTrigger, kToggle, kChoice, kNumTypes };
 		enum { kHoverAniCB, kClickAniCB, kToggleStateCB, kUpdateParameterCB, kNumCallbacks };
 
-		// u, uID
-		Button(Utils&, const String&);
+		// u
+		Button(Utils&);
 
 		void paint(Graphics&) override;
 

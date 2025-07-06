@@ -11,8 +11,7 @@ namespace gui
 		struct Patch :
 			public Comp
 		{
-			// u, uID
-			Patch(Utils&, const String&);
+			Patch(Utils&);
 
 			// name, author, file
 			void activate(const String&, const String&, const File&);

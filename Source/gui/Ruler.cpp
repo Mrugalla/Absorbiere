@@ -2,8 +2,8 @@
 
 namespace gui
 {
-	Ruler::Ruler(Utils& u, const String& uID) :
-		Comp(u, uID),
+	Ruler::Ruler(Utils& u) :
+		Comp(u),
 		labels(),
 		getIncFunc([](float l) { return l / 4.f; }),
 		valToStrFunc([](float v) { return String(v); }),
@@ -102,8 +102,7 @@ namespace gui
 		for (auto i = 0; i < numLabels; ++i)
 		{
 			const auto x = static_cast<int>(xF);
-			const auto uID = getName() + String(i + 1);
-			labels.emplace_back(new Label(utils, uID));
+			labels.emplace_back(new Label(utils));
 			auto& label = *labels.back();
 			makeTextLabel(label, valToStrFunc(val), font, just, cID, "");
 			label.setBounds({ x + xOff, 0, 100, h });

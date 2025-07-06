@@ -3,7 +3,7 @@
 namespace gui
 {
 	ButtonLink::ButtonLink(Utils& u) :
-		Button(u, "")
+		Button(u)
 	{
 	}
 

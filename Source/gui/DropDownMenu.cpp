@@ -2,8 +2,8 @@
 
 namespace gui
 {
-	DropDownMenu::DropDownMenu(Utils& u, const String& uID) :
-		Comp(u, uID),
+	DropDownMenu::DropDownMenu(Utils& u) :
+		Comp(u),
 		buttons(),
 		labelGroup()
 	{
@@ -26,17 +26,17 @@ namespace gui
 		}
 	}
 
-	void DropDownMenu::add(Button::OnPaint onPaint, Button::OnClick onClick, const String& uID)
+	void DropDownMenu::add(Button::OnPaint onPaint, Button::OnClick onClick)
 	{
-		buttons.push_back(std::make_unique<Button>(utils, uID));
+		buttons.push_back(std::make_unique<Button>(utils));
 		auto& btn = *buttons.back().get();
 		btn.onClick = onClick;
 		btn.onPaint = onPaint;
 	}
 
-	void DropDownMenu::add(Button::OnClick onClick, const String& text, const String& uID, const String& _tooltip)
+	void DropDownMenu::add(Button::OnClick onClick, const String& text, const String& _tooltip)
 	{
-		buttons.push_back(std::make_unique<Button>(utils, uID));
+		buttons.push_back(std::make_unique<Button>(utils));
 		auto& btn = *buttons.back().get();
 		makeTextButton(btn, text, _tooltip, CID::Interact);
 		btn.onClick = onClick;
@@ -79,7 +79,7 @@ namespace gui
 	//
 
 	ButtonDropDown::ButtonDropDown(Utils& u) :
-		Button(u, "")
+		Button(u)
 	{
 	}
 

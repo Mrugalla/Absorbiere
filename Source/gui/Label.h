@@ -11,8 +11,8 @@ namespace gui
 		enum class Type { Text, Paint, Image, NumTypes };
 		static constexpr int NumTypes = static_cast<int>(Type::NumTypes);
 
-		// u, uID, autoMaxHeight
-		Label(Utils&, const String& = "", bool = false);
+		// u, autoMaxHeight
+		Label(Utils&, bool = false);
 
 		void resized() override;
 

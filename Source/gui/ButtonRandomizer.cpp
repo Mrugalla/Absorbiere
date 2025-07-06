@@ -2,8 +2,8 @@
 
 namespace gui
 {
-    ButtonRandomizer::ButtonRandomizer(Utils& u, const String& uID, String&& id) :
-        Button(u, uID),
+    ButtonRandomizer::ButtonRandomizer(Utils& u, String&& id) :
+        Button(u),
         randomizables(),
         randFuncs(),
         randomizer(*u.audioProcessor.state.props.getUserSettings(), std::move(id))

@@ -22,7 +22,7 @@ namespace gui
 	//
 
 	ButtonPower::ButtonPower(CompPower& editor) :
-		Button(editor.utils, "buttonpower")
+		Button(editor.utils)
 	{
 		makeParameter(*this, PID::Power, Button::Type::kToggle, makeButtonOnPaintPower());
 		type = Button::Type::kToggle;

@@ -4,9 +4,9 @@ namespace gui
 {
 	// Visualizer
 
-	EnvelopeFollowerEditor::Visualizer::Visualizer(Utils& u, const String& uID,
+	EnvelopeFollowerEditor::Visualizer::Visualizer(Utils& u,
 		const EnvFol& envelopeFollower) :
-		Comp(u, uID),
+		Comp(u),
 		img(),
 		y0(0.f)
 	{
@@ -57,24 +57,14 @@ namespace gui
 
 	// Editor
 
-	EnvelopeFollowerEditor::EnvelopeFollowerEditor(Utils& u, const String& uID,
-		const EnvFol& envFol, PID pGain, PID pAttack, PID pDecay, PID pSmooth) :
-		Comp(u, uID),
-		visualizer(u, uID + "vs", envFol),
-		title(u, uID + "t"),
-		gainLabel(u, uID + "gl"),
-		attackLabel(u, uID + "al"),
-		decayLabel(u, uID + "dl"),
-		smoothLabel(u, uID + "sl"),
-		gain(u, uID + "g"),
-		attack(u, uID + "a"),
-		decay(u, uID + "d"),
-		smooth(u, uID + "s"),
-		gainMod(u, uID + "gm"),
-		attackMod(u, uID + "am"),
-		decayMod(u, uID + "dm"),
-		smoothMod(u, uID + "sm"),
-		randomizer(u, uID + "rnd", "randenvfol"),
+	EnvelopeFollowerEditor::EnvelopeFollowerEditor(const EnvFol& envFol, Utils& u,
+		PID pGain, PID pAttack, PID pDecay, PID pSmooth) :
+		Comp(u),
+		visualizer(u, envFol),
+		title(u), gainLabel(u), attackLabel(u), decayLabel(u), smoothLabel(u),
+		gain(u), attack(u), decay(u), smooth(u),
+		gainMod(u), attackMod(u), decayMod(u), smoothMod(u),
+		randomizer(u, "randenvfol"),
 		labelGroup()
 	{
 		layout.init

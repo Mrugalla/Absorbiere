@@ -2,9 +2,9 @@
 
 namespace gui
 {
-	TextEditor::TextEditor(Utils& u, const String& uID, const String& emptyString) :
-			Button(u, uID),
-			labelEmpty(u, uID + "e"),
+	TextEditor::TextEditor(Utils& u, const String& emptyString) :
+			Button(u),
+			labelEmpty(u),
 			txt(""),
 			txtEmpty(emptyString),
 			caret(0),

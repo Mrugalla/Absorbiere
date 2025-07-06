@@ -13,8 +13,7 @@ namespace gui
 		struct Visualizer :
 			public Comp
 		{
-			// u, uID, envFol
-			Visualizer(Utils&, const String&, const EnvFol&);
+			Visualizer(Utils&, const EnvFol&);
 
 			void resized() override;
 
@@ -25,9 +24,9 @@ namespace gui
 		};
 
 	public:
-		// u, uID, envFol, gain, attack, decay, smooth
-		EnvelopeFollowerEditor(Utils&, const String&,
-			const EnvFol&, PID, PID, PID, PID);
+		// envFol, u, gain, attack, decay, smooth
+		EnvelopeFollowerEditor(const EnvFol&, Utils&,
+			PID, PID, PID, PID);
 
 		void paint(Graphics&) override;
 

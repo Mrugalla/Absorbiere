@@ -8,8 +8,8 @@ namespace gui
 	{
 		enum { cbEmpty, cbKeyFocus, cbCaret };
 
-		// u, uID, emptyString
-		TextEditor(Utils&, const String& uID, const String & = "");
+		// u, emptyString
+		TextEditor(Utils&, const String & = "");
 
 		bool keyPressed(const KeyPress&) override;
 
