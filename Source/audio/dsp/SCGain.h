@@ -14,6 +14,8 @@ namespace dsp
 
 		void reset() noexcept
 		{
+			if(scGain.isInGesture())
+				scGain.endGesture();
 			listening.store(false);
 		}
 

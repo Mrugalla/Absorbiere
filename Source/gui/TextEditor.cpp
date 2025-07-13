@@ -10,7 +10,7 @@ namespace gui
 			caret(0),
 			emptyAniIdx(0),
 			active(true),
-			onEnter([](){}),
+			onEnter(nullptr),
 			onKeyPress([](const KeyPress&) {})
 		{
 			addAndMakeVisible(labelEmpty);
@@ -91,9 +91,14 @@ namespace gui
 			return false;
 		if (key == KeyPress::returnKey)
 		{
+			if (onEnter)
+			{
+				onEnter();
+				return true;
+			}
 			txt = txt.substring(0, caret) + "\n" + txt.substring(caret);
 			++caret;
-			onEnter();
+			
 		}
 		else if (key == KeyPress::spaceKey)
 		{

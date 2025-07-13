@@ -3,10 +3,12 @@
 
 namespace gui
 {
+	static inline bool SingleInstance = true;
+
 	struct ButtonSCAutogain :
 		public Comp
 	{
-		ButtonSCAutogain(Utils& u) :
+		ButtonSCAutogain(Utils& u, const String& filter) :
 			Comp(u),
 			btn(u)
 		{
@@ -14,6 +16,7 @@ namespace gui
 			add(Callback([&, speed = msToInc(5000.f, fps)]()
 			{
 				const auto listening = u.audioProcessor.scGainer.isListening();
+				btn.value = listening ? 1.f : 0.f;
 				if (!listening)
 					return;
 				auto& phase = callbacks[0].phase;
@@ -47,21 +50,35 @@ namespace gui
 					const auto circleHoverBounds = bounds.reduced(rad + hoverPhase * (thicc8 - rad));
 					g.drawEllipse(circleHoverBounds, thicc2);
 				}
-			}, "The plugin listens to the sidechain input to normalize it.");
+			},
+				"Every instance with this ID listens to its sidechain input to normalize them with the sc gain parameter.");
 
 			btn.type = Button::Type::kToggle;
 			btn.onClick = [&](const Mouse&)
 			{
+				auto& user = u.getProps();
+				const auto str = filter.toLowerCase();
+				SingleInstance = str.isEmpty();
+				user.setValue("requestauto", !SingleInstance);
 				auto& scGainer = u.audioProcessor.scGainer;
-				btn.value = scGainer.isListening() ? 0.f : 1.f;
-				scGainer.setListening(btn.value);
+				const auto listening = scGainer.isListening();
+				if (SingleInstance)
+					return scGainer.setListening(!listening);
+				user.setValue("requestfilter", str);
+				user.setValue("requeststate", !listening);
 			};
 			btn.value = 0.f;
 		}
 
 		~ButtonSCAutogain()
 		{
-			utils.audioProcessor.scGainer.reset();
+			if (SingleInstance)
+			{
+				utils.audioProcessor.scGainer.reset();
+				return;
+			}
+			auto& user = utils.getProps();
+			user.setValue("requestfilter", "everyponyreset");
 		}
 
 		void paint(Graphics& g)
@@ -99,7 +116,6 @@ namespace gui
 			Comp::resized();
 			btn.setBounds(getLocalBounds());
 		}
-
 	private:
 		Button btn;
 	};

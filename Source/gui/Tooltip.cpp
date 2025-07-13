@@ -44,7 +44,7 @@ namespace gui
 
 	void Tooltip::paint(Graphics& g)
 	{
-		setCol(g, CID::Darken);
+		setCol(g, CID::Bg);
 		g.fillAll();
 	}
 

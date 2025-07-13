@@ -48,7 +48,8 @@ namespace audio
         ),
         midiSubBuffer(),
         mixProcessor(),
-        scGainer(params(PID::SCGain))
+        scGainer(params(PID::SCGain)),
+        instanceID("")
     {
         const auto& user = *state.props.getUserSettings();
         const auto& settingsFile = user.getFile();
@@ -79,6 +80,7 @@ namespace audio
         initFile.create();
         const auto xmlString = init.toXmlString();
 		initFile.replaceWithText(xmlString);
+        startTimerHz(12);
     }
 
     Processor::~Processor()
@@ -219,6 +221,7 @@ namespace audio
 #if KeepState
         pluginProcessor.savePatch(state);
         params.savePatch(state);
+		state.set("instanceid", instanceID);
         state.savePatch(*this, destData);
 #endif
     }
@@ -227,6 +230,9 @@ namespace audio
     {
 #if KeepState
         state.loadPatch(*this, data, sizeInBytes);
+		const auto nIDVar = state.get("instanceid");
+        if(nIDVar)
+		    instanceID = nIDVar->toString();
         params.loadPatch(state);
         pluginProcessor.loadPatch(state);
 #endif
@@ -262,7 +268,7 @@ namespace audio
                     const auto scGainDb = scGainParam.getValModDenorm();
                     const auto scGain = math::dbToAmp(scGainDb);
 					const auto scListen = params(PID::SCListen).getValue() > .5f;
-
+                   
                     auto scBuffer = scBus->getBusBuffer(buffer);
                     auto scSamples = scBuffer.getArrayOfWritePointers();
                     const auto numChannelsSC = scBuffer.getNumChannels();
@@ -453,9 +459,17 @@ namespace audio
 
     void Processor::timerCallback()
     {
-        static constexpr bool needForcePrepare = false;
-        if(needForcePrepare)
-            forcePrepare();
+        auto& user = *state.props.getUserSettings();
+        user.reload();
+        const auto multiInstance = user.getBoolValue("requestauto", false);
+        if (!multiInstance)
+            return;
+        const auto filter = user.getValue("requestfilter", "");
+        if (filter == "everyponyreset")
+			return scGainer.reset();
+		const auto requestState = user.getBoolValue("requeststate", false);
+        if (filter == instanceID)
+            scGainer.setListening(requestState);
     }
 
     void Processor::forcePrepare()

@@ -58,6 +58,7 @@ namespace audio
         void timerCallback() override;
         bool supportsDoublePrecisionProcessing() const override;
         void forcePrepare();
+
 #if PPDHasTuningEditor
         XenManager xenManager;
 #endif
@@ -70,6 +71,7 @@ namespace audio
 #if PPDHasSidechain
         dsp::SCGain scGainer;
 #endif
+        String instanceID;
 
         //JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Processor)
     };
