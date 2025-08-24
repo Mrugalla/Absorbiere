@@ -11,7 +11,7 @@ namespace gui
             case evt::Type::ThemeUpdated:
                 return e.repaint();
             case evt::Type::ClickedEmpty:
-                e.parameterEditor.setActive(false);
+                e.parameterEditor.giveAwayKeyboardFocus();
                 e.editorComp.setVisible(true);
                 //e.patchBrowser.setVisible(false);
                 e.giveAwayKeyboardFocus();

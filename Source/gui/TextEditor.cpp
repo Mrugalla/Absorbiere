@@ -9,7 +9,6 @@ namespace gui
 			txtEmpty(emptyString),
 			caret(0),
 			emptyAniIdx(0),
-			active(true),
 			onEnter(nullptr),
 			onKeyPress([](const KeyPress&) {})
 		{
@@ -42,20 +41,10 @@ namespace gui
 					}
 					labelEmpty.setMaxHeight();
 					labelEmpty.repaint();
-					return;
 				}
-				labelEmpty.setVisible(false);
-			}, cbEmpty, cbFPS::k_1_875, true));
-
-			add(Callback([&]()
-			{
-				if (isShowing() && active)
-					grabKeyboardFocus();
-			}, cbKeyFocus, cbFPS::k7_5, true));
-
-			add(Callback([&]()
-			{
-				if (!active)
+				else
+					labelEmpty.setVisible(false);
+				if (!hasKeyboardFocus(false))
 				{
 					callbacks[cbCaret].phase = 0.f;
 					updateLabel();
@@ -66,20 +55,17 @@ namespace gui
 					callbacks[cbCaret].phase = 1.f - callbacks[cbCaret].phase;
 					updateLabel();
 				}
-			}, cbCaret, cbFPS::k_1_875, true));
+			}, cbEmpty, cbFPS::k_1_875, true));
 
 			onClick = [&](const Mouse&)
 			{
-				setActive(true);
+				grabKeyboardFocus();
 			};
 
 			addEvt([&](evt::Type t, const void*)
 			{
 				if (t == evt::Type::DeactivateAllTextEditors)
-				{
-					active = false;
 					giveAwayKeyboardFocus();
-				}
 			});
 
 			setWantsKeyboardFocus(true);
@@ -87,7 +73,7 @@ namespace gui
 
 	bool TextEditor::keyPressed(const KeyPress& key)
 	{
-		if (!active)
+		if (!hasKeyboardFocus(false))
 			return false;
 		if (key == KeyPress::returnKey)
 		{
@@ -98,7 +84,6 @@ namespace gui
 			}
 			txt = txt.substring(0, caret) + "\n" + txt.substring(caret);
 			++caret;
-			
 		}
 		else if (key == KeyPress::spaceKey)
 		{
@@ -144,7 +129,6 @@ namespace gui
 				++caret;
 			}
 		}
-
 		updateLabel();
 		onKeyPress(key);
 		return true;
@@ -182,21 +166,6 @@ namespace gui
 		if (cbTxt.isEmpty())
 			return;
 		addText(cbTxt);
-	}
-
-	void TextEditor::setActive(bool e)
-	{
-		notify(evt::Type::DeactivateAllTextEditors);
-		active = e;
-		updateActive();
-	}
-
-	void TextEditor::updateActive()
-	{
-		if (active)
-			grabKeyboardFocus();
-		else
-			giveAwayKeyboardFocus();
 	}
 
 	bool TextEditor::isEmpty() const noexcept

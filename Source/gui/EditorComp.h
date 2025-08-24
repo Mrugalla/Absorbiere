@@ -74,10 +74,9 @@ namespace gui
 				idEditor.txt = idEditor.txt.toLowerCase();
 				utils.audioProcessor.instanceID = idEditor.txt;
 			};
-			idEditor.setActive(false);
 			idEditor.onEnter = [&]()
 			{
-				idEditor.setActive(false);
+				idEditor.giveAwayKeyboardFocus();
 			};
 			idEditor.tooltip = "Enter an identifier for all instances that use the same sidechain input!";
 		}

@@ -54,7 +54,7 @@ namespace gui
 
 		editor.onClick = [&](const Mouse&)
 		{
-			editor.setActive(true);
+			editor.grabKeyboardFocus();
 		};
 
 		manifest.onClick = [&](const Mouse&)
@@ -91,7 +91,7 @@ namespace gui
 			file.create();
 			file.appendText(editor.txt);
 			file.revealToUser();
-			editor.setActive(false);
+			editor.giveAwayKeyboardFocus();
 			parse("Manifested: " + fileName);
 		};
 
@@ -113,7 +113,7 @@ namespace gui
 			if (numFiles == 0)
 			{
 				editor.clear();
-				editor.setActive(true);
+				editor.grabKeyboardFocus();
 				Random rand;
 				auto r = rand.nextInt(3);
 				switch (r)
@@ -133,7 +133,7 @@ namespace gui
 					const File file(it.getFile());
 					parse(file.getFileName());
 					editor.setText(file.loadFileAsString());
-					editor.setActive(false);
+					editor.giveAwayKeyboardFocus();
 					return;
 				}
 				else
@@ -153,14 +153,14 @@ namespace gui
 		clear.onClick = [&](const Mouse&)
 		{
 			editor.clear();
-			editor.setActive(true);
+			editor.grabKeyboardFocus();
 			parse();
 		};
 
 		paste.onClick = [&](const Mouse&)
 		{
 			editor.paste();
-			editor.setActive(true);
+			editor.grabKeyboardFocus();
 		};
 
 		makeTextLabel
@@ -228,7 +228,6 @@ namespace gui
 		layout.place(reveal, 2, 4, 1, 1);
 		layout.place(clear, 3, 4, 1, 1);
 		layout.place(paste, 4, 4, 1, 1);
-
 		buttonLabelsGroup.setMaxHeight(thicc * 2.f);
 	}
 

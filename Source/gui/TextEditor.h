@@ -23,16 +23,11 @@ namespace gui
 
 		void paste();
 
-		virtual void setActive(bool e);
-
-		void updateActive();
-
 		bool isEmpty() const noexcept;
 
 		Label labelEmpty;
 		String txt, txtEmpty;
 		int caret, emptyAniIdx;
-		bool active;
 		std::function<void()> onEnter;
 		std::function<void(const KeyPress&)> onKeyPress;
 	private:

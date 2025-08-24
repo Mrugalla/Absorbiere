@@ -8,7 +8,6 @@ namespace gui
 	{
 		onEnter = [&]()
 		{
-			setActive(false);
 			for (const auto pID : pIDs)
 			{
 				auto& param = u.getParam(pID);
@@ -18,6 +17,8 @@ namespace gui
 				const auto valNorm = param.range.convertTo0to1(valLegal);
 				param.setValueWithGesture(valNorm);
 			}
+			giveAwayKeyboardFocus();
+			setVisible(false);
 		};
 
 		addEvt([&](evt::Type t, const void* stuff)
@@ -31,7 +32,8 @@ namespace gui
 				const auto x = knobScreenBounds.getX() - pluginScreenBounds.getX();
 				const auto y = knobScreenBounds.getY() - pluginScreenBounds.getY();
 				setTopLeftPosition(x, y);
-				setActive(true);
+				setVisible(true);
+				grabKeyboardFocus();
 			}
 			else if (t == evt::Type::ParameterEditorAssignParam)
 			{
@@ -42,15 +44,9 @@ namespace gui
 			}
 			else if (t == evt::Type::ParameterEditorVanish)
 			{
-				setActive(false);
+				giveAwayKeyboardFocus();
+				setVisible(false);
 			}
 		});
-	}
-
-	void ParameterEditor::setActive(bool e)
-	{
-		if (e) setVisible(e);
-		TextEditor::setActive(e);
-		if (!e) setVisible(e);
 	}
 }
