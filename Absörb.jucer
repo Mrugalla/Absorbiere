@@ -108,6 +108,10 @@
                 file="Source/audio/dsp/PluginRecorder.h"/>
           <FILE id="dkRRfr" name="PRM.cpp" compile="1" resource="0" file="Source/audio/dsp/PRM.cpp"/>
           <FILE id="PeWEgd" name="PRM.h" compile="0" resource="0" file="Source/audio/dsp/PRM.h"/>
+          <FILE id="pucigW" name="ProcessorBufferView.cpp" compile="1" resource="0"
+                file="Source/audio/dsp/ProcessorBufferView.cpp"/>
+          <FILE id="L7s3LY" name="ProcessorBufferView.h" compile="0" resource="0"
+                file="Source/audio/dsp/ProcessorBufferView.h"/>
           <FILE id="COtYQZ" name="Randomizer.cpp" compile="1" resource="0" file="Source/audio/dsp/Randomizer.cpp"/>
           <FILE id="UbXJN7" name="Randomizer.h" compile="0" resource="0" file="Source/audio/dsp/Randomizer.h"/>
           <FILE id="gtCIRw" name="Resonator.cpp" compile="1" resource="0" file="Source/audio/dsp/Resonator.cpp"/>
